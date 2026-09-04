@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", sans-serif;
+  --font-inter: "Inter", sans-serif;
+  --color-primary: #3525cd;
+  --color-primary-hover: #2a1da6;
+  --color-danger: #BA1A1A;
+  --color-danger-hover: #b91c1c;
+  --color-surface-light: #f7f9fb;
+  --color-border-subtle: #C7C4D84D;
+  --color-text-default: #191C1E;
+}
+
+html, body {
+  font-family: var(--font-inter);
+}
