@@ -107,9 +107,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               className="absolute right-3.5 flex items-center text-gray-400 hover:text-gray-600 focus:outline-none"
             >
               {showPassword ? (
-                <EyeOff className="h-4 w-4" />
-              ) : (
                 <Eye className="h-4 w-4" />
+              ) : (
+                <EyeOff className="h-4 w-4" />
               )}
             </button>
           ) : (

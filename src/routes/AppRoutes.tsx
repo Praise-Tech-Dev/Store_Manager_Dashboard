@@ -1,15 +1,27 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import LoginPage from '../pages/login/LoginPage'
 import SignUpPage from '../pages/sign-up/SignUpPage'
 import ForgotPassword from '../pages/forgot-password/ForgotPassword'
 import AuthLayout from '../layout/AuthLayout'
 import AppLayout from '../layout/AppLayout'
 import DashboardPage from '../pages/dashboard/DashboardPage'
+import { ProtectedRoute } from './ProtectedRoutes'
 
 export const AppRoutes = () => {
     return (
       <BrowserRouter>
         <Routes>
+          <Route
+            path="/"
+            element={
+              localStorage.getItem("auth_token") ? (
+                <Navigate to="/dashboard" replace />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
+
           {/* auth pages  */}
           <Route element={<AuthLayout />}>
             <Route path="/login" element={<LoginPage />} />
@@ -18,12 +30,17 @@ export const AppRoutes = () => {
           </Route>
 
           {/* protected routes  */}
-          <Route element={<AppLayout />}>
-            {/* dashboard */}
-            <Route path="/" element={<DashboardPage />} />
-            {/* user management  */}
-            {/* product catalogue  */}
+          <Route element={<ProtectedRoute />}>
+            <Route element={<AppLayout />}>
+              {/* dashboard */}
+              <Route path="/dashboard" element={<DashboardPage />} />
+              {/* user management  */}
+              {/* product catalogue  */}
+            </Route>
           </Route>
+
+          {/* Catch-all */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
     );
