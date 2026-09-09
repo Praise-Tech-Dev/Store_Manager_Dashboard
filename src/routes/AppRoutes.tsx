@@ -25,6 +25,10 @@ export const AppRoutes = () => {
           {/* auth pages  */}
           <Route element={<AuthLayout />}>
             <Route path="/login" element={<LoginPage />} />
+            <Route
+              path="/signup"
+              element={<Navigate to="/sign-up" replace />}
+            />
             <Route path="/sign-up" element={<SignUpPage />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
           </Route>
