@@ -12,6 +12,7 @@
   --color-surface-light: #f7f9fb;
   --color-border-subtle: #C7C4D84D;
   --color-text-default: #191C1E;
+  --color-text-gray: #464555;
 }
 
 html, body {
