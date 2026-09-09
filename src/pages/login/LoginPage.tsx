@@ -39,8 +39,7 @@ export default function LoginPage() {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {error && (
             <div className="rounded-xl bg-red-50 p-3 text-xs text-red-600 border border-red-200">
-              {error.response?.data?.message ||
-                "Invalid credentials."}
+              {error.response?.data?.message || "Invalid credentials."}
             </div>
           )}
           <Input
@@ -126,6 +125,16 @@ export default function LoginPage() {
               Github
             </Button>
           </div>
+
+          <p className="text-center text-xs font-medium text-gray-500 pt-3">
+            Don't have an administrator account?{" "}
+            <Link
+              to="/sign-up"
+              className="font-semibold text-primary hover:underline cursor-pointer"
+            >
+              Register here
+            </Link>
+          </p>
         </form>
       </AuthCard>
     </div>
