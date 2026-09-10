@@ -6,6 +6,7 @@ import AuthLayout from '../layout/AuthLayout'
 import AppLayout from '../layout/AppLayout'
 import { ProtectedRoute } from './ProtectedRoutes'
 import { DashboardPage } from '@/pages/dashboard/DashboardPage'
+import { UsersPage } from '@/pages/dashboard/UsersPage'
 
 export const AppRoutes = () => {
     return (
@@ -39,6 +40,7 @@ export const AppRoutes = () => {
               {/* dashboard */}
               <Route path="/dashboard" element={<DashboardPage />} />
               {/* user management  */}
+              <Route path='/users' element={<UsersPage />} />
               {/* product catalogue  */}
             </Route>
           </Route>

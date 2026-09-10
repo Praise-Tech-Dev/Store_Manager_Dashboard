@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { DashboardUser, UpdateUserDTO } from "../../types/user";
+import type { DashboardUser, UpdateUserDTO } from "../../types/user.types";
 import { userService } from "../../services/userService";
 import { USER_KEYS } from "./userKeys";
 import { toast } from "react-toastify";

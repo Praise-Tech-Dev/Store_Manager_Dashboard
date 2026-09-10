@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { CreateUserDTO, DashboardUser } from "../../types/user";
+import type { CreateUserDTO, DashboardUser } from "../../types/user.types";
 import { userService } from "../../services/userService";
 import { USER_KEYS } from "./userKeys";
 import { toast } from "react-toastify";
@@ -17,8 +17,7 @@ export const useCreateUser = () => {
       toast.success(`User ${newUser.name.firstname} created successfully`);
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Failed to create user');
+      toast.error(error.message || "Failed to create user");
     },
   });
-
 };

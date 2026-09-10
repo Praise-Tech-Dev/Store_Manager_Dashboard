@@ -1,7 +1,7 @@
-import Dashboard from "../assets/icons/sidebar/dashboard.svg"
-import Products from "../assets/icons/sidebar/products.svg"
-import Users from "../assets/icons/sidebar/users.svg"
-import Orders from "../assets/icons/sidebar/orders.svg"
+import Dashboard from "../assets/icons/sidebar/dashboard.svg?react"
+import Products from "../assets/icons/sidebar/products.svg?react";
+import Users from "../assets/icons/sidebar/users.svg?react";
+import Orders from "../assets/icons/sidebar/orders.svg?react";
 
 
 export const navigation = [

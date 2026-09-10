@@ -1,10 +1,10 @@
+import type { ComponentType, SVGProps } from "react";
 import { NavLink } from "react-router-dom";
-// import type { LucideIcon } from "lucide-react";
 
 type SidebarNavItemProps = {
   name: string;
   path: string;
-  icon: string;
+  icon: ComponentType<SVGProps<SVGSVGElement>>;
   isOpen: boolean;
   closeSidebar: () => void;
   toggleSidebar: () => void;
@@ -13,7 +13,7 @@ type SidebarNavItemProps = {
 export default function SidebarNavItem({
   name,
   path,
-  icon,
+  icon: Icon,
   isOpen,
   closeSidebar,
   toggleSidebar,
@@ -42,7 +42,7 @@ export default function SidebarNavItem({
         transition-all
         duration-300
         
-        ${isOpen ? "px-4 justify-start" : " px-1 justify-center md:justify-center"}
+        ${isOpen ? "px-3.5 gap-3 justify-start" : "px-0 justify-center"}
 
         ${
           isActive
@@ -52,10 +52,11 @@ export default function SidebarNavItem({
         `
       }
     >
-      <img src={icon} alt={`${name} icon`} className="w-4.5 h-4.5 shrink-0 " />
+      {/* <img src={icon} alt={`${name} icon`} className={`w-4.5 h-4.5 shrink-0 `} /> */}
+      <Icon className="w-5 h-5 shrink-0 " />
 
       <span
-        className={`truncate text-xs tracking-tight transition-opacity duration-200 ${
+        className={`truncate text-sm font-medium tracking-tight ${
           isOpen ? "inline-block" : "hidden md:inline-block"
         }`}
       >

@@ -31,7 +31,7 @@ export default function Sidebar() {
         duration-300
         ease-in-out
 
-        ${isOpen ? "w-64" : "w-16"}
+        ${isOpen ? "w-64" : "w-18"}
 
         md:w-64
       `}
@@ -40,7 +40,7 @@ export default function Sidebar() {
           className={`transition-all duration-300 ${isOpen ? "px-4" : "px-2"}`}
         >
           <div className="flex items-center gap-3 px-2  py-4">
-            <div className="flex w-8 h-8 items-center justify-center  bg-slate-100  shadow-sm">
+            <div className="flex w-8 h-8 shrink-0 items-center justify-center  bg-slate-100  shadow-sm">
               <img
                 src={logo}
                 alt="Logo"
@@ -50,17 +50,20 @@ export default function Sidebar() {
 
             <div
               className={`
-              transition-all
-              duration-300
-              text-xl
-              font-semibold
-              tracking-[0.5px]
-              leading-[-0.5px]
-              text-primary
-              ${isOpen ? "opacity-100" : "w-0 opacity-0"}
+                overflow-hidden
+                whitespace-nowrap
+                transition-all
+                duration-300
+                text-base
+                md:text-xl
+                font-semibold
+                tracking-[0.5px]
+                leading-[-0.5px]
+                text-primary
+                ${isOpen ? "opacity-100" : "w-0 opacity-0"}
 
-              md:w-auto md:opacity-100
-            `}
+                md:w-auto md:opacity-100
+              `}
             >
               StoreManager
             </div>
