@@ -2,9 +2,9 @@ import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { X } from "lucide-react";
 import { navigation } from "../../../constants/navigation";
-import { useSidebar } from "../../../context/SidebarContext";
 import logo from "../../../assets/icons/logo.svg";
 import SidebarNavItem from "./SidebarNavItem";
+import { useSidebar } from "@/hooks/sidebar/useSidebar";
 
 export default function Sidebar() {
   const { isOpen, toggleSidebar, closeSidebar } = useSidebar();
@@ -96,4 +96,3 @@ export default function Sidebar() {
     </div>
   );
 }
-

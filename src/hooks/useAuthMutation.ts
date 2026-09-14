@@ -5,6 +5,11 @@ import type { AxiosError } from "axios";
 import type { LoginFormValues, SignupFormValues } from "../validationSchema/authSchema";
 import { toast } from "react-toastify";
 
+interface DecodedToken {
+  sub: number;
+  user: string;
+  iat: number;
+}
 
 export const useLoginMutation = () => {
     const navigate =useNavigate();
@@ -16,7 +21,11 @@ export const useLoginMutation = () => {
     >({
       mutationFn: (data: LoginFormValues) => authService.login(data),
       onSuccess: (data) => {
+        const payload: DecodedToken = JSON.parse(atob(data.token.split('.')[1]));
+        const userId = payload.sub;
+
         localStorage.setItem("auth_token", data.token);
+        localStorage.setItem("auth_user_id", String(userId));
         toast.success("Welcome back! Signed in successfully.");
         navigate("/dashboard", { replace: true });
       },

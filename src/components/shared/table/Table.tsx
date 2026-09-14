@@ -1,4 +1,3 @@
-import React from "react";
 import { TableSkeleton } from "./TableSkeleton";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { Column } from "@/types/table/Column.types";
