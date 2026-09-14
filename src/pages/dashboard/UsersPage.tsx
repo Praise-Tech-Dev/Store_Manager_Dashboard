@@ -1,14 +1,14 @@
 import { UserTable } from "@/components/users/UserTable";
 import { useDashboardUsers } from "@/hooks/users";
-import type { DashboardUser } from "@/types/user.types";
-import { useMemo, useState } from "react";
+// import type { DashboardUser } from "@/types/user.types";
+import { useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 
-type ActiveModal =
-  | { type: "edit"; user: DashboardUser }
-  | { type: "suspend"; user: DashboardUser }
-  | { type: "delete"; user: DashboardUser }
-  | null;
+// type ActiveModal =
+//   | { type: "edit"; user: DashboardUser }
+//   | { type: "suspend"; user: DashboardUser }
+//   | { type: "delete"; user: DashboardUser }
+//   | null;
 
 const PAGE_SIZE = 5;
 
@@ -17,7 +17,7 @@ export const UsersPage = () => {
   const page = parseInt(searchParams.get("page") || "1", 10);
 
   const { data: allUsers = [], isLoading, error } = useDashboardUsers();
-  const [activeModal, setActiveModal] = useState<ActiveModal>(null);
+  // const [_activeModal, setActiveModal] = useState<ActiveModal>(null);
 
   // Computed values needed for pagination
   const totalItems = allUsers.length;
@@ -42,15 +42,13 @@ export const UsersPage = () => {
 
   return (
     <div className="space-y-6 p-8">
-      <h1 className="text-[32px] font-bold tracking-[-0.64px] leading-10">Users</h1>
+      <h1 className="text-[32px] font-bold tracking-[-0.64px] leading-10">
+        Users
+      </h1>
       {/*  Header & KPI Metrics */}
 
       {/* Controls Toolbar (Search, Role Filter, Export CSV) */}
-      <div className="">
-
-        {/* search  */}
-        
-      </div>
+      <div className="">{/* search  */}</div>
 
       <UserTable
         users={paginatedUsers}
@@ -62,9 +60,12 @@ export const UsersPage = () => {
           pageSize: PAGE_SIZE,
           onPageChange: handlePageChange,
         }}
-        onEdit={(user) => setActiveModal({ type: "edit", user })}
-        onSuspend={(user) => setActiveModal({ type: "suspend", user })}
-        onDelete={(user) => setActiveModal({ type: "delete", user })}
+        // onEdit={(user) => setActiveModal({ type: "edit", user })}
+        // onSuspend={(user) => setActiveModal({ type: "suspend", user })}
+        // onDelete={(user) => setActiveModal({ type: "delete", user })}
+        onEdit={(user) => console.log("Edit", user)}
+        onSuspend={(user) => console.log("Suspend", user)}
+        onDelete={(user) => console.log("Delete", user)}
       />
 
       {/* Modals controlled by activeModal */}
