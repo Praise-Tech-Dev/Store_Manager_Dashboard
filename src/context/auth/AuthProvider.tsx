@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { AuthContext } from "../AuthContext";
+import { AuthContext } from "./AuthContext";
 import { useState, type ReactNode } from "react";
 import { useCurrentUser } from "@/hooks/auth/currentUser";
 
@@ -35,7 +35,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setToken(null);
     setUserId(null);
     queryClient.clear();
-    window.location.href = "/login";
   };
 
   return (

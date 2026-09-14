@@ -4,7 +4,7 @@ export type AvatarProps = {
   src?: string | null;
   alt?: string;
   name?: string;
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "xs" | "md" | "lg";
   className?: string;
 };
 
@@ -16,7 +16,7 @@ export const Avatar = ({
   className = "",
 }: AvatarProps) => {
   const [hasError, setHasError] = useState(false);
-
+  
   const getInitials = (str: string) => {
     if (!str) return "U";
     const parts = str.trim().split(" ");
@@ -42,6 +42,7 @@ export const Avatar = ({
 
   const sizes = {
     sm: "h-8 w-8 text-xs",
+    xs: "h-9 w-9 text-sm",
     md: "h-10 w-10 text-sm",
     lg: "h-12 w-12 text-base",
   };
@@ -54,6 +55,7 @@ export const Avatar = ({
     >
       {src && !hasError ? (
         <img
+          key={src}
           src={src}
           alt={alt}
           onError={() => setHasError(true)}

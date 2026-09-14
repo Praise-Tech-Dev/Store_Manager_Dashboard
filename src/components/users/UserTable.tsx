@@ -5,6 +5,7 @@ import type { PaginationConfig } from "@/types/table/PaginationConfig.types";
 import { Badge, type BadgeVariant } from "../shared/Badge";
 import { Table } from "../shared/table/Table";
 import { UserActionMenu } from "./UserActionMenu";
+import { Avatar } from "../shared/Avatar";
 
 interface UserTableProps {
   users: DashboardUser[];
@@ -23,21 +24,19 @@ export const UserTable = ({
   onSuspend,
   onDelete,
 }: UserTableProps) => {
+  
   const columns: Column<DashboardUser>[] = useMemo(
     () => [
       {
         key: "user",
         title: "User",
         render: (user) => {
-          const firstInitial = user.name.firstname?.charAt(0) ?? "";
-          const lastInitial = user.name.lastname?.charAt(0) ?? "";
-          const initials = `${firstInitial}${lastInitial}`.toUpperCase();
+          const fullName = `${user.name.firstname} ${user.name.lastname}`;
+          
 
           return (
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-indigo-50 font-semibold text-indigo-600">
-                {initials}
-              </div>
+              <Avatar name={fullName} src={user.avatar} size="md" />
               <div>
                 <p className="font-semibold capitalize text-slate-900">
                   {user.name.firstname} {user.name.lastname}

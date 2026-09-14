@@ -13,6 +13,13 @@ const STATUSES: UserStatus[] = ["Active", "Active", "Active", "Suspended"];
 
 const enrichUserData = (user: ApiUser): DashboardUser => ({
   ...user,
+  // Give User 2 and User 1 a test image
+  avatar:
+    user.id === 2
+      ? "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=250"
+      : user.id === 1
+        ? "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=250"
+        : null, // Others will fall back to your initials generator
   role: ROLES[user.id % ROLES.length],
   status: STATUSES[user.id % STATUSES.length],
   joinedDate: "2023-01-15",

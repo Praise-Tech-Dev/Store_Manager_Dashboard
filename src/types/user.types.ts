@@ -32,6 +32,7 @@ export interface ApiUser {
 
 
 export interface DashboardUser extends ApiUser {
+    avatar?: string | null;
     role: UserRole;
     status: UserStatus;
     joinedDate: string;

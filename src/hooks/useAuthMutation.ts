@@ -1,9 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { authService, type LoginResponse } from "../services/auth.services";
 import type { AxiosError } from "axios";
 import type { LoginFormValues, SignupFormValues } from "../validationSchema/authSchema";
 import { toast } from "react-toastify";
+import { useAuth } from "./auth/useAuth";
 
 interface DecodedToken {
   sub: number;
@@ -12,8 +13,10 @@ interface DecodedToken {
 }
 
 export const useLoginMutation = () => {
+    const location = useLocation();
     const navigate =useNavigate();
-
+    const { setSession } = useAuth();
+    const from = location.state?.from?.pathname || "/dashboard";
     return useMutation<
       LoginResponse,
       AxiosError<{ message?: string }>,
@@ -26,8 +29,9 @@ export const useLoginMutation = () => {
 
         localStorage.setItem("auth_token", data.token);
         localStorage.setItem("auth_user_id", String(userId));
+        setSession(data.token, userId);
         toast.success("Welcome back! Signed in successfully.");
-        navigate("/dashboard", { replace: true });
+        navigate(from, { replace: true });
       },
       onError: (error) => {
         const data = error.response?.data;
