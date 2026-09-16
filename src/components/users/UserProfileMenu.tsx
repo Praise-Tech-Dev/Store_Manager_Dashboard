@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Avatar } from "../shared/Avatar";
 import { getUserAvatarUrl } from "@/utils/user.utils";
 import { useNavigate } from "react-router-dom";
+import { ProfileMenuSkeleton } from "../shared/topNav/ProfileMenuSkeleton";
 
 export const UserProfileMenu = () => {
     const { user, isLoading, logout} = useAuth();
@@ -31,13 +32,14 @@ export const UserProfileMenu = () => {
 
     if (isLoading) {
       return (
-        <div className="flex items-center gap-3 animate-pulse">
-          <div className="w-10 h-10 rounded-full bg-slate-200" />
-          <div className="hidden sm:flex flex-col gap-1.5">
-            <div className="w-24 h-3.5 bg-slate-200 rounded" />
-            <div className="w-16 h-2.5 bg-slate-200 rounded" />
-          </div>
-        </div>
+        // <div className="flex items-center gap-3 animate-pulse">
+        //   <div className="w-10 h-10 rounded-full bg-slate-200" />
+        //   <div className="hidden sm:flex flex-col gap-1.5">
+        //     <div className="w-24 h-3.5 bg-slate-200 rounded" />
+        //     <div className="w-16 h-2.5 bg-slate-200 rounded" />
+        //   </div>
+        // </div>
+        <ProfileMenuSkeleton />
       );
     }
 
