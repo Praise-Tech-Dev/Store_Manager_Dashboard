@@ -1,4 +1,5 @@
 import { SearchInput } from "@/components/shared/SearchInput";
+import { UserKPIs } from "@/components/users/UserKPIs";
 import { UserTable } from "@/components/users/UserTable";
 import { useDashboardUsers } from "@/hooks/users";
 import { useUserTableFilters } from "@/hooks/users/useUserTableFilters";
@@ -30,23 +31,8 @@ export const UsersPage = () => {
     clearFilters,
   } = useUserTableFilters(allUsers);
 
-  // Computed values needed for pagination
-  // const totalItems = allUsers.length;
-  // const totalPages = Math.max(1, Math.ceil(totalItems / PAGE_SIZE));
-
-  // const paginatedUsers = useMemo(() => {
-  //   const startIndex = (page - 1) * PAGE_SIZE;
-  //   return allUsers.slice(startIndex, startIndex + PAGE_SIZE);
-  // }, [allUsers, page]);
-
-  // const handlePageChange = (newPage: number) => {
-  //   setSearchParams((prev) => {
-  //     const next = new URLSearchParams(prev);
-  //     next.set("page", newPage.toString());
-  //     return next;
-  //   });
-  // };
-  // console.log("Enriched Users:", users);
+  // const totalUsers = allUsers.length;
+  
 
   // Check if any filter is currently active
   const isFiltered = Boolean(searchTerm.trim() || selectedRole !== "All");
@@ -59,6 +45,7 @@ export const UsersPage = () => {
         Users
       </h1>
       {/*  Header & KPI Metrics */}
+      <UserKPIs users={allUsers} isLoading={isLoading} />
 
       {/* Controls Toolbar: Search & Role Filter */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
