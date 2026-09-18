@@ -14,6 +14,7 @@ interface UserTableProps {
   onEdit: (user: DashboardUser) => void;
   onSuspend: (user: DashboardUser) => void;
   onDelete: (user: DashboardUser) => void;
+  onClearFilters?: () => void;
 }
 
 export const UserTable = ({
@@ -23,8 +24,8 @@ export const UserTable = ({
   onEdit,
   onSuspend,
   onDelete,
+  onClearFilters,
 }: UserTableProps) => {
-  
   const columns: Column<DashboardUser>[] = useMemo(
     () => [
       {
@@ -32,7 +33,6 @@ export const UserTable = ({
         title: "User",
         render: (user) => {
           const fullName = `${user.name.firstname} ${user.name.lastname}`;
-          
 
           return (
             <div className="flex items-center gap-3">
@@ -115,6 +115,7 @@ export const UserTable = ({
       loading={loading}
       pagination={pagination}
       emptyMessage="No users match your criteria"
+      onClearFilters={onClearFilters}
     />
   );
 };

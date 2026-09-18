@@ -1,8 +1,10 @@
+import { SearchInput } from "@/components/shared/SearchInput";
 import { UserTable } from "@/components/users/UserTable";
 import { useDashboardUsers } from "@/hooks/users";
+import { useUserTableFilters } from "@/hooks/users/useUserTableFilters";
+import type { UserRole } from "@/types/user.types";
 // import type { DashboardUser } from "@/types/user.types";
-import { useMemo } from "react";
-import { useSearchParams } from "react-router-dom";
+
 
 // type ActiveModal =
 //   | { type: "edit"; user: DashboardUser }
@@ -10,33 +12,44 @@ import { useSearchParams } from "react-router-dom";
 //   | { type: "delete"; user: DashboardUser }
 //   | null;
 
-const PAGE_SIZE = 5;
-
 export const UsersPage = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const page = parseInt(searchParams.get("page") || "1", 10);
-
   const { data: allUsers = [], isLoading, error } = useDashboardUsers();
   // const [_activeModal, setActiveModal] = useState<ActiveModal>(null);
 
+  const {
+    searchTerm,
+    setSearchTerm,
+    selectedRole,
+    setRole,
+    currentPage,
+    setPage,
+    totalPages,
+    totalItems,
+    pageSize,
+    paginatedUsers,
+    clearFilters,
+  } = useUserTableFilters(allUsers);
+
   // Computed values needed for pagination
-  const totalItems = allUsers.length;
-  const totalPages = Math.max(1, Math.ceil(totalItems / PAGE_SIZE));
+  // const totalItems = allUsers.length;
+  // const totalPages = Math.max(1, Math.ceil(totalItems / PAGE_SIZE));
 
-  const paginatedUsers = useMemo(() => {
-    const startIndex = (page - 1) * PAGE_SIZE;
-    return allUsers.slice(startIndex, startIndex + PAGE_SIZE);
-  }, [allUsers, page]);
+  // const paginatedUsers = useMemo(() => {
+  //   const startIndex = (page - 1) * PAGE_SIZE;
+  //   return allUsers.slice(startIndex, startIndex + PAGE_SIZE);
+  // }, [allUsers, page]);
 
-  const handlePageChange = (newPage: number) => {
-    setSearchParams((prev) => {
-      const next = new URLSearchParams(prev);
-      next.set("page", newPage.toString());
-      return next;
-    });
-  };
+  // const handlePageChange = (newPage: number) => {
+  //   setSearchParams((prev) => {
+  //     const next = new URLSearchParams(prev);
+  //     next.set("page", newPage.toString());
+  //     return next;
+  //   });
+  // };
   // console.log("Enriched Users:", users);
 
+  // Check if any filter is currently active
+  const isFiltered = Boolean(searchTerm.trim() || selectedRole !== "All");
   // if (isLoading) return <div>Loading users...</div>;
   if (error) return <div>Error loading users</div>;
 
@@ -47,18 +60,42 @@ export const UsersPage = () => {
       </h1>
       {/*  Header & KPI Metrics */}
 
-      {/* Controls Toolbar (Search, Role Filter, Export CSV) */}
-      <div className="">{/* search  */}</div>
+      {/* Controls Toolbar: Search & Role Filter */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="w-full sm:w-80">
+          <SearchInput
+            placeholder="Search users by name or email..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onClear={() => setSearchTerm("")}
+          />
+        </div>
 
+        <div className="flex items-center gap-2 self-end sm:self-auto">
+          <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+            Filter by role:
+          </span>
+          <select
+            value={selectedRole}
+            onChange={(e) => setRole(e.target.value as UserRole | "All")}
+            className="rounded-xl border border-transparent bg-[#F3F4F6]/80 px-3 py-2 text-xs font-medium text-slate-700 outline-none transition hover:border-slate-200 focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/20 cursor-pointer"
+          >
+            <option value="All">All Roles</option>
+            <option value="Admin">Admin</option>
+            <option value="Customer">Customer</option>
+            <option value="Editor">Editor</option>
+          </select>
+        </div>
+      </div>
       <UserTable
         users={paginatedUsers}
         loading={isLoading}
         pagination={{
-          currentPage: page,
+          currentPage,
           totalPages: totalPages,
           totalItems: totalItems,
-          pageSize: PAGE_SIZE,
-          onPageChange: handlePageChange,
+          pageSize,
+          onPageChange: setPage,
         }}
         // onEdit={(user) => setActiveModal({ type: "edit", user })}
         // onSuspend={(user) => setActiveModal({ type: "suspend", user })}
@@ -66,6 +103,7 @@ export const UsersPage = () => {
         onEdit={(user) => console.log("Edit", user)}
         onSuspend={(user) => console.log("Suspend", user)}
         onDelete={(user) => console.log("Delete", user)}
+        onClearFilters={isFiltered ? clearFilters : undefined}
       />
 
       {/* Modals controlled by activeModal */}

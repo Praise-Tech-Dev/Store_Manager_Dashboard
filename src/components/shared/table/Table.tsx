@@ -16,6 +16,7 @@ export type TableProps<T> = {
   emptyMessage?: string;
   getRowKey?: (row: T) => string | number;
   pagination?: PaginationConfig;
+  onClearFilters?: () => void;
 };
 
 export function Table<T extends Identifiable>({
@@ -25,6 +26,7 @@ export function Table<T extends Identifiable>({
   emptyMessage = "No records found.",
   getRowKey = (row) => row.id ?? JSON.stringify(row),
   pagination,
+  onClearFilters,
 }: TableProps<T>) {
 
   // pagination calc 
@@ -83,7 +85,16 @@ export function Table<T extends Identifiable>({
                   colSpan={columns.length}
                   className="px-5 py-12 text-center text-sm text-slate-500 sm:px-6"
                 >
-                  {emptyMessage}
+                  <p>{emptyMessage}</p>
+                  {onClearFilters && (
+                    <button
+                      type="button"
+                      onClick={onClearFilters}
+                      className="mt-2 text-xs font-semibold text-primary hover:underline cursor-pointer"
+                    >
+                      Clear all filters
+                    </button>
+                  )}
                 </td>
               </tr>
             ) : (
