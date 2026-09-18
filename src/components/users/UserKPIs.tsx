@@ -18,15 +18,15 @@ export const UserKPIs = ({ users, isLoading = false}: UserKPIProps) => {
       { icon: React.ReactNode; bg: string }
     > = {
       total: {
-        icon: <Users className="h-5 w-5 text-indigo-600" />,
+        icon: <Users className="h-4 w-4 text-indigo-600" />,
         bg: "bg-indigo-50",
       },
       active: {
-        icon: <UserCheck className="h-5 w-5 text-emerald-600" />,
+        icon: <UserCheck className="h-4 w-4 text-emerald-600" />,
         bg: "bg-emerald-50",
       },
       suspended: {
-        icon: <Ban className="h-5 w-5 text-rose-600" />,
+        icon: <Ban className="h-4 w-4 text-rose-600" />,
         bg: "bg-rose-50",
       },
     };
@@ -64,7 +64,7 @@ export const UserKPIs = ({ users, isLoading = false}: UserKPIProps) => {
                 {metric.label}
               </span>
               <div
-                className={`flex h-9 w-9 items-center justify-center rounded-xl ${visual.bg}`}
+                className={`flex h-6 w-6 md:h-9 md:w-9 items-center justify-center rounded-xl ${visual.bg}`}
               >
                 {visual.icon}
               </div>

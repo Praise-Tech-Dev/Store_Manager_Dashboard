@@ -5,7 +5,7 @@ const sanitizeCsvField = (field: string | number | undefined | null): string => 
 
     return `"${stringified.replace(/"/g, '""')}"`;
 }   
-export const exportUsersToCSV = (users: DashboardUser[], filename: "users_export.csv"): void => {
+export const exportUsersToCSV = (users: DashboardUser[], filename= "users_export.csv"): void => {
 
     if (users.length === 0) return;
 

@@ -1,9 +1,12 @@
+import Button from "@/components/shared/Button";
 import { SearchInput } from "@/components/shared/SearchInput";
 import { UserKPIs } from "@/components/users/UserKPIs";
 import { UserTable } from "@/components/users/UserTable";
 import { useDashboardUsers } from "@/hooks/users";
 import { useUserTableFilters } from "@/hooks/users/useUserTableFilters";
 import type { UserRole } from "@/types/user.types";
+import { exportUsersToCSV } from "@/utils/exportCsv";
+import { Download, UserPlus } from "lucide-react";
 // import type { DashboardUser } from "@/types/user.types";
 
 
@@ -41,9 +44,40 @@ export const UsersPage = () => {
 
   return (
     <div className="space-y-6 p-8">
-      <h1 className="text-[32px] font-bold tracking-[-0.64px] leading-10">
-        Users
-      </h1>
+      {/* Top Header Toolbar */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-[32px] font-bold tracking-[-0.64px] leading-10 text-slate-900">
+            Users
+          </h1>
+          <p className="mt-1 text-xs text-slate-500">
+            Manage team accounts, assign roles, and audit security permissions.
+          </p>
+        </div>
+
+        <div className="flex gap-3 shrink-0 items-center">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            iconLeft={<Download className="h-4 w-4" />}
+            onClick={() => exportUsersToCSV(allUsers)}
+            disabled={isLoading || allUsers.length === 0}
+          >
+            Export CSV
+          </Button>
+
+          <Button
+            type="button"
+            variant="primary"
+            size="sm"
+            iconLeft={<UserPlus className="h-4 w-4" />}
+            onClick={() => console.log("Open Add User Modal")}
+          >
+            Add User
+          </Button>
+        </div>
+      </div>
       {/*  Header & KPI Metrics */}
       <UserKPIs users={allUsers} isLoading={isLoading} />
 
