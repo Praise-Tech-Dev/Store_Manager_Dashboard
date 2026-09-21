@@ -28,9 +28,9 @@ export const useUpdateUser = () => {
       }
       toast.error("Failed to update user");
     },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: USER_KEYS.all });
-    },
+    // onSettled: () => {
+    //   queryClient.invalidateQueries({ queryKey: USER_KEYS.all });
+    // },
     onSuccess: () => {
       toast.success("User updated successfully");
     },

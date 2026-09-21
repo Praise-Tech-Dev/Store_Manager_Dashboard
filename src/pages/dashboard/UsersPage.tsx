@@ -7,18 +7,20 @@ import { useUserTableFilters } from "@/hooks/users/useUserTableFilters";
 import type { UserRole } from "@/types/user.types";
 import { exportUsersToCSV } from "@/utils/exportCsv";
 import { Download, UserPlus } from "lucide-react";
-// import type { DashboardUser } from "@/types/user.types";
+import type { DashboardUser } from "@/types/user.types";
+import { useState } from "react";
+import { EditUserModal } from "@/components/users/modals/EditUserModal";
 
 
-// type ActiveModal =
-//   | { type: "edit"; user: DashboardUser }
-//   | { type: "suspend"; user: DashboardUser }
-//   | { type: "delete"; user: DashboardUser }
-//   | null;
+type ActiveModal =
+  | { type: "edit"; user: DashboardUser }
+  | { type: "suspend"; user: DashboardUser }
+  | { type: "delete"; user: DashboardUser }
+  | null;
 
 export const UsersPage = () => {
   const { data: allUsers = [], isLoading, error } = useDashboardUsers();
-  // const [_activeModal, setActiveModal] = useState<ActiveModal>(null);
+  const [activeModal, setActiveModal] = useState<ActiveModal>(null);
 
   const {
     searchTerm,
@@ -34,7 +36,7 @@ export const UsersPage = () => {
     clearFilters,
   } = useUserTableFilters(allUsers);
 
-  // const totalUsers = allUsers.length;
+  const totalUsers = allUsers.length;
   
 
   // Check if any filter is currently active
@@ -62,7 +64,7 @@ export const UsersPage = () => {
             size="sm"
             iconLeft={<Download className="h-4 w-4" />}
             onClick={() => exportUsersToCSV(allUsers)}
-            disabled={isLoading || allUsers.length === 0}
+            disabled={isLoading || totalUsers === 0}
           >
             Export CSV
           </Button>
@@ -118,16 +120,24 @@ export const UsersPage = () => {
           pageSize,
           onPageChange: setPage,
         }}
-        // onEdit={(user) => setActiveModal({ type: "edit", user })}
-        // onSuspend={(user) => setActiveModal({ type: "suspend", user })}
-        // onDelete={(user) => setActiveModal({ type: "delete", user })}
-        onEdit={(user) => console.log("Edit", user)}
-        onSuspend={(user) => console.log("Suspend", user)}
-        onDelete={(user) => console.log("Delete", user)}
+        onEdit={(user) => setActiveModal({ type: "edit", user })}
+        onSuspend={(user) => setActiveModal({ type: "suspend", user })}
+        onDelete={(user) => setActiveModal({ type: "delete", user })}
+        // onEdit={(user) => console.log("Edit", user)}
+        // onSuspend={(user) => console.log("Suspend", user)}
+        // onDelete={(user) => console.log("Delete", user)}
         onClearFilters={isFiltered ? clearFilters : undefined}
       />
 
-      {/* Modals controlled by activeModal */}
+      {/* Modals */}
+      {activeModal?.type === "edit" && (
+        <EditUserModal 
+          user={activeModal.user}
+          isOpen={true}
+          onClose={() => setActiveModal(null)}
+          onRequestDelete={(user) => setActiveModal({ type: "delete", user})}
+        />
+      )}
     </div>
   );
-};;
+};

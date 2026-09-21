@@ -10,6 +10,7 @@ export type InputProps = {
   iconRight?: React.ReactNode | string;
   isPassword?: boolean;
   containerClassName?: string;
+  variant?: "filled" | "outline";
 } & React.ComponentPropsWithoutRef<"input">;
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -25,6 +26,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       isPassword = false,
       disabled = false,
       required = false,
+      variant = "filled",
       className = "",
       containerClassName = "",
       id,
@@ -55,12 +57,31 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       return icon;
     };
 
+    const variantStyles = {
+      filled: `
+        bg-[#F3F4F6]/80 py-3.5
+        ${
+          error
+            ? "border-red-500 bg-red-50/20 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"
+            : "border-transparent hover:border-gray-200 focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/20"
+        }
+      `,
+      outline: `
+        bg-white py-2.5 text-sm font-normal text-slate-800 
+        ${
+          error
+            ? "border-rose-500 focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20"
+            : "border-[#C7C4D8] hover:border-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20"
+        }
+      `,
+    };
+
     return (
       <div className={`flex w-full flex-col gap-1.5 ${containerClassName}`}>
         {label && (
           <label
             htmlFor={inputId}
-            className="text-xs font-semibold text-gray-700 tracking-tight"
+            className="text-[11px] font-semibold text-gray-700 tracking-tight"
           >
             {label}
             {required && <span className="ml-1 text-red-500">*</span>}
@@ -87,6 +108,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               py-3.5
               ${iconLeft ? "pl-11" : "pl-4"}
               ${iconRight || isPassword ? "pr-11" : "pr-4"}
+              ${variantStyles[variant]}
               ${
                 error
                   ? "border-red-500 bg-red-50/20 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"

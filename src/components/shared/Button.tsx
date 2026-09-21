@@ -3,7 +3,8 @@ import { Loader2 } from "lucide-react";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
-  onClick?: () => void;
+  // onClick?: () => void;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
   type?: "button" | "submit" | "reset";
   variant?: "primary" | "secondary" | "outline" | "danger";
   size?: "xs" | "sm" | "md" | "lg";
@@ -25,9 +26,10 @@ export default function Button({
   loading = false,
   disabled = false,
   className = "",
+  ...rest
 }: ButtonProps) {
   const baseStyles =
-    "inline-flex items-center justify-center gap-2 font-medium shadow-xs transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/30 disabled:opacity-50 disabled:cursor-not-allowed tracking-[0px] whitespace-nowrap";
+    "cursor-pointer inline-flex items-center justify-center gap-2 font-medium shadow-xs transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/30 disabled:opacity-50 disabled:cursor-not-allowed tracking-[0px] whitespace-nowrap";
 
   const sizes = {
     xs: "py-2 px-4 text-sm rounded-lg leading-[20px] ",
@@ -42,7 +44,7 @@ export default function Button({
     secondary: "bg-surface-light text-text-default  hover:bg-slate-100",
 
     outline:
-      "bg-none border border-border-subtle/30 text-text-default hover:bg-slate-50",
+      "bg-none border border-border-subtle text-text-default hover:bg-slate-50",
 
     danger: "bg-danger text-white hover:opacity-90",
   };
@@ -53,10 +55,11 @@ export default function Button({
       onClick={onClick}
       disabled={disabled || loading}
       className={`${baseStyles} ${sizes[size]} ${variants[variant]} ${className}`}
+      {...rest}
     >
       {loading ? (
         <>
-          <Loader2 className="w-4 h-4 animate-spin" />
+          <Loader2 className="w-4 h-4 animate-spin " />
           <span>Loading...</span>
         </>
       ) : (
