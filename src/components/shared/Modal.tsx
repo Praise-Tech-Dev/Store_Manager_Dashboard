@@ -150,7 +150,7 @@ export const Modal = ({
             </div>
           </div>
         ) : (
-          // Modal for Edit
+          // Modal for Edit and suspend 
           <>
             {(title || Icon) && (
               <div className="flex items-start justify-between gap-4 border-b border-[#E0E3E5] px-6 py-5">
