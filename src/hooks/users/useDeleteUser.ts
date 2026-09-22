@@ -27,9 +27,9 @@ export const useDeleteUser = () => {
       }
       toast.error("Failed to delete user");
     },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: USER_KEYS.all });
-    },
+    // onSettled: () => {
+    //   queryClient.invalidateQueries({ queryKey: USER_KEYS.all });
+    // },
     onSuccess: () => {
       toast.success("User deleted successfully");
     },

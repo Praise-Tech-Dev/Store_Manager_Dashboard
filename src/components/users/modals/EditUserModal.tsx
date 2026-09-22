@@ -4,7 +4,7 @@ import { Select } from "@/components/shared/Select";
 import { useUpdateUser } from "@/hooks/users";
 import type { EditUserFormValues } from "@/types/editUserFormValues.types";
 import type { DashboardUser } from "@/types/user.types";
-import { Check, Mail, ShieldAlert, User } from "lucide-react";
+import { Check, Info, Mail, User } from "lucide-react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import userIcon from "@/assets/icons/user-settings.svg?react"
@@ -87,10 +87,12 @@ export const EditUserModal = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
+      variant="default"
       title="Edit User"
       subtitle={`ID: ${user.id}-XYZ`}
       icon={userIcon}
       iconVariant="primary"
+      bodyClassName="bg-surface-light p-3 md:p-6"
       maxWidth="lg"
       confirmText="Save Changes"
       confirmFormId="edit-user-form"
@@ -101,7 +103,7 @@ export const EditUserModal = ({
     >
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-4 bg-surface-light p-3 md:p-6"
+        className="space-y-4 "
         id="edit-user-form"
       >
         <Input
@@ -138,14 +140,16 @@ export const EditUserModal = ({
         </div>
 
         {/* audit trail  */}
-        <div className="flex items-start gap-2.5 rounded-xl border border-border-subtle bg-white p-3 text-text-default">
-          <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0 text-slate-400" />
-          <div className="text-[11px] leading-relaxed">
-            <span className="font-semibold text-slate-700">
+        <div className="bg-[#D0E1FB]/30 flex items-start gap-2.5 rounded-lg  p-3 text-text-default">
+          <Info className="mt-0.5 h-4 w-4 shrink-0 text-slate-400" />
+          <div className="flex flex-col text-[11px] leading-relaxed">
+            <span className="font-semibold text-[#54647ACC]">
               Audit Trail Active:
-            </span>{" "}
-            Changes to user roles or status will be logged in the system audit
-            trail for compliance purposes.
+            </span>
+            <span className="text-wrap text-[#54647ACC]/80">
+              Changes to user roles or status will be logged in the system audit
+              trail for compliance purposes.
+            </span>
           </div>
         </div>
 

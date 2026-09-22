@@ -71,7 +71,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         ${
           error
             ? "border-rose-500 focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20"
-            : "border-[#C7C4D8] hover:border-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20"
+            : " border-[#C7C4D8] hover:border-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20"
         }
       `,
     };

@@ -10,6 +10,8 @@ import { Download, UserPlus } from "lucide-react";
 import type { DashboardUser } from "@/types/user.types";
 import { useState } from "react";
 import { EditUserModal } from "@/components/users/modals/EditUserModal";
+import { DeleteUserModal } from "@/components/users/modals/DeleteUserModal";
+import { SuspendUserModal } from "@/components/users/modals/SuspendUserModal";
 
 
 type ActiveModal =
@@ -136,6 +138,21 @@ export const UsersPage = () => {
           isOpen={true}
           onClose={() => setActiveModal(null)}
           onRequestDelete={(user) => setActiveModal({ type: "delete", user})}
+        />
+      )}
+
+      {activeModal?.type === "delete" && (
+        <DeleteUserModal
+          user={activeModal.user}
+          isOpen={true}
+          onClose={() => setActiveModal(null)}
+        />
+      )}
+      {activeModal?.type === "suspend" && (
+        <SuspendUserModal
+          user={activeModal.user}
+          isOpen={true}
+          onClose={() => setActiveModal(null)}
         />
       )}
     </div>
