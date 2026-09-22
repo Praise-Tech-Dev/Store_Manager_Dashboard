@@ -26,6 +26,8 @@ export type ModalProps = {
   maxWidth?: "sm" | "md" | "lg" | "xl";
   className?: string;
   showCloseButton?: boolean;
+  headerBorder?: string;
+  footerBorder?: string;
 };
 
 export const Modal = ({
@@ -34,11 +36,13 @@ export const Modal = ({
   variant = "default",
   title,
   subtitle,
+  headerBorder = "border-b border-[#E0E3E5]",
   icon: Icon,
   iconVariant,
   children,
   bodyClassName = "",
   footerBg = "bg-white",
+  footerBorder = "border-t border-[#E0E3E5]",
   onConfirm,
   confirmText,
   cancelText = "Cancel",
@@ -153,7 +157,7 @@ export const Modal = ({
           // Modal for Edit and suspend 
           <>
             {(title || Icon) && (
-              <div className="flex items-start justify-between gap-4 border-b border-[#E0E3E5] px-6 py-5">
+              <div className={`flex items-start justify-between gap-4 ${headerBorder} px-6 py-5`}>
                 <div className="flex items-center gap-3.5">
                   {Icon && (
                     <div
@@ -196,7 +200,7 @@ export const Modal = ({
         {/* Modal Actions Footer */}
         {hasFooter && (
           <div
-            className={`flex flex-col sm:flex-row items-center gap-3 px-6 py-4 border-t border-[#E0E3E5] ${footerBg} ${
+            className={`flex flex-col sm:flex-row items-center gap-3 px-6 py-4 ${footerBorder}  ${footerBg} ${
               onDelete ? "justify-between" : "justify-end"
             }`}
           >

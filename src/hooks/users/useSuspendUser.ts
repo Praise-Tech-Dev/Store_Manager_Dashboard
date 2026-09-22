@@ -10,7 +10,11 @@ export const useSuspendUser = () => {
 
     return useMutation({
       mutationFn: ({ id, reason, notifyUser }: SuspendUserPayload) =>
-        userService.updateUser(id, { status: "Suspended" }),
+        userService.updateUser(id, { 
+          status: "Suspended",
+          ...(reason ? {suspendReason : reason } : {}), 
+          ...(notifyUser !== undefined ? { notifyUser } : {}), 
+        } as Partial<DashboardUser>),
 
       onMutate: async ({ id }) => {
         await queryClient.cancelQueries({ queryKey: USER_KEYS.all });

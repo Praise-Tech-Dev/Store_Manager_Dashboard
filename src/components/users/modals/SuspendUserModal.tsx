@@ -40,6 +40,7 @@ export const SuspendUserModal = ({
         onClose={onClose}
         title="Suspend Account"
         subtitle="Are you sure you want to suspend this account?"
+        headerBorder=""
         icon={AlertTriangle}
         iconVariant="danger"
         maxWidth="md"
@@ -51,9 +52,10 @@ export const SuspendUserModal = ({
         cancelText="Cancel"
         footerBg="bg-[#F2F4F6]"
         showCloseButton={false}
+        footerBorder=""
       >
         <div className="space-y-4 pt-1 pb-6 px-6">
-          <div className="space-y-2">
+          <div className="flex flex-col gap-2">
             <label
               htmlFor="suspend-reason"
               className="text-[11px] font-semibold tracking-[0.55px] leading-4 align-middle text-text-gray"
