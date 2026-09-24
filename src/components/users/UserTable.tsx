@@ -6,6 +6,7 @@ import { Badge, type BadgeVariant } from "../shared/Badge";
 import { Table } from "../shared/table/Table";
 import { UserActionMenu } from "./UserActionMenu";
 import { Avatar } from "../shared/Avatar";
+import { useAuth } from "@/hooks/auth/useAuth";
 
 interface UserTableProps {
   users: DashboardUser[];
@@ -13,6 +14,7 @@ interface UserTableProps {
   pagination?: PaginationConfig;
   onEdit: (user: DashboardUser) => void;
   onSuspend: (user: DashboardUser) => void;
+  onUnsuspend: (user: DashboardUser) => void;
   onDelete: (user: DashboardUser) => void;
   onClearFilters?: () => void;
 }
@@ -23,11 +25,16 @@ export const UserTable = ({
   pagination,
   onEdit,
   onSuspend,
+  onUnsuspend,
   onDelete,
   onClearFilters,
 }: UserTableProps) => {
-  const columns: Column<DashboardUser>[] = useMemo(
-    () => [
+  const { user: currentUser} = useAuth();
+  // only active admin has the permission to see actions
+  const isAdmin = currentUser?.role === "Admin" && currentUser?.status !== "Suspended";
+
+  const columns: Column<DashboardUser>[] = useMemo(() => {
+    const baseColumns: Column<DashboardUser>[] = [
       {
         key: "user",
         title: "User",
@@ -85,7 +92,11 @@ export const UserTable = ({
           );
         },
       },
-      {
+      
+    ];
+
+    if (isAdmin) {
+      baseColumns.push({
         key: "actions",
         title: "Actions",
         className: "text-right",
@@ -99,13 +110,15 @@ export const UserTable = ({
               isNearBottom={isNearBottom}
               onEdit={onEdit}
               onSuspend={onSuspend}
+              onUnsuspend={onUnsuspend}
               onDelete={onDelete}
             />
           );
         },
-      },
-    ],
-    [users, onEdit, onSuspend, onDelete],
+      });
+    }
+    return baseColumns;
+  }, [users, isAdmin, onEdit, onSuspend, onUnsuspend, onDelete],
   );
 
   return (

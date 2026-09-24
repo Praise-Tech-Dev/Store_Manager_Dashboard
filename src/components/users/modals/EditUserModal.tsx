@@ -20,7 +20,7 @@ const ROLE_OPTIONS = [
   { label: "Admin", value: "Admin" },
   { label: "Customer", value: "Customer" },
   { label: "Editor", value: "Editor" },
-  { label: "Viewer", value: "Editor" },
+  { label: "Viewer", value: "Viewer" },
 ];
 
 const STATUS_OPTIONS = [

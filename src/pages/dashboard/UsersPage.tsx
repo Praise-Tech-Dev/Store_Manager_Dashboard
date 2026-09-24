@@ -2,7 +2,7 @@ import Button from "@/components/shared/Button";
 import { SearchInput } from "@/components/shared/SearchInput";
 import { UserKPIs } from "@/components/users/UserKPIs";
 import { UserTable } from "@/components/users/UserTable";
-import { useDashboardUsers } from "@/hooks/users";
+import { useDashboardUsers, useUnsuspendUser } from "@/hooks/users";
 import { useUserTableFilters } from "@/hooks/users/useUserTableFilters";
 import type { UserRole } from "@/types/user.types";
 import { exportUsersToCSV } from "@/utils/exportCsv";
@@ -12,6 +12,8 @@ import { useState } from "react";
 import { EditUserModal } from "@/components/users/modals/EditUserModal";
 import { DeleteUserModal } from "@/components/users/modals/DeleteUserModal";
 import { SuspendUserModal } from "@/components/users/modals/SuspendUserModal";
+import { useAuth } from "@/hooks/auth/useAuth";
+import { toast } from "react-toastify";
 
 
 type ActiveModal =
@@ -22,6 +24,8 @@ type ActiveModal =
 
 export const UsersPage = () => {
   const { data: allUsers = [], isLoading, error } = useDashboardUsers();
+  const { user: currentUser} = useAuth();
+  const { mutate: updateUser} = useUnsuspendUser();
   const [activeModal, setActiveModal] = useState<ActiveModal>(null);
 
   const {
@@ -40,7 +44,33 @@ export const UsersPage = () => {
 
   const totalUsers = allUsers.length;
   
+  const handleOpenSuspend = (targetUser: DashboardUser) => {
+    if (currentUser?.id === targetUser.id){
+      toast.error("Security Restriction: You cannot suspend your own account.");
+      return;
+    }
 
+    if (currentUser?.role !== "Admin") {
+      toast.error("Unauthorized Only administrators can suspend accounts.");
+      return;
+    }
+    setActiveModal({ type: "suspend", user: targetUser });
+  };
+
+  const handleOpenDelete = (targetUser: DashboardUser) => {
+    if (currentUser?.id === targetUser.id) {
+      toast.error("Security Restriction: You cannot delete your own account.");
+    }
+    if (currentUser?.role !== "Admin") {
+      toast.error("Unauthorized Only administrators can delete accounts.");
+      return;
+    }
+    setActiveModal({ type: "delete", user: targetUser });
+  }
+
+  const handleUnsuspend = (targetUser: DashboardUser) => {
+    updateUser(targetUser.id);
+  }
   // Check if any filter is currently active
   const isFiltered = Boolean(searchTerm.trim() || selectedRole !== "All");
   // if (isLoading) return <div>Loading users...</div>;
@@ -109,6 +139,7 @@ export const UsersPage = () => {
             <option value="Admin">Admin</option>
             <option value="Customer">Customer</option>
             <option value="Editor">Editor</option>
+            <option value="Viewer">Viewer</option>
           </select>
         </div>
       </div>
@@ -123,11 +154,9 @@ export const UsersPage = () => {
           onPageChange: setPage,
         }}
         onEdit={(user) => setActiveModal({ type: "edit", user })}
-        onSuspend={(user) => setActiveModal({ type: "suspend", user })}
-        onDelete={(user) => setActiveModal({ type: "delete", user })}
-        // onEdit={(user) => console.log("Edit", user)}
-        // onSuspend={(user) => console.log("Suspend", user)}
-        // onDelete={(user) => console.log("Delete", user)}
+        onSuspend={handleOpenSuspend}
+        onUnsuspend = {handleUnsuspend}
+        onDelete={handleOpenDelete}
         onClearFilters={isFiltered ? clearFilters : undefined}
       />
 

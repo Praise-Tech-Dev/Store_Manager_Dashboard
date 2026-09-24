@@ -42,8 +42,9 @@ export const useSuspendUser = () => {
       //   queryClient.invalidateQueries({ queryKey: USER_KEYS.all });
       // },
 
-      onSuccess: () => {
-        toast.success("Account suspended successfully.")
+      onSuccess: (_data, variables) => {
+        const name = variables.userName ? `${variables.userName}'s ` : "User"; 
+        toast.success(`${name} account suspended successfully.`);
       },
     });
 }

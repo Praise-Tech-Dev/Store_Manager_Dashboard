@@ -8,7 +8,7 @@ import type {
   UserStatus,
 } from "../types/user.types";
 
-const ROLES: UserRole[] = ["Admin", "Customer", "Editor"];
+const ROLES: UserRole[] = ["Admin", "Customer", "Editor", "Viewer"];
 const STATUSES: UserStatus[] = ["Active", "Active", "Active", "Suspended"];
 
 const enrichUserData = (user: ApiUser): DashboardUser => ({

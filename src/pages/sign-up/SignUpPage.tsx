@@ -6,30 +6,31 @@ import Button from "../../components/shared/Button";
 import { Check, Circle, Lock, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useSignupMutation } from "../../hooks/useAuthMutation";
-import { signupSchema, type SignupFormValues } from "../../validationSchema/authSchema";
+import {
+  signupSchema,
+  type SignupFormValues,
+} from "../../validationSchema/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 export default function SignUpPage() {
-
-  const { mutate: signup, isPending, error} = useSignupMutation();
+  const { mutate: signup, isPending, error } = useSignupMutation();
 
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
-
   } = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
-      fullName: '',
-      email: '',
-      password: '',
+      fullName: "",
+      email: "",
+      password: "",
     },
-    mode: "onTouched"
+    mode: "onTouched",
   });
 
-  // password indicator check 
+  // password indicator check
   const password = watch("password", "");
 
   // The 3 rules corresponding to the 3 visual bars
@@ -179,6 +180,4 @@ export default function SignUpPage() {
       </AuthCard>
     </div>
   );
-
-  
 }

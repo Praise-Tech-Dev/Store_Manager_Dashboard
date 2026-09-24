@@ -4,3 +4,7 @@ export * from "./useDashboardUser";
 export * from "./useCreateUser";
 export * from "./useUpdateUser";
 export * from "./useDeleteUser";
+export * from "./useSuspendUser";
+export * from "./useUnsuspend";
+export * from "./useUserMetrics"
+export * from "./useUserTableFilters"
