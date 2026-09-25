@@ -100,25 +100,19 @@ export const UserTable = ({
         key: "actions",
         title: "Actions",
         className: "text-right",
-        render: (user) => {
-          const currentIndex = users.findIndex((u) => u.id === user.id);
-          const isNearBottom = currentIndex >= users.length - 2;
-
-          return (
-            <UserActionMenu
-              user={user}
-              isNearBottom={isNearBottom}
-              onEdit={onEdit}
-              onSuspend={onSuspend}
-              onUnsuspend={onUnsuspend}
-              onDelete={onDelete}
-            />
-          );
-        },
+        render: (user) => (
+          <UserActionMenu
+            user={user}
+            onEdit={onEdit}
+            onSuspend={onSuspend}
+            onUnsuspend={onUnsuspend}
+            onDelete={onDelete}
+          />
+        ),
       });
     }
     return baseColumns;
-  }, [users, isAdmin, onEdit, onSuspend, onUnsuspend, onDelete],
+  }, [ isAdmin, onEdit, onSuspend, onUnsuspend, onDelete],
   );
 
   return (
