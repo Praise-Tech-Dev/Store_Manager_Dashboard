@@ -155,18 +155,21 @@ export const UsersPage = () => {
         }}
         onEdit={(user) => setActiveModal({ type: "edit", user })}
         onSuspend={handleOpenSuspend}
-        onUnsuspend = {handleUnsuspend}
+        onUnsuspend={handleUnsuspend}
         onDelete={handleOpenDelete}
         onClearFilters={isFiltered ? clearFilters : undefined}
       />
 
       {/* Modals */}
       {activeModal?.type === "edit" && (
-        <EditUserModal 
+        <EditUserModal
           user={activeModal.user}
           isOpen={true}
           onClose={() => setActiveModal(null)}
-          onRequestDelete={(user) => setActiveModal({ type: "delete", user})}
+          onRequestDelete={(user) => setActiveModal({ type: "delete", user })}
+          existingEmails={allUsers
+            .filter((u) => u.id !== activeModal?.user.id)
+            .map((u) => u.email)}
         />
       )}
 

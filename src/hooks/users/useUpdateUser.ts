@@ -1,15 +1,25 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { DashboardUser, UpdateUserDTO } from "../../types/user.types";
+import type { DashboardUser } from "../../types/user.types";
 import { userService } from "../../services/userService";
 import { USER_KEYS } from "./userKeys";
 import { toast } from "react-toastify";
+import { useAuth } from "../auth/useAuth";
+import type { UpdateUserPayload } from "@/types/updateUserPayload.types";
 
 export const useUpdateUser = () => {
   const queryClient = useQueryClient();
+  const { user: currentUser } = useAuth();
 
   return useMutation({
-    mutationFn: ({ id, data }: { id: number; data: UpdateUserDTO }) =>
-      userService.updateUser(id, data),
+    mutationFn: async ({ id, data }: UpdateUserPayload) => {
+      if (currentUser?.role !== "Admin" || currentUser?.status === "Suspended") {
+        throw new Error(
+          "Unauthorized: Only active administrators can update users.",
+        );
+      }
+      return userService.updateUser(id, data);
+    },
+      
     onMutate: async ({ id, data }) => {
       await queryClient.cancelQueries({ queryKey: USER_KEYS.all });
       const previousUsers = queryClient.getQueryData<DashboardUser[]>(
@@ -22,11 +32,11 @@ export const useUpdateUser = () => {
 
       return { previousUsers };
     },
-    onError: (_err, _variables, context) => {
+    onError: (err: Error, _variables, context) => {
       if (context?.previousUsers) {
         queryClient.setQueryData(USER_KEYS.all, context.previousUsers);
       }
-      toast.error("Failed to update user");
+      toast.error(err.message || "Failed to update user");
     },
     // onSettled: () => {
     //   queryClient.invalidateQueries({ queryKey: USER_KEYS.all });

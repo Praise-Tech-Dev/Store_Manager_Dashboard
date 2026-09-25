@@ -2,47 +2,53 @@ import { Input } from "@/components/shared/Input";
 import { Modal } from "@/components/shared/Modal";
 import { Select } from "@/components/shared/Select";
 import { useUpdateUser } from "@/hooks/users";
-import type { EditUserFormValues } from "@/types/editUserFormValues.types";
 import type { DashboardUser } from "@/types/user.types";
 import { Check, Info, Mail, User } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import userIcon from "@/assets/icons/user-settings.svg?react"
-
+import { createEditUserSchema, type EditUserSchemaType} from "@/validationSchema"
+import { useAuth } from "@/hooks/auth/useAuth";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { USER_ROLES, USER_STATUSES } from "@/constants/user.constants";
 interface EditUserModalProps {
-    user: DashboardUser;
-    isOpen: boolean;
-    onClose: () => void;
-    onRequestDelete: (user: DashboardUser) => void;
+  user: DashboardUser;
+  isOpen: boolean;
+  onClose: () => void;
+  onRequestDelete: (user: DashboardUser) => void;
+  existingEmails: string[];
 }
 
-const ROLE_OPTIONS = [
-  { label: "Admin", value: "Admin" },
-  { label: "Customer", value: "Customer" },
-  { label: "Editor", value: "Editor" },
-  { label: "Viewer", value: "Viewer" },
-];
+const ROLE_OPTIONS = USER_ROLES.map((role) => ({ label: role, value: role }));
 
-const STATUS_OPTIONS = [
-  { label: "Active", value: "Active" },
-  { label: "Suspended", value: "Suspended" },
-  { label: "Invited", value: "Invited" },
-];
+const STATUS_OPTIONS = USER_STATUSES.map((status) => ({ label: status, value: status }))
 
 export const EditUserModal = ({
     user,
     isOpen,
     onClose,
     onRequestDelete,
+    existingEmails,
 }: EditUserModalProps) => {
+  const { user: currentUser } = useAuth();
   const { mutate: updateUser, isPending }  = useUpdateUser();
+
+  const isSelf = Boolean(currentUser?.id && currentUser.id === user.id);
+
+  // Regenerate schema whenever target user or existing emails change 
+  const validationSchema = useMemo(
+    () => createEditUserSchema(existingEmails, isSelf),
+    [existingEmails, isSelf]
+  )
 
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors},
-  } = useForm<EditUserFormValues>({
+  } = useForm<EditUserSchemaType>({
+    resolver: zodResolver(validationSchema),
+    mode: "onChange",
     defaultValues: {
       name: `${user.name.firstname} ${user.name.lastname}`,
       email: user.email,
@@ -61,7 +67,11 @@ export const EditUserModal = ({
     });
   }, [user, reset]);
 
-  const onSubmit = async (values: EditUserFormValues) => {
+  const handleClose = () => {
+    reset();
+    onClose();
+  }
+  const onSubmit = async (values: EditUserSchemaType) => {
     const [firstname="", ...rest] = values.name.trim().split(" ");
     const lastname = rest.join(" ");
 
@@ -76,9 +86,7 @@ export const EditUserModal = ({
         },
       },
       {
-        onSuccess: () => {
-          onClose();
-        },
+        onSuccess: handleClose,
       }
     );
   };
@@ -86,7 +94,7 @@ export const EditUserModal = ({
   return (
     <Modal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleClose}
       variant="default"
       title="Edit User"
       subtitle={`ID: ${user.id}-XYZ`}
@@ -98,7 +106,7 @@ export const EditUserModal = ({
       confirmFormId="edit-user-form"
       confirmLoading={isPending}
       confirmIcon={<Check className="h-3.5 w-3.5" />}
-      onDelete={() => onRequestDelete(user)}
+      onDelete={!isSelf ? () => onRequestDelete(user) : undefined}
       deleteText="Delete User"
     >
       <form
@@ -110,7 +118,7 @@ export const EditUserModal = ({
           label="Full Name"
           iconLeft={<User className="w-3.5 h-3.5 text-text-gray" />}
           error={errors.name?.message}
-          {...register("name", { required: "Full name is required" })}
+          {...register("name")}
           variant="outline"
           className="bg-white border-border-subtle"
         />
@@ -118,25 +126,42 @@ export const EditUserModal = ({
           label="Email Address"
           iconLeft={<Mail className="w-3.5 h-3.5 text-text-gray" />}
           error={errors.email?.message}
-          {...register("email", { required: "Email is required" })}
+          {...register("email")}
           variant="outline"
           className="bg-white border-border-subtle"
         />
 
         {/* Role and system dropdown  */}
         <div className="flex gap-2 md:gap-4">
-          <Select
-            label="System Role"
-            options={ROLE_OPTIONS}
-            {...register("role")}
-            className="flex-1"
-          />
-          <Select
-            label="Account Status"
-            options={STATUS_OPTIONS}
-            {...register("status")}
-            className="flex-1"
-          />
+          <div className="flex flex-col">
+            <Select
+              label="System Role"
+              options={ROLE_OPTIONS}
+              disabled={isSelf}
+              {...register("role")}
+              className="flex-1"
+            />
+            {isSelf && (
+              <p className="mt-1 text-[11px] text-slate-400">
+                You cannot alter your own administrative role.
+              </p>
+            )}
+          </div>
+
+          <div className="flex flex-col">
+            <Select
+              label="Account Status"
+              options={STATUS_OPTIONS}
+              disabled={isSelf}
+              {...register("status")}
+              className="flex-1"
+            />
+            {isSelf && (
+              <p className="mt-1 text-[11px] text-slate-400">
+                You cannot suspend your own account.
+              </p>
+            )}
+          </div>
         </div>
 
         {/* audit trail  */}
