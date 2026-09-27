@@ -43,5 +43,13 @@ export type CreateUserDTO = Omit<ApiUser, 'id'> & {
     role?: UserRole;
     status?: UserStatus;
 }
+export interface CreateUserFormData {
+    email: string;
+    name: FullName;
+    role: UserRole;
+    status: UserStatus;
+    avatar?: string | null;
+    phone?: string;
+}
 
 export type UpdateUserDTO = Partial<CreateUserDTO>;

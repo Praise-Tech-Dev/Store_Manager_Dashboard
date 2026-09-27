@@ -1,10 +1,8 @@
+import type { SearchInputProps } from "@/types/shared/search.types";
 import { Search, X } from "lucide-react";
 import { forwardRef } from "react";
 
-export interface SearchInputProps extends Omit<React.ComponentPropsWithoutRef<"input">, "size"> {
-    onClear: () => void;
-    containerClassName?: string;
-}
+
 
 export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
     (

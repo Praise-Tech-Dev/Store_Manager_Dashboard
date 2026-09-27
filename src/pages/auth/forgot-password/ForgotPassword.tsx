@@ -1,7 +1,7 @@
+import { AuthCard } from "@/components/auth/AuthCard";
+import Button from "@/components/shared/Button";
+import { Input } from "@/components/shared/Input";
 import { ArrowLeft, Mail } from "lucide-react";
-import { AuthCard } from "../../components/auth/shared/AuthCard";
-import { Input } from "../../components/shared/Input";
-import Button from "../../components/shared/Button";
 
 export default function ForgotPassword() {
   return (

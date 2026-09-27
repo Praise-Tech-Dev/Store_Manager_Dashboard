@@ -1,6 +1,5 @@
 import { Modal } from "@/components/shared/Modal";
 import { useSuspendUser } from "@/hooks/users/useSuspendUser";
-import type { DashboardUser } from "@/types/user.types";
 import { AlertTriangle } from "lucide-react";
 // import { useState } from "react";
 import {
@@ -9,12 +8,7 @@ import {
 } from "@/validationSchema/suspendUser.schema";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-interface SuspendUserModalProps {
-  user: DashboardUser;
-  isOpen: boolean;
-  onClose: () => void;
-}
+import type { SuspendUserModalProps } from "@/types/shared/modals/suspendUserModalProps";
 
 export const SuspendUserModal = ({
   user,
@@ -45,7 +39,9 @@ export const SuspendUserModal = ({
   };
 
   const onSubmit = (data: SuspendUserSchemaType) => {
-    const displayName = `${user.name?.firstname ?? ""} ${user.name?.lastname ?? ""}`.trim() || user.username;
+    const displayName =
+      `${user.name?.firstname ?? ""} ${user.name?.lastname ?? ""}`.trim() ||
+      user.username;
     suspendUser(
       {
         id: user.id,

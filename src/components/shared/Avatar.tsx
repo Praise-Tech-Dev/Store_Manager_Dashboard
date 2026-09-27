@@ -1,12 +1,7 @@
+import type { AvatarProps } from "@/types/shared/avatar.types";
 import  { useState } from "react";
 
-export type AvatarProps = {
-  src?: string | null;
-  alt?: string;
-  name?: string;
-  size?: "sm" | "xs" | "md" | "lg";
-  className?: string;
-};
+
 
 export const Avatar = ({
   src,

@@ -1,23 +1,15 @@
 import { useMemo } from "react";
 import type { DashboardUser } from "@/types/user.types";
 import type { Column } from "@/types/table/Column.types";
-import type { PaginationConfig } from "@/types/table/PaginationConfig.types";
-import { Badge, type BadgeVariant } from "../shared/Badge";
+import { Badge } from "../shared/Badge";
 import { Table } from "../shared/table/Table";
 import { UserActionMenu } from "./UserActionMenu";
 import { Avatar } from "../shared/Avatar";
 import { useAuth } from "@/hooks/auth/useAuth";
+import type { UserTableProps } from "@/types/users/usersTable.types";
+import type { BadgeVariant } from "@/types/shared/badge/badgeVariant.types";
 
-interface UserTableProps {
-  users: DashboardUser[];
-  loading: boolean;
-  pagination?: PaginationConfig;
-  onEdit: (user: DashboardUser) => void;
-  onSuspend: (user: DashboardUser) => void;
-  onUnsuspend: (user: DashboardUser) => void;
-  onDelete: (user: DashboardUser) => void;
-  onClearFilters?: () => void;
-}
+
 
 export const UserTable = ({
   users,

@@ -1,17 +1,17 @@
 import { Lock, Mail } from "lucide-react";
-import { Input } from "../../components/shared/Input";
-import { AuthCard } from "../../components/auth/shared/AuthCard";
-import Button from "../../components/shared/Button";
-import Google from "../../assets/icons/google.svg";
-import Github from "../../assets/icons/github.svg";
-import { useLoginMutation } from "../../hooks/useAuthMutation";
+import { Input } from "@/components/shared/Input";
+import Button from "@/components/shared/Button";
+import Google from "@/assets/icons/google.svg";
+import Github from "@/assets/icons/github.svg";
+import { useLoginMutation } from "../../../hooks/useAuthMutation";
 import { useForm } from "react-hook-form";
 import {
   loginSchema,
   type LoginFormValues,
-} from "../../validationSchema/auth.schema";
+} from "../../../validationSchema/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "react-router-dom";
+import { AuthCard } from "@/components/auth/AuthCard";
 
 export default function LoginPage() {
   const { mutate: login, isPending, error } = useLoginMutation();

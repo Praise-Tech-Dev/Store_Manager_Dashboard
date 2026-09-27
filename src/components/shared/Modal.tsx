@@ -1,34 +1,7 @@
-import React, { useEffect, type ComponentType, type SVGProps } from "react";
+import { useEffect } from "react";
 import { Trash2, X } from "lucide-react";
 import Button from "./Button";
-
-export type ModalProps = {
-  isOpen: boolean;
-  onClose: () => void;
-  variant?: "default" | "delete" | "suspend";
-  title?: string;
-  subtitle?: string;
-  icon?: ComponentType<SVGProps<SVGSVGElement>>;
-  iconVariant?: "primary" | "danger";
-  children: React.ReactNode;
-  bodyClassName?: string;
-  footerBg?: string;
-  onConfirm?: () => void;
-  confirmText?: string;
-  cancelText?: string;
-  confirmVariant?: "primary" | "danger";
-  confirmLoading?: boolean;
-  confirmFormId?: string;
-  confirmIcon?: React.ReactNode;
-  onDelete?: () => void;
-  deleteText?: string;
-  deleteLoading?: boolean;
-  maxWidth?: "sm" | "md" | "lg" | "xl";
-  className?: string;
-  showCloseButton?: boolean;
-  headerBorder?: string;
-  footerBorder?: string;
-};
+import type { ModalProps } from "@/types/shared/modals/modalProps.types";
 
 export const Modal = ({
   isOpen,
@@ -154,10 +127,12 @@ export const Modal = ({
             </div>
           </div>
         ) : (
-          // Modal for Edit and suspend 
+          // Modal for Edit and suspend
           <>
             {(title || Icon) && (
-              <div className={`flex items-start justify-between gap-4 ${headerBorder} px-6 py-5`}>
+              <div
+                className={`flex items-start justify-between gap-4 ${headerBorder} px-6 py-5`}
+              >
                 <div className="flex items-center gap-3.5">
                   {Icon && (
                     <div

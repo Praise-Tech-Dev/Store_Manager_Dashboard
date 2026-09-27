@@ -1,13 +1,12 @@
 // import { email } from "zod";
+import type { LoginResponse } from "@/types/auth/loginResponse.types";
 import { apiClient } from "../api/axiosInstance";
 import type {
   LoginFormValues,
   SignupFormValues,
 } from "../validationSchema/auth.schema";
 
-export interface LoginResponse {
-  token: string;
-}
+
 
 export const authService = {
   login: async (credentials: LoginFormValues): Promise<LoginResponse> => {

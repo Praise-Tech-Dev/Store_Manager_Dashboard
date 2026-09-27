@@ -1,11 +1,11 @@
 import React from "react";
-import { Card } from "../../shared/Card";
-import logo from '../../../assets/icons/logo.svg'
+import { Card } from "../shared/Card";
+import logo from "../../assets/icons/logo.svg";
 
 export type AuthCardProps = {
   title: string;
   subtitle: string;
-//   logoSrc?: string;
+  //   logoSrc?: string;
   titleSize?: string;
   children: React.ReactNode;
   className?: string;

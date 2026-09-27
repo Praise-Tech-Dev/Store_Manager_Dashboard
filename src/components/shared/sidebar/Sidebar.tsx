@@ -13,7 +13,7 @@ export default function Sidebar() {
     if (window.innerWidth < 768) {
       closeSidebar();
     }
-  }, [location.pathname]);
+  }, [location.pathname, closeSidebar]);
   return (
     <div className="">
       <aside

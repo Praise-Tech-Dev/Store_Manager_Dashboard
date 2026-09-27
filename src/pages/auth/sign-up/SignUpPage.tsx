@@ -1,24 +1,25 @@
-import { AuthCard } from "../../components/auth/shared/AuthCard";
-import { Input } from "../../components/shared/Input";
+import { Input } from "@/components/shared/Input";
 
-import name from "../../assets/icons/name.svg";
-import Button from "../../components/shared/Button";
+import name from "@/assets/icons/name.svg";
+import Button from "@/components/shared/Button";
 import { Check, Circle, Lock, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useSignupMutation } from "../../hooks/useAuthMutation";
+import { useSignupMutation } from "@/hooks/useAuthMutation";
 import {
   signupSchema,
   type SignupFormValues,
-} from "../../validationSchema/auth.schema";
+} from "@/validationSchema/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
+import { AuthCard } from "@/components/auth/AuthCard";
 export default function SignUpPage() {
   const { mutate: signup, isPending, error } = useSignupMutation();
 
   const {
     register,
     handleSubmit,
-    watch,
+    // watch,
+    control,
     formState: { errors },
   } = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
@@ -31,7 +32,11 @@ export default function SignUpPage() {
   });
 
   // password indicator check
-  const password = watch("password", "");
+ const password = useWatch({
+   control,
+   name: "password",
+   defaultValue: "",
+ });
 
   // The 3 rules corresponding to the 3 visual bars
   const rules = [

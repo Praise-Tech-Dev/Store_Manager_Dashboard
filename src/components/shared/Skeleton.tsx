@@ -1,6 +1,4 @@
-import type { HTMLAttributes } from "react";
-
-export type SkeletonProps = HTMLAttributes<HTMLDivElement>;
+import type { SkeletonProps } from "@/types/shared/skeleton.types";
 
 export const Skeleton = ({ className = "", ...props }: SkeletonProps) => {
   return (

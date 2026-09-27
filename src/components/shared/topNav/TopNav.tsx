@@ -1,5 +1,6 @@
 import { UserProfileMenu } from "@/components/users/UserProfileMenu"
-import { Notification, type NotificationsProps } from "./Notification";
+import { Notification } from "./Notification";
+import type { NotificationsProps } from "@/types/shared/topNav/notification.types";
 
 export const TopNav = ({hasUnreadNotification =true, isLoading = false } : NotificationsProps) => {
 

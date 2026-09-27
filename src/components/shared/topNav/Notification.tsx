@@ -1,9 +1,5 @@
+import type { NotificationsProps } from "@/types/shared/topNav/notification.types";
 import { Bell } from "lucide-react";
-
-export interface NotificationsProps {
-  hasUnreadNotification?: boolean;
-  isLoading?: boolean;
-}
 
 export const Notification = ({
   hasUnreadNotification = true,

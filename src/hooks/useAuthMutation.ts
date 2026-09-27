@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "react-router-dom";
-import { authService, type LoginResponse } from "../services/auth.services";
+import { authService } from "../services/auth.services";
 import type { AxiosError } from "axios";
 import type {
   LoginFormValues,
@@ -8,12 +8,8 @@ import type {
 } from "../validationSchema/auth.schema";
 import { toast } from "react-toastify";
 import { useAuth } from "./auth/useAuth";
-
-interface DecodedToken {
-  sub: number;
-  user: string;
-  iat: number;
-}
+import type { DecodedToken } from "@/types/auth/decodedToken.types";
+import type { LoginResponse } from "@/types/auth/loginResponse.types";
 
 export const useLoginMutation = () => {
   const location = useLocation();

@@ -1,16 +1,7 @@
-import React from "react";
 import Button from "./Button";
+import type { CardProps } from "@/types/shared/card.types";
 
-export type CardProps = {
-  title?: React.ReactNode;
-  subtitle?: React.ReactNode;
-  icon?: React.ReactNode;
-  actionLabel?: string;
-  onAction?: () => void;
-  children: React.ReactNode;
-  footer?: React.ReactNode;
-  className?: string;
-} & React.ComponentPropsWithoutRef<"div">;
+
 
 export const Card = ({
   title,

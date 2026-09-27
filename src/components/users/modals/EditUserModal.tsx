@@ -2,50 +2,49 @@ import { Input } from "@/components/shared/Input";
 import { Modal } from "@/components/shared/Modal";
 import { Select } from "@/components/shared/Select";
 import { useUpdateUser } from "@/hooks/users";
-import type { DashboardUser } from "@/types/user.types";
 import { Check, Info, Mail, User } from "lucide-react";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
-import userIcon from "@/assets/icons/user-settings.svg?react"
-import { createEditUserSchema, type EditUserSchemaType} from "@/validationSchema"
+import userIcon from "@/assets/icons/user-settings.svg?react";
+import {
+  createEditUserSchema,
+  type EditUserSchemaType,
+} from "@/validationSchema";
 import { useAuth } from "@/hooks/auth/useAuth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { USER_ROLES, USER_STATUSES } from "@/constants/user.constants";
-interface EditUserModalProps {
-  user: DashboardUser;
-  isOpen: boolean;
-  onClose: () => void;
-  onRequestDelete: (user: DashboardUser) => void;
-  existingEmails: string[];
-}
+import type { EditUserModalProps } from "@/types/shared/modals/editUserModal";
 
 const ROLE_OPTIONS = USER_ROLES.map((role) => ({ label: role, value: role }));
 
-const STATUS_OPTIONS = USER_STATUSES.map((status) => ({ label: status, value: status }))
+const STATUS_OPTIONS = USER_STATUSES.map((status) => ({
+  label: status,
+  value: status,
+}));
 
 export const EditUserModal = ({
-    user,
-    isOpen,
-    onClose,
-    onRequestDelete,
-    existingEmails,
+  user,
+  isOpen,
+  onClose,
+  onRequestDelete,
+  existingEmails,
 }: EditUserModalProps) => {
   const { user: currentUser } = useAuth();
-  const { mutate: updateUser, isPending }  = useUpdateUser();
+  const { mutate: updateUser, isPending } = useUpdateUser();
 
   const isSelf = Boolean(currentUser?.id && currentUser.id === user.id);
 
-  // Regenerate schema whenever target user or existing emails change 
+  // Regenerate schema whenever target user or existing emails change
   const validationSchema = useMemo(
     () => createEditUserSchema(existingEmails, isSelf),
-    [existingEmails, isSelf]
-  )
+    [existingEmails, isSelf],
+  );
 
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors},
+    formState: { errors },
   } = useForm<EditUserSchemaType>({
     resolver: zodResolver(validationSchema),
     mode: "onChange",
@@ -60,19 +59,19 @@ export const EditUserModal = ({
   // Keep form in sync if the selected user prop changes
   useEffect(() => {
     reset({
-        name: `${user.name.firstname} ${user.name.lastname}`,
-        email: user.email,
-        role: user.role,
-        status: user.status,
+      name: `${user.name.firstname} ${user.name.lastname}`,
+      email: user.email,
+      role: user.role,
+      status: user.status,
     });
   }, [user, reset]);
 
   const handleClose = () => {
     reset();
     onClose();
-  }
+  };
   const onSubmit = async (values: EditUserSchemaType) => {
-    const [firstname="", ...rest] = values.name.trim().split(" ");
+    const [firstname = "", ...rest] = values.name.trim().split(" ");
     const lastname = rest.join(" ");
 
     updateUser(
@@ -80,14 +79,14 @@ export const EditUserModal = ({
         id: user.id,
         data: {
           email: values.email,
-          name: { firstname, lastname},
+          name: { firstname, lastname },
           role: values.role,
           status: values.status,
         },
       },
       {
         onSuccess: handleClose,
-      }
+      },
     );
   };
 
@@ -133,7 +132,7 @@ export const EditUserModal = ({
 
         {/* Role and system dropdown  */}
         <div className="flex gap-2 md:gap-4">
-          <div className="flex flex-col">
+          <div className="flex-1 flex-col">
             <Select
               label="System Role"
               options={ROLE_OPTIONS}
@@ -148,7 +147,7 @@ export const EditUserModal = ({
             )}
           </div>
 
-          <div className="flex flex-col">
+          <div className="flex-1 flex-col">
             <Select
               label="Account Status"
               options={STATUS_OPTIONS}
@@ -177,42 +176,7 @@ export const EditUserModal = ({
             </span>
           </div>
         </div>
-
-        {/* modal footer  */}
-        {/* <div className="bg-white flex items-center justify-between  py-2 md:py-4 ">
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={() => onRequestDelete(user)}
-            iconLeft={<Trash2 className="w-3.5 h-3.5 text-danger" />}
-          >
-            Delete User
-          </Button>
-
-          <div className=" flex items-center gap-2">
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={onClose}
-              disabled={isPending}
-            >
-              Cancel
-            </Button>
-
-            <Button
-              type="submit"
-              variant="primary"
-              size="sm"
-              loading={isPending}
-              iconRight={<Check className="w-3.5 h-3.5" />}
-            >
-              Save Changes
-            </Button>
-          </div>
-        </div> */}
       </form>
     </Modal>
   );
-}
+};

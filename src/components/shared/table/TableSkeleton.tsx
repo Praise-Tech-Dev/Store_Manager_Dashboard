@@ -1,7 +1,4 @@
-interface TableSkeletonProps {
-  rows?: number;
-  columnsCount?: number;
-}
+import type { TableSkeletonProps } from "@/types/table/tableSkeleton.types";
 
 export const TableSkeleton = ({
   rows = 5,

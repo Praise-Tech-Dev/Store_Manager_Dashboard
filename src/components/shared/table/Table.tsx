@@ -1,23 +1,6 @@
 import { TableSkeleton } from "./TableSkeleton";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import type { Column } from "@/types/table/Column.types";
-import type { PaginationConfig } from "@/types/table/PaginationConfig.types";
-
-
-
-// Base constraint ensuring every row has at least an id or string/number key
-export interface Identifiable {
-  id?: string | number;
-}
-export type TableProps<T> = {
-  columns: Column<T>[];
-  data: T[];
-  loading?: boolean;
-  emptyMessage?: string;
-  getRowKey?: (row: T) => string | number;
-  pagination?: PaginationConfig;
-  onClearFilters?: () => void;
-};
+import type { Identifiable, TableProps } from "@/types/table/table.types";
 
 export function Table<T extends Identifiable>({
   columns,

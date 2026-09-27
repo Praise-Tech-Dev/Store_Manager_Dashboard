@@ -1,14 +1,11 @@
 import { useUserMetrics } from "@/hooks/users/useUserMetrics";
-import type { DashboardUser } from "@/types/user.types"
 import { Skeleton } from "../shared/Skeleton";
 import { Card } from "../shared/Card";
 import { Ban, UserCheck, Users } from "lucide-react";
 import type { MetricType } from "@/types/metricCardData.types";
+import type { UserKPIProps } from "@/types/users/userKPI.types";
 
-interface UserKPIProps {
-    users: DashboardUser[];
-    isLoading?: boolean;
-}
+
 
 const SKELETON_SLOTS = [0, 1, 2] as const;
 

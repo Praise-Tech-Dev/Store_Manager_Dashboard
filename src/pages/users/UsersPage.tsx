@@ -17,6 +17,7 @@ import { toast } from "react-toastify";
 
 
 type ActiveModal =
+  | { type: "create" }
   | { type: "edit"; user: DashboardUser }
   | { type: "suspend"; user: DashboardUser }
   | { type: "delete"; user: DashboardUser }
@@ -106,10 +107,14 @@ export const UsersPage = () => {
             variant="primary"
             size="sm"
             iconLeft={<UserPlus className="h-4 w-4" />}
-            onClick={() => console.log("Open Add User Modal")}
+            onClick={() => setActiveModal({ type: "create" })}
           >
             Add User
           </Button>
+
+          {/* {activeModal?.type === "create" && (
+
+          )} */}
         </div>
       </div>
       {/*  Header & KPI Metrics */}

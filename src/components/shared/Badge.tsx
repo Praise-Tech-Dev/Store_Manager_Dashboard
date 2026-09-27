@@ -1,19 +1,5 @@
-import React from "react";
-
-export type BadgeVariant =
-  | "active"
-  | "suspended"
-  | "invited"
-  | "admin"
-  | "customer"
-  | "default";
-
-export type BadgeProps = {
-  children: React.ReactNode;
-  variant?: BadgeVariant;
-  withDot?: boolean;
-  className?: string;
-};
+import type { BadgeProps } from "@/types/shared/badge/badge.types";
+import type { BadgeVariant } from "@/types/shared/badge/badgeVariant.types";
 
 export const Badge = ({
   children,

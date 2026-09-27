@@ -6,7 +6,6 @@ import { useAuth } from "@/hooks/auth/useAuth";
 
 interface UserActionMenuProps {
   user: DashboardUser;
-  // isNearBottom: boolean;
   onEdit: (user: DashboardUser) => void;
   onSuspend: (user: DashboardUser) => void;
   onUnsuspend?: (user: DashboardUser) => void;
@@ -41,9 +40,9 @@ export const UserActionMenu = ({
         <button
           type="button"
           aria-label="Actions"
-          className="cursor-pointer rounded-lg p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 focus:outline-none"
+          className="cursor-pointer rounded-lg px-1 pt-1 pb-2.25 text-text-gray transition hover:bg-slate-100 hover:text-slate-600 focus:outline-none"
         >
-          <MoreVertical className="h-4 w-4" />
+          <MoreVertical className="h-7.25 w-4" />
         </button>
       </DropdownMenu.Trigger>
 
