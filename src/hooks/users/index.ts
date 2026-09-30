@@ -5,6 +5,6 @@ export * from "./useCreateUser";
 export * from "./useUpdateUser";
 export * from "./useDeleteUser";
 export * from "./useSuspendUser";
-export * from "./useUnsuspend";
+export * from "./useUnsuspendUser";
 export * from "./useUserMetrics"
 export * from "./useUserTableFilters"

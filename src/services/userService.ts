@@ -11,26 +11,34 @@ import type {
 const ROLES: UserRole[] = ["Admin", "Customer", "Editor", "Viewer"];
 const STATUSES: UserStatus[] = ["Active", "Active", "Active", "Suspended"];
 
-const enrichUserData = (user: ApiUser): DashboardUser => ({
-  ...user,
-  // Give User 2 and User 1 a test image
-  avatar:
+const enrichUserData = (
+  user: ApiUser,
+  overrides?: Partial<DashboardUser>,
+): DashboardUser => {
+  const defaultAvatar =
     user.id === 2
       ? "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=250"
       : user.id === 1
         ? "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=250"
-        : null, // Others will fall back to your initials generator
-  role: ROLES[user.id % ROLES.length],
-  status: STATUSES[user.id % STATUSES.length],
-  joinedDate: "2023-01-15",
-  lastLogin: "2 hours ago",
-});
+        : null;
+
+  return {
+    ...user,
+    avatar: overrides?.avatar !== undefined ? overrides.avatar : defaultAvatar,
+    role: overrides?.role ?? ROLES[user.id % ROLES.length],
+    status: overrides?.status ?? STATUSES[user.id % STATUSES.length],
+    joinedDate: overrides?.joinedDate ?? "2023-01-15",
+    lastLogin:
+      overrides?.lastLogin ??
+      (overrides?.status === "Invited" ? "Pending Invite" : "2 hours ago"),
+  };
+};
 
 export const userService = {
   fetchDashboardUsers: async (): Promise<DashboardUser[]> => {
     const apiUsers = await userApi.getAll();
 
-    return apiUsers.map(enrichUserData);
+    return apiUsers.map((u) => enrichUserData(u));
   },
 
   fetchDashboardUserById: async (id: number): Promise<DashboardUser> => {
@@ -39,15 +47,42 @@ export const userService = {
     return enrichUserData(apiUser);
   },
 
-  createUser: async (payload: CreateUserDTO): Promise<DashboardUser> => {
+  createUser: async (payload: CreateUserDTO, existingUsers: DashboardUser[] = []): Promise<DashboardUser> => {
+    const today = new Date().toISOString().split("T")[0];
+
     const createdUser = await userApi.create(payload);
 
-    return enrichUserData({
-      ...payload,
-      id: createdUser.id || Date.now(),
+    // Find the highest ID currently loaded in the system
+    const maxExistingId = existingUsers.reduce(
+      (max, user) =>
+        typeof user.id === "number" && user.id > max ? user.id : max,
+      0,
+    );
+
+    // use backend highest id or maxId
+    const assignedId =
+    createdUser?.id && createdUser.id > maxExistingId
+      ? createdUser.id
+      : maxExistingId + 1;
+
+    const baseApiUser: ApiUser = {
+      id: assignedId,
+      email: payload.email,
+      username: payload.username,
+      name: payload.name,
+      phone: payload.phone,
+      address: payload.address,
+    };
+
+    return enrichUserData(baseApiUser, {
+      role: payload.role ?? "Customer",
+      status: payload.status ?? "Invited",
+      avatar: payload.avatar ?? null,
+      joinedDate: today,
+      lastLogin: "Pending Invite",
     });
   },
-
+  
   updateUser: async (
     id: number,
     payload: UpdateUserDTO,

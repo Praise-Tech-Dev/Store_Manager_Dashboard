@@ -26,8 +26,8 @@ export interface ApiUser {
     username: string;
     password?: string;
     name: FullName;
-    address: Address;
-    phone: string;
+    address?: Address;
+    phone?: string;
 }
 
 
@@ -42,6 +42,7 @@ export interface DashboardUser extends ApiUser {
 export type CreateUserDTO = Omit<ApiUser, 'id'> & {
     role?: UserRole;
     status?: UserStatus;
+    avatar?: string | null;
 }
 export interface CreateUserFormData {
     email: string;

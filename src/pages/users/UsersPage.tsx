@@ -2,7 +2,7 @@ import Button from "@/components/shared/Button";
 import { SearchInput } from "@/components/shared/SearchInput";
 import { UserKPIs } from "@/components/users/UserKPIs";
 import { UserTable } from "@/components/users/UserTable";
-import { useDashboardUsers, useUnsuspendUser } from "@/hooks/users";
+import { useDashboardUsers, useUnsuspendUser,  } from "@/hooks/users";
 import { useUserTableFilters } from "@/hooks/users/useUserTableFilters";
 import type { UserRole } from "@/types/user.types";
 import { exportUsersToCSV } from "@/utils/exportCsv";
@@ -14,6 +14,7 @@ import { DeleteUserModal } from "@/components/users/modals/DeleteUserModal";
 import { SuspendUserModal } from "@/components/users/modals/SuspendUserModal";
 import { useAuth } from "@/hooks/auth/useAuth";
 import { toast } from "react-toastify";
+import { CreateUserModal } from "@/components/users/modals/CreateUserModal";
 
 
 type ActiveModal =
@@ -29,6 +30,7 @@ export const UsersPage = () => {
   const { mutate: updateUser} = useUnsuspendUser();
   const [activeModal, setActiveModal] = useState<ActiveModal>(null);
 
+  const isAdmin = currentUser?.role ==="Admin";
   const {
     searchTerm,
     setSearchTerm,
@@ -51,7 +53,7 @@ export const UsersPage = () => {
       return;
     }
 
-    if (currentUser?.role !== "Admin") {
+    if (!isAdmin) {
       toast.error("Unauthorized Only administrators can suspend accounts.");
       return;
     }
@@ -62,7 +64,7 @@ export const UsersPage = () => {
     if (currentUser?.id === targetUser.id) {
       toast.error("Security Restriction: You cannot delete your own account.");
     }
-    if (currentUser?.role !== "Admin") {
+    if (!isAdmin) {
       toast.error("Unauthorized Only administrators can delete accounts.");
       return;
     }
@@ -71,6 +73,14 @@ export const UsersPage = () => {
 
   const handleUnsuspend = (targetUser: DashboardUser) => {
     updateUser(targetUser.id);
+  }
+
+  const handleOpenCreateModal = () => {
+    if (!isAdmin) {
+      toast.error("Unauthorized: Only administrators can create new users.");
+      return;
+    }
+    setActiveModal({ type: "create" });
   }
   // Check if any filter is currently active
   const isFiltered = Boolean(searchTerm.trim() || selectedRole !== "All");
@@ -102,15 +112,17 @@ export const UsersPage = () => {
             Export CSV
           </Button>
 
-          <Button
-            type="button"
-            variant="primary"
-            size="sm"
-            iconLeft={<UserPlus className="h-4 w-4" />}
-            onClick={() => setActiveModal({ type: "create" })}
-          >
-            Add User
-          </Button>
+          {isAdmin && (
+            <Button
+              type="button"
+              variant="primary"
+              size="sm"
+              iconLeft={<UserPlus className="h-4 w-4" />}
+              onClick={handleOpenCreateModal}
+            >
+              Add User
+            </Button>
+          )}
 
           {/* {activeModal?.type === "create" && (
 
@@ -166,6 +178,14 @@ export const UsersPage = () => {
       />
 
       {/* Modals */}
+      {activeModal?.type === "create" && (
+        <CreateUserModal
+          isOpen={true}
+          onClose={() => setActiveModal(null)}
+          existingEmails={allUsers.map((u) => u.email)}
+        />
+      )}
+
       {activeModal?.type === "edit" && (
         <EditUserModal
           user={activeModal.user}

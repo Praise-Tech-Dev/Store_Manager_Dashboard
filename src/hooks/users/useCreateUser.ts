@@ -8,7 +8,12 @@ export const useCreateUser = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (payload: CreateUserDTO) => userService.createUser(payload),
+    mutationFn: (payload: CreateUserDTO) => {
+      // Pull current live state from the cache
+      const cachedUsers =
+        queryClient.getQueryData<DashboardUser[]>(USER_KEYS.all) || [];
+      return userService.createUser(payload, cachedUsers);
+    },
     onSuccess: (newUser) => {
       queryClient.setQueryData<DashboardUser[]>(USER_KEYS.all, (old = []) => [
         newUser,

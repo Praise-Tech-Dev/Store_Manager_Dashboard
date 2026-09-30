@@ -11,7 +11,16 @@ export const Avatar = ({
   className = "",
 }: AvatarProps) => {
   const [hasError, setHasError] = useState(false);
-  
+
+  // Validate that src is an actual valid URL
+  const isValidSrc = Boolean(
+    src &&
+    !hasError &&
+    (src.startsWith("http://") ||
+      src.startsWith("https://") ||
+      (src.startsWith("data:image/") && src.includes(";base64,"))),
+  );
+
   const getInitials = (str: string) => {
     if (!str) return "U";
     const parts = str.trim().split(" ");
@@ -45,13 +54,13 @@ export const Avatar = ({
   return (
     <div
       className={`relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full font-semibold select-none ${sizes[size]} ${
-        !src || hasError ? getColorFromName(name) : ""
+        !isValidSrc ? getColorFromName(name) : ""
       } ${className}`}
     >
-      {src && !hasError ? (
+      {isValidSrc ? (
         <img
           key={src}
-          src={src}
+          src={src!}
           alt={alt}
           onError={() => setHasError(true)}
           className="h-full w-full object-cover"
