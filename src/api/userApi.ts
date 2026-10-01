@@ -6,28 +6,28 @@ import type {
 import { apiClient } from "./axiosInstance";
 
 export const userApi = {
-  getAll: async (): Promise<ApiUser[]> => {
+  async getAll(): Promise<ApiUser[]> {
     const { data } = await apiClient.get<ApiUser[]>("/users");
 
     return data;
   },
 
-  getById: async (id: number): Promise<ApiUser> => {
+  async getById(id: number): Promise<ApiUser> {
     const { data } = await apiClient.get<ApiUser>(`/users/${id}`);
 
     return data;
   },
-  create: async (payload: CreateUserDTO): Promise<ApiUser> => {
+  async create(payload: CreateUserDTO): Promise<ApiUser> {
     const { data } = await apiClient.post<ApiUser>("/users", payload);
 
     return data;
   },
-  update: async (id: number, payload: UpdateUserDTO): Promise<ApiUser> => {
+  async update(id: number, payload: UpdateUserDTO): Promise<ApiUser> {
     const { data } = await apiClient.put<ApiUser>(`/users/${id}`, payload);
 
     return data;
   },
-  delete: async (id: number): Promise<void> => {
+  async delete(id: number): Promise<void> {
     await apiClient.delete(`/users/${id}`);
   },
 };

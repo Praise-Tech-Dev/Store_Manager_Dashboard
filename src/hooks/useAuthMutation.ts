@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { useLocation, useNavigate } from "react-router-dom";
-import { authService } from "../services/auth.services";
+import { authService } from "../services/auth.service";
 import type { AxiosError } from "axios";
 import type {
   LoginFormValues,

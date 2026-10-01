@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { userService } from "../../services/userService";
+import { userService } from "../../services/user.service";
 import type { DashboardUser } from "../../types/user.types";
 import { USER_KEYS } from "./userKeys";
 import { toast } from "react-toastify";
@@ -10,18 +10,25 @@ export const useDeleteUser = () => {
   const { user: currentUser } = useAuth();
 
   return useMutation({
-    mutationFn: async(id: number) => {
-      // Guard against self deletion 
-      if (currentUser?.id === id){
-        throw new Error("Action Prohibited:  You cannot delete your own account.");
+    mutationFn: async (id: number) => {
+      // Guard against self deletion
+      if (currentUser?.id === id) {
+        throw new Error(
+          "Action Prohibited:  You cannot delete your own account.",
+        );
       }
 
-      // Guard against unauthorized users 
-      if (currentUser?.role !== "Admin" || currentUser?.status ==="Suspended"){
-        throw new Error("Unauthorized: Only active administrators can delete accounts.");
+      // Guard against unauthorized users
+      if (
+        currentUser?.role !== "Admin" ||
+        currentUser?.status === "Suspended"
+      ) {
+        throw new Error(
+          "Unauthorized: Only active administrators can delete accounts.",
+        );
       }
 
-    return userService.deleteUser(id);
+      return userService.deleteUser(id);
     },
 
     onMutate: async (id) => {

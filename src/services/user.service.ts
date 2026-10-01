@@ -35,19 +35,22 @@ const enrichUserData = (
 };
 
 export const userService = {
-  fetchDashboardUsers: async (): Promise<DashboardUser[]> => {
+  async fetchDashboardUsers(): Promise<DashboardUser[]> {
     const apiUsers = await userApi.getAll();
 
     return apiUsers.map((u) => enrichUserData(u));
   },
 
-  fetchDashboardUserById: async (id: number): Promise<DashboardUser> => {
+  async fetchDashboardUserById(id: number): Promise<DashboardUser> {
     const apiUser = await userApi.getById(id);
 
     return enrichUserData(apiUser);
   },
 
-  createUser: async (payload: CreateUserDTO, existingUsers: DashboardUser[] = []): Promise<DashboardUser> => {
+  async createUser(
+    payload: CreateUserDTO,
+    existingUsers: DashboardUser[] = [],
+  ): Promise<DashboardUser> {
     const today = new Date().toISOString().split("T")[0];
 
     const createdUser = await userApi.create(payload);
@@ -61,9 +64,9 @@ export const userService = {
 
     // use backend highest id or maxId
     const assignedId =
-    createdUser?.id && createdUser.id > maxExistingId
-      ? createdUser.id
-      : maxExistingId + 1;
+      createdUser?.id && createdUser.id > maxExistingId
+        ? createdUser.id
+        : maxExistingId + 1;
 
     const baseApiUser: ApiUser = {
       id: assignedId,
@@ -76,26 +79,33 @@ export const userService = {
 
     return enrichUserData(baseApiUser, {
       role: payload.role ?? "Customer",
-      status: payload.status ?? "Invited",
+      status: "Invited",
       avatar: payload.avatar ?? null,
       joinedDate: today,
       lastLogin: "Pending Invite",
     });
   },
-  
-  updateUser: async (
+
+  async updateUser(
     id: number,
     payload: UpdateUserDTO,
-  ): Promise<DashboardUser> => {
+  ): Promise<DashboardUser> {
     const updatedUser = await userApi.update(id, payload);
 
-    return enrichUserData({
-      ...updatedUser,
-      id,
-    });
+    return enrichUserData(
+      {
+        ...updatedUser,
+        id,
+      },
+      {
+        role: payload.role,
+        status: payload.status,
+        avatar: payload.avatar,
+      },
+    );
   },
 
-  deleteUser: async (id: number): Promise<number> => {
+  async deleteUser(id: number): Promise<number> {
     await userApi.delete(id);
 
     return id;

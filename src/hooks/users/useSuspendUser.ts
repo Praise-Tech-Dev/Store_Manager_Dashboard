@@ -1,50 +1,50 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import type { SuspendUserPayload } from "../../types/suspendUserPayload.types"
-import { userService } from "@/services/userService";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import type { SuspendUserPayload } from "../../types/suspendUserPayload.types";
+import { userService } from "@/services/user.service";
 import { USER_KEYS } from "./userKeys";
 import type { DashboardUser } from "@/types/user.types";
 import { toast } from "react-toastify";
 
 export const useSuspendUser = () => {
-    const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-    return useMutation({
-      mutationFn: ({ id, reason, notifyUser }: SuspendUserPayload) =>
-        userService.updateUser(id, { 
-          status: "Suspended",
-          ...(reason ? {suspendReason : reason } : {}), 
-          ...(notifyUser !== undefined ? { notifyUser } : {}), 
-        } as Partial<DashboardUser>),
+  return useMutation({
+    mutationFn: ({ id, reason, notifyUser }: SuspendUserPayload) =>
+      userService.updateUser(id, {
+        status: "Suspended",
+        ...(reason ? { suspendReason: reason } : {}),
+        ...(notifyUser !== undefined ? { notifyUser } : {}),
+      } as Partial<DashboardUser>),
 
-      onMutate: async ({ id }) => {
-        await queryClient.cancelQueries({ queryKey: USER_KEYS.all });
+    onMutate: async ({ id }) => {
+      await queryClient.cancelQueries({ queryKey: USER_KEYS.all });
 
-        const previousUsers = queryClient.getQueryData<DashboardUser[]>(
-          USER_KEYS.all,
-        );
+      const previousUsers = queryClient.getQueryData<DashboardUser[]>(
+        USER_KEYS.all,
+      );
 
-        queryClient.setQueryData<DashboardUser[]>(USER_KEYS.all, (old = []) =>
-          old.map((user) =>
-            user.id === id ? { ...user, status: "Suspended" } : user,
-          ),
-        );
+      queryClient.setQueryData<DashboardUser[]>(USER_KEYS.all, (old = []) =>
+        old.map((user) =>
+          user.id === id ? { ...user, status: "Suspended" } : user,
+        ),
+      );
 
-        return { previousUsers };
-      },
-      onError: (_err, _variables, context) => {
-        if (context?.previousUsers) {
-          queryClient.setQueryData(USER_KEYS.all, context.previousUsers);
-        }
-        toast.error("Failed to suspend account");
-      },
+      return { previousUsers };
+    },
+    onError: (_err, _variables, context) => {
+      if (context?.previousUsers) {
+        queryClient.setQueryData(USER_KEYS.all, context.previousUsers);
+      }
+      toast.error("Failed to suspend account");
+    },
 
-      // onSettled: () => {
-      //   queryClient.invalidateQueries({ queryKey: USER_KEYS.all });
-      // },
+    // onSettled: () => {
+    //   queryClient.invalidateQueries({ queryKey: USER_KEYS.all });
+    // },
 
-      onSuccess: (_data, variables) => {
-        const name = variables.userName ? `${variables.userName}'s ` : "User"; 
-        toast.success(`${name} account suspended successfully.`);
-      },
-    });
-}
+    onSuccess: (_data, variables) => {
+      const name = variables.userName ? `${variables.userName}'s ` : "User";
+      toast.success(`${name} account suspended successfully.`);
+    },
+  });
+};

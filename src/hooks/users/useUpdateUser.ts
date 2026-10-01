@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { DashboardUser } from "../../types/user.types";
-import { userService } from "../../services/userService";
+import { userService } from "../../services/user.service";
 import { USER_KEYS } from "./userKeys";
 import { toast } from "react-toastify";
 import { useAuth } from "../auth/useAuth";
@@ -12,14 +12,17 @@ export const useUpdateUser = () => {
 
   return useMutation({
     mutationFn: async ({ id, data }: UpdateUserPayload) => {
-      if (currentUser?.role !== "Admin" || currentUser?.status === "Suspended") {
+      if (
+        currentUser?.role !== "Admin" ||
+        currentUser?.status === "Suspended"
+      ) {
         throw new Error(
           "Unauthorized: Only active administrators can update users.",
         );
       }
       return userService.updateUser(id, data);
     },
-      
+
     onMutate: async ({ id, data }) => {
       await queryClient.cancelQueries({ queryKey: USER_KEYS.all });
       const previousUsers = queryClient.getQueryData<DashboardUser[]>(

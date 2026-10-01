@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { userService } from "../../services/userService";
+import { userService } from "../../services/user.service";
 import { AUTH_KEYS } from "./authKeys";
 
 export const useCurrentUser = (userId: number | null) => {

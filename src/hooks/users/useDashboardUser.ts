@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { USER_KEYS } from "./userKeys";
-import { userService } from "../../services/userService";
+import { userService } from "../../services/user.service";
 
 export const useDashboardUser = (id: number) => {
   return useQuery({
