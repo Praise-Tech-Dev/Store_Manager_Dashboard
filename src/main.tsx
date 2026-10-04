@@ -5,7 +5,7 @@ import App from "./App.tsx";
 import { SidebarProvider } from "./context/sidebar/SidebarProvider.tsx";
 import { AuthProvider } from "./context/auth/AuthProvider.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { isUpstreamApiHealthy } from "./mock/healthCheck.ts";
+// import { isUpstreamApiHealthy } from "./mock/healthCheck.ts";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,24 +17,32 @@ const queryClient = new QueryClient({
 });
 
 
-async function bootstrapApp(): Promise<void> {
-  const isHealthy = await isUpstreamApiHealthy();
+// async function bootstrapApp(): Promise<void> {
+//   const isHealthy = await isUpstreamApiHealthy();
 
-  if (!isHealthy) {
-    console.warn(
-      "[Network] FakeStoreAPI is unreachable or blocked. Activating fallback mock layer.",
-    );
-    const { worker } = await import("@/mock/browser");
-    await worker.start();
-  } else {
-    console.info(
-      "[Network] FakeStoreAPI is online. Direct network mode active.",
-    );
-  }
+//   if (!isHealthy) {
+//     console.warn(
+//       "[Network] FakeStoreAPI is unreachable or blocked. Activating fallback mock layer.",
+//     );
+//     const { worker } = await import("@/mock/browser");
+//     await worker.start();
+//   } else {
+//     console.info(
+//       "[Network] FakeStoreAPI is online. Direct network mode active.",
+//     );
+//   }
+// }
+
+async function prepareApp(): Promise<void> {
+  const { worker } = await import("@/mock/browser");
+  await worker.start({
+    serviceWorker: {
+      url: "/mockServiceWorker.js",
+    },
+  });
 }
 
-
-bootstrapApp().then(() => {
+prepareApp().then(() => {
   createRoot(document.getElementById("root")!).render(
     <StrictMode>
       <QueryClientProvider client={queryClient}>
@@ -46,5 +54,5 @@ bootstrapApp().then(() => {
       </QueryClientProvider>
     </StrictMode>,
   );
-})
+});
 
