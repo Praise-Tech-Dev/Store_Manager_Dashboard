@@ -22,7 +22,7 @@ export default function SidebarNavItem({
     <NavLink
       to={path}
       // end={path === "/" || path === "/dashboard"}
-      end={path === "/dashboard"}
+      end={path === "/statistics"}
       onClick={(e) => {
         if (!isOpen && window.innerWidth < 768) {
           e.preventDefault();

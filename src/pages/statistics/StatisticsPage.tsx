@@ -1,6 +1,6 @@
 
 // test for fetching users
-export const DashboardPage = () => {
+export const StatisticsPage = () => {
   
 
   return (

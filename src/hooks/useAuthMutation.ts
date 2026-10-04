@@ -15,7 +15,7 @@ export const useLoginMutation = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { setSession } = useAuth();
-  const from = location.state?.from?.pathname || "/dashboard";
+  const from = location.state?.from?.pathname || "/statistics";
   return useMutation<
     LoginResponse,
     AxiosError<{ message?: string }>,

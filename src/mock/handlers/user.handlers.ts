@@ -11,14 +11,30 @@ import { MOCK_USERS } from "@/mock/data/users.data"
 // Cloned in memory so mutate operations (POST, PUT, DELETE) won't permanently corrupt the seed array
 let usersState: ApiUser[] = [...MOCK_USERS];
 
-const USERS_PATH_REGEX = /^(https:\/\/fakestoreapi\.com)?\/users$/;
-const USER_DETAIL_PATH_REGEX = /^(https:\/\/fakestoreapi\.com)?\/users\/:id$/;
-const LOGIN_PATH_REGEX = /^(https:\/\/fakestoreapi\.com)?\/auth\/login$/;
+const BASE = "https://fakestoreapi.com";
+
+// Helper to generate a valid base64-encoded JWT structure
+const createMockJwt = (userId: number, username: string) => {
+  const header = btoa(JSON.stringify({ alg: "HS256", typ: "JWT" }));
+  const payload = btoa(
+    JSON.stringify({
+      sub: userId,
+      user_id: userId,
+      id: userId,
+      username: username,
+      exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // 24 hours
+    }),
+  );
+  const signature = btoa("mock-signature");
+
+  return `${header}.${payload}.${signature}`;
+};
+
 
 export const userHandlers = [
   // POST /auth/login
   http.post<never, LoginDTO, AuthSuccessResponse | ErrorResponse>(
-    LOGIN_PATH_REGEX,
+    `${BASE}/auth/login`,
     async ({ request }) => {
       const body = await request.json();
       const validUser = usersState.find(
@@ -33,19 +49,20 @@ export const userHandlers = [
       }
 
       return HttpResponse.json({
-        token: `mock-jwt-token-${validUser.id}`,
+        // token: `mock-jwt-token-${validUser.id}`,
+        token: createMockJwt(validUser.id, validUser.username),
       });
     },
   ),
 
   // GET /users
-  http.get<never, never, ApiUser[]>(USERS_PATH_REGEX, () => {
+  http.get<never, never, ApiUser[]>(`${BASE}/users`, () => {
     return HttpResponse.json(usersState);
   }),
 
   // GET /users/:id
   http.get<IdParam, never, ApiUser | ErrorResponse>(
-    USER_DETAIL_PATH_REGEX,
+    `${BASE}/users/:id`,
     ({ params }) => {
       const targetId = Number(params.id);
       const user = usersState.find((u) => u.id === targetId);
@@ -63,7 +80,7 @@ export const userHandlers = [
 
   // POST /users
   http.post<never, CreateUserDTO, ApiUser>(
-    USERS_PATH_REGEX,
+    `${BASE}/users`,
     async ({ request }) => {
       const payload = await request.json();
       const nextId =
@@ -83,7 +100,7 @@ export const userHandlers = [
 
   // PUT /users/:id
   http.put<IdParam, UpdateUserDTO, ApiUser | ErrorResponse>(
-    USER_DETAIL_PATH_REGEX,
+    `${BASE}/users/:id`,
     async ({ request, params }) => {
       const targetId = Number(params.id);
       const payload = await request.json();
@@ -109,7 +126,7 @@ export const userHandlers = [
 
   // DELETE /users/:id
   http.delete<IdParam, never, ApiUser | ErrorResponse>(
-    USER_DETAIL_PATH_REGEX,
+    `${BASE}/users/:id`,
     ({ params }) => {
       const targetId = Number(params.id);
       const existingUser = usersState.find((u) => u.id === targetId);

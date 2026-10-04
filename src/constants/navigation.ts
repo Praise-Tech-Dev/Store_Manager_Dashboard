@@ -7,7 +7,7 @@ import Orders from "../assets/icons/sidebar/orders.svg?react";
 export const navigation = [
     {
       name: "Statistics",
-      path: "/dashboard",
+      path: "/statistics",
       icon: Dashboard,
     },
     {

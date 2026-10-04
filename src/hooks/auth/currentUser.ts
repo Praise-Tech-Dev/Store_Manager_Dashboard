@@ -6,6 +6,7 @@ export const useCurrentUser = (userId: number | null) => {
   return useQuery({
     queryKey: AUTH_KEYS.profile_detail(userId ?? 0),
     queryFn: () => userService.fetchDashboardUserById(userId ?? 0),
+    enabled: Boolean(userId && userId > 0),
     staleTime: Infinity,
     gcTime: 60 * 60 * 1000,
   });
