@@ -7,7 +7,6 @@ type SidebarNavItemProps = {
   icon: ComponentType<SVGProps<SVGSVGElement>>;
   isOpen: boolean;
   closeSidebar: () => void;
-  toggleSidebar: () => void;
 };
 
 export default function SidebarNavItem({
@@ -16,21 +15,17 @@ export default function SidebarNavItem({
   icon: Icon,
   isOpen,
   closeSidebar,
-  toggleSidebar,
 }: SidebarNavItemProps) {
   return (
     <NavLink
       to={path}
       // end={path === "/" || path === "/dashboard"}
       end={path === "/statistics"}
-      onClick={(e) => {
+      onClick={() => {
         if (!isOpen && window.innerWidth < 768) {
-          e.preventDefault();
-          toggleSidebar();
-          return;
+          closeSidebar();
         }
 
-        closeSidebar();
       }}
       className={({ isActive }) =>
         `

@@ -7,7 +7,7 @@ import SidebarNavItem from "./SidebarNavItem";
 import { useSidebar } from "@/hooks/sidebar/useSidebar";
 
 export default function Sidebar() {
-  const { isOpen, toggleSidebar, closeSidebar } = useSidebar();
+  const { isOpen, closeSidebar } = useSidebar();
   const location = useLocation();
   useEffect(() => {
     if (window.innerWidth < 768) {
@@ -86,7 +86,6 @@ export default function Sidebar() {
                   {...item}
                   isOpen={isOpen}
                   closeSidebar={closeSidebar}
-                  toggleSidebar={toggleSidebar}
                 />
               ))}
             </nav>

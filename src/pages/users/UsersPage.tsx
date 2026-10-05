@@ -88,19 +88,19 @@ export const UsersPage = () => {
   if (error) return <div>Error loading users</div>;
 
   return (
-    <div className="space-y-6 p-8">
+    <div className="space-y-6 p-4 sm:p-8">
       {/* Top Header Toolbar */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
+        <div className="w-full ">
           <h1 className="text-[32px] font-bold tracking-[-0.64px] leading-10 text-slate-900">
             Users
           </h1>
-          <p className="mt-1 text-xs text-slate-500">
+          <p className="mt-1 text-xs text-slate-500 text-wrap">
             Manage team accounts, assign roles, and audit security permissions.
           </p>
         </div>
 
-        <div className="flex gap-3 shrink-0 items-center">
+        <div className="flex flex-col sm:flex-row gap-3 shrink-0 items-center ">
           <Button
             type="button"
             variant="outline"
@@ -108,6 +108,7 @@ export const UsersPage = () => {
             iconLeft={<Download className="h-4 w-4" />}
             onClick={() => exportUsersToCSV(allUsers)}
             disabled={isLoading || totalUsers === 0}
+            className="w-full sm:w-auto"
           >
             Export CSV
           </Button>
@@ -119,6 +120,7 @@ export const UsersPage = () => {
               size="sm"
               iconLeft={<UserPlus className="h-4 w-4" />}
               onClick={handleOpenCreateModal}
+              className="w-full sm:w-auto"
             >
               Add User
             </Button>
