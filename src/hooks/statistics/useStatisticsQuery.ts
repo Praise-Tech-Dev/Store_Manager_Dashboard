@@ -9,5 +9,6 @@ export const useStatisticsQuery = () => {
     queryKey: statisticsKeys.overview(),
     queryFn: () => statisticsService.getDashboardStatistics(),
     staleTime: 1000 * 60 * 5, // 5 minutes fresh
+    retry: 1,
   });
 };

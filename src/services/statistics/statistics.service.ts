@@ -49,10 +49,11 @@ export const statisticsService = {
         }));
 
         const revenueOrders = calculateRevenueTimeline(carts, productMap);
+        const activeUsers = users.filter((u) => u.status === "Active" || !u.status)
         const metrics = calculateDashboardMetrics({
             totalRevenue,
             totalOrders: carts.length,
-            totalUsers: users.length,
+            totalUsers: activeUsers.length,
             revenueOrders,
         }); 
 
