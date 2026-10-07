@@ -1,4 +1,5 @@
 import MetricCard from "@/components/statistics/metrics/MetricCard";
+import RecentActivityList from "@/components/statistics/recentActivityList/RecentActivityList";
 import { RevenueOrdersChart } from "@/components/statistics/revenueorders/RevenueOrdersChart";
 import { StatisticsErrorState } from "@/components/statistics/StatisticsErrorState";
 import { StatisticsLoader } from "@/components/statistics/StatisticsLoader";
@@ -42,6 +43,10 @@ export const StatisticsPage = () => {
         <div className="lg:col-span-1">
           {data?.topCategories && <TopCategoriesChart data={data.topCategories} />}
         </div>
+      </div>
+      <div className="">
+        {data?.recentActivities && <RecentActivityList activities={data.recentActivities} />}
+        
       </div>
     </div>
   );

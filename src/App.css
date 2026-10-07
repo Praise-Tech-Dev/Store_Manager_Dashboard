@@ -5,6 +5,7 @@
 @theme {
   --font-sans: "Inter", sans-serif;
   --font-inter: "Inter", sans-serif;
+  --font-liberation: "Liberation Serif", "Times New Roman", Times, serif;
   --color-primary: #3525cd;
   --color-primary-hover: #2a1da6;
   --color-danger: #BA1A1A;
