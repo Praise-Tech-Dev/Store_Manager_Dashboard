@@ -12,7 +12,7 @@ export const RevenueOrdersChart= ({
   data,
 }: RevenueOrdersChartProps) => {
   return (
-    <div className="flex h-full flex-col gap3 sm:gap-6 rounded-xl bg-white p-3 sm:p-6 shadow-xs ">
+    <div className="flex h-full flex-col gap-6 rounded-xl bg-white p-4 sm:p-6 shadow-xs ">
       {/* Title & Legend Header */}
       <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-4">
         <h2 className="font-inter text-xl font-semibold text-text-default tracking-normal leading-7">
@@ -107,7 +107,7 @@ export const RevenueOrdersChart= ({
               strokeWidth={3.69}
               dot={false}
               activeDot={{ r: 5, fill: "#3525CD" }}
-              isAnimationActive={false}
+              // isAnimationActive={false}
             />
             {/* Orders Curve dashed line*/}
             <Line
@@ -119,7 +119,7 @@ export const RevenueOrdersChart= ({
               strokeDasharray="4 3"
               dot={false}
               activeDot={{ r: 4, fill: "#505F76" }}
-              isAnimationActive={false}
+              // isAnimationActive={false}
             />
           </LineChart>
         </ResponsiveContainer>

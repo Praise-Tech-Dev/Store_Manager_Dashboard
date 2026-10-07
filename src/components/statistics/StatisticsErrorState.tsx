@@ -2,11 +2,11 @@ import React from "react";
 import Button from "@/components/shared/Button";
 import type { StatisticsErrorStateProps } from "@/types/statistics/statisticsState.types";
 
-export const StatisticsErrorState: React.FC<StatisticsErrorStateProps> = ({
+export const StatisticsErrorState = ({
   error,
   refetch,
   isRetrying = false,
-}) => {
+}: StatisticsErrorStateProps) => {
   return (
     <div className="flex flex-col items-center justify-center p-12 text-center">
       <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-rose-50 text-rose-600">

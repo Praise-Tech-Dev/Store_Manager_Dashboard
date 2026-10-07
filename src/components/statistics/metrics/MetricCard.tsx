@@ -1,13 +1,9 @@
-import React from "react";
 import { MetricSparkline } from "./MetricSparkline";
 import type { MetricCardProps } from "@/types/statistics";
 import { FALLBACK_THEME, METRIC_THEMES } from "@/constants/metric.constants";
 import { MetricBadge } from "./MetricBadgeProps";
 
-export const MetricCard: React.FC<MetricCardProps> = ({
-  data,
-  className = "",
-}) => {
+export const MetricCard = ({ data, className = "" }: MetricCardProps) => {
   const {
     id,
     title,
@@ -21,7 +17,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({
 
   return (
     <div
-      className={`*:font-inter flex flex-col justify-between overflow-hidden rounded-xl bg-white p-6 gap-4 shadow-xs transition-shadow hover:shadow-sm ${className}`}
+      className={`*:font-inter flex flex-col justify-between overflow-hidden rounded-xl bg-white p-4 sm:p-6 gap-4 shadow-xs transition-shadow hover:shadow-sm ${className}`}
     >
       {/* Label & Trend Badge */}
       <div className="flex items-start justify-between gap-2">
@@ -33,7 +29,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({
 
       {/* Main KPI Value */}
       <div className="">
-        <span className="text-[32px] font-bold tracking-[-0.62px] text-gray-900 align-middle">
+        <span className="text-2xl xl:text-[32px] font-bold tracking-[-0.62px] text-gray-900 align-middle">
           {value}
         </span>
       </div>

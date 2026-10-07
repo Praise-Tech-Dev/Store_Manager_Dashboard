@@ -1,16 +1,9 @@
 import type { MetricBadgeProps } from "@/types/statistics/metric.badge.types";
-import React from "react";
 
-
-
-export const MetricBadge: React.FC<MetricBadgeProps> = ({
-  change,
-  isPositive,
-  theme,
-}) => {
+export const MetricBadge = ({ change, isPositive, theme }: MetricBadgeProps) => {
   return (
     <span
-      className={`inline-flex items-center gap-0.5 sm:gap-1 rounded-full px-1.5 sm:px-2 py-0.5 sm:py-1 text-xs font-semibold ${
+      className={`inline-flex shrink-0 whitespace-nowrap items-center gap-0.5 sm:gap-1 rounded-full px-1.5 sm:px-2 py-0.5 sm:py-1 text-xs font-semibold ${
         isPositive
           ? `${theme.badgeBg} ${theme.badgeText}`
           : "bg-[#FFDAD6] text-[#93000A]"

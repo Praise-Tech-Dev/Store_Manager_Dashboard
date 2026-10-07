@@ -29,11 +29,11 @@ const STATUS_OPTIONS = USER_STATUSES.map((status) => ({
   value: status,
 }));
 
-export const CreateUserModal: React.FC<CreateUserModalProps> = ({
+export const CreateUserModal = ({
   isOpen,
   onClose,
   existingEmails,
-}) => {
+}: CreateUserModalProps) => {
   const { mutate: createUser, isPending } = useCreateUser();
 
   const validationSchema = useMemo(

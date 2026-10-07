@@ -2,6 +2,7 @@ import MetricCard from "@/components/statistics/metrics/MetricCard";
 import { RevenueOrdersChart } from "@/components/statistics/revenueorders/RevenueOrdersChart";
 import { StatisticsErrorState } from "@/components/statistics/StatisticsErrorState";
 import { StatisticsLoader } from "@/components/statistics/StatisticsLoader";
+import { TopCategoriesChart } from "@/components/statistics/topCategories/TopCategoriesChart";
 import { useStatisticsQuery } from "@/hooks/statistics/useStatisticsQuery";
 // import { useState } from "react";
 
@@ -25,20 +26,22 @@ export const StatisticsPage = () => {
   }
 
   return (
-    <div className="flex flex-col gap-3 sm:gap-6">
+    <div className="flex flex-col gap-6">
       {/* header  */}
       <h1 className="text-xl font-bold">Statistics</h1>
 
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
         {data?.metrics.map((metric) => (
           <MetricCard key={metric.title} data={metric} />
         ))}
       </div>
-      <div className="flex">
-        <div className="w-full sm:w-2/3">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <div className="lg:col-span-2">
           {data?.revenueOrders && <RevenueOrdersChart data={data.revenueOrders} />}
         </div>
-        <div className="w-full sm:w-1/3"></div>
+        <div className="lg:col-span-1">
+          {data?.topCategories && <TopCategoriesChart data={data.topCategories} />}
+        </div>
       </div>
     </div>
   );

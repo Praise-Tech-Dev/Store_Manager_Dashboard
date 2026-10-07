@@ -2,10 +2,7 @@ import type { MetricSparklineProps } from "@/types/statistics";
 import React, { useId } from "react";
 import { ResponsiveContainer, AreaChart, Area, YAxis, Tooltip } from "recharts";
 
-export const MetricSparkline: React.FC<MetricSparklineProps> = ({
-  trend,
-  theme,
-}) => {
+export const MetricSparkline = ({ trend, theme }: MetricSparklineProps) => {
   const uniqueId = useId().replace(/:/g, "");
   const gradientId = `sparkline-gradient-${uniqueId}`;
   const safeTrend =
@@ -57,7 +54,7 @@ export const MetricSparkline: React.FC<MetricSparklineProps> = ({
             stroke={theme.stroke}
             strokeWidth={3}
             fill={`url(#${gradientId})`}
-            isAnimationActive={false}
+            // isAnimationActive={false}
           />
         </AreaChart>
       </ResponsiveContainer>

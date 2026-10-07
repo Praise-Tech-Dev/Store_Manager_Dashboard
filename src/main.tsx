@@ -39,6 +39,7 @@ async function prepareApp(): Promise<void> {
     serviceWorker: {
       url: "/mockServiceWorker.js",
     },
+    ...({ onUnhandledRequest: "bypass" } as Record<string, unknown>),
   });
 }
 
