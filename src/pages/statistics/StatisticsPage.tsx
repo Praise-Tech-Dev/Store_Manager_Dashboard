@@ -1,4 +1,5 @@
-import MetricCard from "@/components/statistics/MetricCard";
+import MetricCard from "@/components/statistics/metrics/MetricCard";
+import { RevenueOrdersChart } from "@/components/statistics/revenueorders/RevenueOrdersChart";
 import { StatisticsErrorState } from "@/components/statistics/StatisticsErrorState";
 import { StatisticsLoader } from "@/components/statistics/StatisticsLoader";
 import { useStatisticsQuery } from "@/hooks/statistics/useStatisticsQuery";
@@ -6,18 +7,25 @@ import { useStatisticsQuery } from "@/hooks/statistics/useStatisticsQuery";
 
 export const StatisticsPage = () => {
   // const [timeRange, setTimeRange] = useState("Last 30 Days");
-  const { data, isLoading, isError, error, refetch, isRefetching } = useStatisticsQuery();
+  const { data, isLoading, isError, error, refetch, isRefetching } =
+    useStatisticsQuery();
 
   if (isLoading) {
     return <StatisticsLoader />;
   }
 
   if (isError) {
-    return <StatisticsErrorState error={error} refetch={refetch} isRetrying={isRefetching}/>;
+    return (
+      <StatisticsErrorState
+        error={error}
+        refetch={refetch}
+        isRetrying={isRefetching}
+      />
+    );
   }
 
   return (
-    <div className="flex flex-col p-4 sm:p-8 gap-3 sm:gap-6">
+    <div className="flex flex-col gap-3 sm:gap-6">
       {/* header  */}
       <h1 className="text-xl font-bold">Statistics</h1>
 
@@ -25,6 +33,12 @@ export const StatisticsPage = () => {
         {data?.metrics.map((metric) => (
           <MetricCard key={metric.title} data={metric} />
         ))}
+      </div>
+      <div className="flex">
+        <div className="w-full sm:w-2/3">
+          {data?.revenueOrders && <RevenueOrdersChart data={data.revenueOrders} />}
+        </div>
+        <div className="w-full sm:w-1/3"></div>
       </div>
     </div>
   );

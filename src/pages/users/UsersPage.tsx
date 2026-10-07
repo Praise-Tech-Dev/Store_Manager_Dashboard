@@ -88,7 +88,7 @@ export const UsersPage = () => {
   if (error) return <div>Error loading users</div>;
 
   return (
-    <div className="space-y-6 p-4 sm:p-8">
+    <div className="space-y-6 ">
       {/* Top Header Toolbar */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="w-full ">

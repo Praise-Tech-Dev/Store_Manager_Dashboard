@@ -5,3 +5,7 @@ export interface RevenueOrdersPoint {
 }
 
 export type RevenueOrdersData = RevenueOrdersPoint[];
+
+export interface RevenueOrdersChartProps {
+    data: RevenueOrdersData;
+}

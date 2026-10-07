@@ -17,7 +17,7 @@ export const calculateRevenueTimeline = (
         6: "Sat",
     };
 
-    const dayTotals: Record<string, { revenue: number; orders: number }> = {
+    const dayIncrements: Record<string, { revenue: number; orders: number }> = {
       Mon: { revenue: 0, orders: 0 },
       Tue: { revenue: 0, orders: 0 },
       Wed: { revenue: 0, orders: 0 },
@@ -29,19 +29,27 @@ export const calculateRevenueTimeline = (
 
     carts.forEach((cart) => {
         const dayName = dayLookup[new Date(cart.date).getDay()];
-        if (dayTotals[dayName]) {
-            dayTotals[dayName].orders += 1;
+        if (dayIncrements[dayName]) {
+            dayIncrements[dayName].orders += 1;
             const cartCost = cart.products.reduce((acc, item) => {
                 const product = productMap.get(item.productId);
                 return acc + (product ?.price ?? 0) * item.quantity;
             }, 0);
-            dayTotals[dayName].revenue += Math.round(cartCost);
+            dayIncrements[dayName].revenue += Math.round(cartCost);
         }
     });
 
-    return WEEKDAYS.map((day) => ({
+    let accumulatedRevenue = 0;
+    let accumulatedOrders = 0;
+
+    return WEEKDAYS.map((day) => {
+      accumulatedRevenue += dayIncrements[day].revenue;
+      accumulatedOrders += dayIncrements[day].orders;
+
+      return {
         day,
-        revenue: dayTotals[day].revenue ,
-        orders: dayTotals[day].orders ,
-    }));
+        revenue: accumulatedRevenue,
+        orders: accumulatedOrders,
+      };
+    });
 }

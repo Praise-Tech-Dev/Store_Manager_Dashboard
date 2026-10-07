@@ -5,12 +5,12 @@ import { TopNav } from "@/components/shared/topNav/TopNav";
 
 export default function AppLayout() {
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen overflow-hidden">
       {/* Fixed Sidebar */}
       <Sidebar />
 
       {/* Right Side */}
-      <div className="ml-16 flex min-w-0 flex-1 flex-col overflow-hidden md:ml-60">
+      <div className="ml-18 flex min-w-0 flex-1 flex-col overflow-hidden md:ml-64">
         {/* <TopNav user_data={UserProfileMockData} hasUnreadNotification={true} /> */}
         <TopNav />
         {/* Only this area scrolls */}
