@@ -1,4 +1,3 @@
-import React from "react";
 import Button from "@/components/shared/Button";
 import type { StatisticsErrorStateProps } from "@/types/statistics/statisticsState.types";
 

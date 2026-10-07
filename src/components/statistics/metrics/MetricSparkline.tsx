@@ -1,5 +1,5 @@
 import type { MetricSparklineProps } from "@/types/statistics";
-import React, { useId } from "react";
+import { useId } from "react";
 import { ResponsiveContainer, AreaChart, Area, YAxis, Tooltip } from "recharts";
 
 export const MetricSparkline = ({ trend, theme }: MetricSparklineProps) => {
