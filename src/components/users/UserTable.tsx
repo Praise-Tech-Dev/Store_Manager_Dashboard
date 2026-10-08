@@ -37,10 +37,10 @@ export const UserTable = ({
             <div className="flex items-center gap-3">
               <Avatar name={fullName} src={user.avatar} size="md" />
               <div>
-                <p className="font-semibold capitalize text-slate-900">
+                <p className="font-semibold font-inter text-sm capitalize text-text-default leading-5 tracking-normal align-middle">
                   {user.name.firstname} {user.name.lastname}
                 </p>
-                <p className="text-xs text-slate-400">ID: {user.id}</p>
+                {/* <p className="text-xs text-slate-400">ID: {user.id}</p> */}
               </div>
             </div>
           );
@@ -49,7 +49,11 @@ export const UserTable = ({
       {
         key: "email",
         title: "Email",
-        render: (user) => <span className="text-slate-500">{user.email}</span>,
+        render: (user) => (
+          <span className="font-normal font-inter text-sm text-text-gray leading-5 tracking-normal align-middle">
+            {user.email}
+          </span>
+        ),
       },
       {
         key: "role",
@@ -67,7 +71,7 @@ export const UserTable = ({
         key: "joinedDate",
         title: "Join Date",
         render: (user) => (
-          <span className="text-slate-500">
+          <span className="font-medium text-[13px] tracking-normal leading-4.5 text-text-gray font-liberation">
             {user.joinedDate ?? "2024-01-15"}
           </span>
         ),
@@ -84,7 +88,6 @@ export const UserTable = ({
           );
         },
       },
-      
     ];
 
     if (isAdmin) {

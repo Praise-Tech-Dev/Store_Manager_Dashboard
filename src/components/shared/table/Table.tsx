@@ -28,16 +28,16 @@ export function Table<T extends Identifiable>({
 
   }
   return (
-    <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div className="overflow-hidden rounded-xl bg-white shadow-sm">
       <div className="overflow-x-auto">
         <table className="min-w-full border-collapse">
-          <thead className="border-b border-slate-200 bg-slate-50">
+          <thead className="bg-[#F2F4F6]">
             <tr>
               {columns.map((column, idx) => (
                 <th
                   key={column.key}
                   scope="col"
-                  className={`px-6 py-4 text-left text-[11px] font-semibold tracking-[0.55px] text-text-gray sm:px-6 ${
+                  className={`px-6 py-4 text-left text-[11px] font-semibold font-inter tracking-[0.55px] text-text-gray ${
                     column.className || ""
                   }`}
                 >
@@ -59,7 +59,7 @@ export function Table<T extends Identifiable>({
             </tr>
           </thead>
 
-          <tbody className="divide-y divide-slate-100">
+          <tbody className="">
             {loading ? (
               <TableSkeleton rows={5} columnsCount={columns.length} />
             ) : data.length === 0 ? (
@@ -84,7 +84,7 @@ export function Table<T extends Identifiable>({
               data.map((row) => (
                 <tr
                   key={getRowKey(row)}
-                  className="transition-colors hover:bg-slate-50/70"
+                  className="font-inter transition-colors hover:bg-slate-50/70"
                 >
                   {columns.map((column) => (
                     <td
