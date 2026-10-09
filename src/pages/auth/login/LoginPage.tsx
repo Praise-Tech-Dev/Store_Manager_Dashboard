@@ -38,6 +38,7 @@ export default function LoginPage() {
       <AuthCard
         title="Welcome back"
         subtitle="Enter your credentials to access your store dashboard."
+        variant="login"
       >
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {error && (

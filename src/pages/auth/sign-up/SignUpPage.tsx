@@ -80,6 +80,7 @@ export default function SignUpPage() {
       <AuthCard
         title="Admin Registration"
         subtitle="Configure your administrator account access."
+        variant="signup"
       >
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {error && (

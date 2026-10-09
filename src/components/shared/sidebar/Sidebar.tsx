@@ -30,7 +30,7 @@ export default function Sidebar() {
         transition-all
         duration-300
         ease-in-out
-
+        justify-between
         ${isOpen ? "w-64" : "w-18"}
 
         md:w-64
@@ -90,6 +90,10 @@ export default function Sidebar() {
               ))}
             </nav>
           </div>
+        </div>
+
+        <div className="py-6 border-t border-border-subtle/30 text-inter font-semibold text-[11px] leading-4 tracking-[0.55px] align-middle text-center ">
+          v1.4.2 Production
         </div>
       </aside>
     </div>

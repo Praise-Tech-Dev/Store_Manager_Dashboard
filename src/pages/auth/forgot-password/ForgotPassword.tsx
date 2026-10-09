@@ -2,8 +2,10 @@ import { AuthCard } from "@/components/auth/AuthCard";
 import Button from "@/components/shared/Button";
 import { Input } from "@/components/shared/Input";
 import { ArrowLeft, Mail } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function ForgotPassword() {
+  const navigate = useNavigate()
   return (
     <div>
       <AuthCard
@@ -22,7 +24,9 @@ export default function ForgotPassword() {
             Send Reset Link
           </Button>
 
-          <Button variant="outline" iconLeft={<ArrowLeft />} className="w-full">
+          <Button variant="outline" iconLeft={<ArrowLeft />} className="w-full"
+          onClick={() => navigate("/login")}
+          >
             Back to Login
           </Button>
         </div>
