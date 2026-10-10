@@ -1,3 +1,4 @@
+import { sizeStyles } from "@/constants/badge.constants";
 import type { BadgeProps } from "@/types/shared/badge/badge.types";
 import type { BadgeVariant } from "@/types/shared/badge/badgeVariant.types";
 
@@ -5,6 +6,7 @@ export const Badge = ({
   children,
   variant = "default",
   withDot = false,
+  size= "md",
   className = "",
 }: BadgeProps) => {
   const variantStyles: Record<
@@ -35,13 +37,26 @@ export const Badge = ({
       container: "bg-gray-100 text-gray-700",
       dot: "bg-gray-500",
     },
+    success: {
+      container: "bg-[#D0E1FB] text-[#54647A]",
+      dot: "",
+    },
+    warning: {
+      container: "bg-[#E0E3E5] text-text-gray",
+      dot: "",
+    },
+    error: {
+      container: "bg-[#FFDAD6]/80 text-[#93000A]",
+      dot: "",
+    },
   };
 
+  const selectedSize = sizeStyles[size] || sizeStyles.md
   const selected = variantStyles[variant] || variantStyles.default;
 
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium ${selected.container} ${className}`}
+      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 text-xs font-medium ${selectedSize} ${selected.container} ${className}`}
     >
       {withDot && (
         <span className={`h-1.5 w-1.5 rounded-full ${selected.dot}`} />

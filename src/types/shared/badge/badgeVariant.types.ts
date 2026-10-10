@@ -4,4 +4,8 @@ export type BadgeVariant =
   | "invited"
   | "admin"
   | "customer"
-  | "default";
+  | "default"
+  | "success"
+  | "warning"
+  | "error";
+  

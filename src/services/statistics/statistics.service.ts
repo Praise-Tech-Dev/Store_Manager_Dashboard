@@ -5,7 +5,7 @@ import type {
 import { productService } from "../product.service";
 import { cartService } from "../cart.service";
 import { userService } from "../user.service";
-import { createProductMap } from "@/utils/product.utils";
+import { createProductMap } from "@/utils/products/product.utils";
 import { formatPercentage } from "@/utils/statistics.utils";
 import { CategoryColor } from "@/constants/statistics/statistics.constants";
 import { calculateRevenueTimeline } from "./timeline.calculator";

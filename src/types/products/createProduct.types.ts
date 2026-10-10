@@ -1,3 +1,5 @@
-import type { Product } from "./product.types";
+import type { DashboardProduct } from "./dashboardProduct.types";
 
-export type CreateProductDTO = Omit<Product, "id" | "rating">;
+export type CreateProductDTO = Omit<DashboardProduct, "id" | "rating" | "sku"> & {
+  stockCount?: number;
+};

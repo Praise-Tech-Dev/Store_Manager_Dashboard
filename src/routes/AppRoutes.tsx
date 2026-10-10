@@ -7,6 +7,7 @@ import LoginPage from "@/pages/auth/login/LoginPage";
 import SignUpPage from "@/pages/auth/sign-up/SignUpPage";
 import ForgotPassword from "@/pages/auth/forgot-password/ForgotPassword";
 import { StatisticsPage } from "@/pages/statistics/StatisticsPage";
+import { ProductPage } from "@/pages/products/ProductPage";
 
 export const AppRoutes = () => {
   return (
@@ -39,6 +40,7 @@ export const AppRoutes = () => {
             {/* user management  */}
             <Route path="/users" element={<UsersPage />} />
             {/* product catalogue  */}
+            <Route path="/products" element={<ProductPage />} />
           </Route>
         </Route>
 
