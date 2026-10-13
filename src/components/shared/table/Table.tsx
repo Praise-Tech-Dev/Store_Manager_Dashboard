@@ -1,6 +1,7 @@
 import { TableSkeleton } from "./TableSkeleton";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { Identifiable, TableProps } from "@/types/table/table.types";
+import { getPageNumbers, isPaginationDisabled } from "@/utils/pagination.utils";
 
 export function Table<T extends Identifiable>({
   columns,
@@ -10,23 +11,41 @@ export function Table<T extends Identifiable>({
   getRowKey = (row) => row.id ?? JSON.stringify(row),
   pagination,
   onClearFilters,
+  skeletonRows,
+  paginationVariant = "default",
+  entityName ="entries",
+  avatarVariant ="circle",
+  activePageColorClass ="bg-primary text-white"
 }: TableProps<T>) {
 
   // pagination calc 
-  const pages: number[] = []
   let fromItem = 0;
   let toItem = 0;
 
   if (pagination){
-    const { currentPage, totalPages, totalItems, pageSize } = pagination;
+    const { currentPage, totalItems, pageSize } = pagination;
     fromItem = totalItems === 0 ? 0 : (currentPage - 1) * pageSize + 1;
     toItem = Math.min(currentPage * pageSize, totalItems);
-
-    for (let i = 1; i <= totalPages; i ++){
-      pages.push(i);
-    }
-
   }
+
+  // Inside Table component:
+  const pageNumbers = pagination
+    ? getPageNumbers({
+        currentPage: pagination.currentPage,
+        totalPages: pagination.totalPages,
+        paginationVariant,
+      })
+    : [];
+
+  const { isPrevDisabled, isNextDisabled } = pagination
+    ? isPaginationDisabled(
+        pagination.currentPage,
+        pagination.totalPages,
+        loading,
+      )
+    : { isPrevDisabled: true, isNextDisabled: true };
+
+
   return (
     <div className="overflow-hidden rounded-xl bg-white shadow-sm">
       <div className="overflow-x-auto">
@@ -61,12 +80,16 @@ export function Table<T extends Identifiable>({
 
           <tbody className="">
             {loading ? (
-              <TableSkeleton rows={5} columnsCount={columns.length} />
+              <TableSkeleton
+                rows={skeletonRows ?? pagination?.pageSize ?? 5}
+                columnsCount={columns.length}
+                avatarVariant={avatarVariant}
+              />
             ) : data.length === 0 ? (
               <tr>
                 <td
                   colSpan={columns.length}
-                  className="px-5 py-12 text-center text-sm text-slate-500 sm:px-6"
+                  className="px-5 py-12 text-center text-sm text-slate-500 sm:px-6 "
                 >
                   <p>{emptyMessage}</p>
                   {onClearFilters && (
@@ -110,29 +133,48 @@ export function Table<T extends Identifiable>({
 
       {/* pagination footer  */}
       {pagination && (
-        <div className="relative z-10 flex items-center justify-between border-t border-slate-100 px-6 py-4">
-          <p className="text-xs text-slate-500 hidden md:block">
-            Showing{" "}
-            <span className="font-medium text-slate-700">{fromItem}</span> to{" "}
-            <span className="font-medium text-slate-700">{toItem}</span> of{" "}
-            <span className="font-medium text-slate-700">
-              {pagination.totalItems}
-            </span>{" "}
-            entries
+        <div className="relative z-10 flex items-center justify-between border-t border-[#ECEEF0] px-6 py-4 font-inter font-normal text-xs leading-4 tracking-normal align-middle text-text-gray">
+          <p className=" hidden md:block">
+            Showing <span className="">{fromItem}</span> to{" "}
+            <span className="">{toItem}</span> of{" "}
+            <span className="">{pagination.totalItems}</span> {entityName}
           </p>
 
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-2">
             <button
               type="button"
-              disabled={pagination.currentPage <= 1 || loading}
+              disabled={isPrevDisabled}
               onClick={() =>
                 pagination.onPageChange(pagination.currentPage - 1)
               }
-              className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-400 transition hover:bg-slate-50 cursor-pointer disabled:cursor-not-allowed disabled:opacity-40 "
+              className={`flex items-center justify-center rounded-sm border border-border-subtle/30  transition hover:bg-slate-50 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent ${
+                paginationVariant === "detailed"
+                  ? "px-3 py-1 text-base leading-6 tracking-normal font-normal text-center align-middle text-text-default"
+                  : "bg-[#F2F4F6] h-8 w-8 text-text-gray"
+              }`}
             >
-              <ChevronLeft className="h-4 -4" />
+              {paginationVariant === "detailed" ? (
+                "Previous"
+              ) : (
+                <ChevronLeft className="h-4 w-4" />
+              )}
             </button>
-            {pages.map((p) => {
+            
+            {/* Render items from pageNumbers utility */}
+            {pageNumbers.map((p, index) => {
+              // Ellipsis rendering
+              if (p === "...") {
+                return (
+                  <span
+                    key={`ellipsis-${index}`}
+                    className="flex h-8 w-8 items-center justify-center text-base text-text-gray leading-6 tracking-normal align-middle text-center"
+                  >
+                    ...
+                  </span>
+                );
+              }
+
+              // Numeric page button rendering
               const isActive = p === pagination.currentPage;
               return (
                 <button
@@ -140,30 +182,33 @@ export function Table<T extends Identifiable>({
                   type="button"
                   disabled={loading}
                   onClick={() => pagination.onPageChange(p)}
-                  className={`flex h-8 w-8 items-center justify-center rounded-lg text-xs font-semibold cursor-pointer transition
-                    ${
-                      isActive
-                        ? "bg-primary text-white shadow-xs"
-                        : "border border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
-                    }
-                    `}
+                  className={`flex h-8 w-8 items-center justify-center rounded-sm text-base font-normal cursor-pointer transition ${
+                    isActive
+                      ? `${activePageColorClass} shadow-xs`
+                      : "border border-slate-200 bg-[#F2F4F6] text-text-gray hover:bg-slate-50"
+                  }`}
                 >
                   {p}
                 </button>
               );
             })}
-
             <button
               type="button"
-              disabled={
-                pagination.currentPage >= pagination.totalPages || loading
-              }
+              disabled={isNextDisabled}
               onClick={() =>
                 pagination.onPageChange(pagination.currentPage + 1)
               }
-              className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-400 transition hover:bg-slate-50 cursor-pointer disabled:cursor-not-allowed disabled:opacity-40"
+              className={`flex items-center justify-center rounded-sm border border-border-subtle/30  transition hover:bg-slate-50 cursor-pointer disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent ${
+                paginationVariant === "detailed"
+                  ? "px-3 py-1 text-base leading-6 tracking-normal font-normal text-center align-middle text-text-default"
+                  : "bg-[#F2F4F6] h-8 w-8 text-text-gray"
+              }`}
             >
-              <ChevronRight className="h-4 -4" />
+              {paginationVariant === "detailed" ? (
+                "Next"
+              ) : (
+                <ChevronRight className="h-4 w-4" />
+              )}
             </button>
           </div>
         </div>

@@ -15,14 +15,7 @@ import { SuspendUserModal } from "@/components/users/modals/SuspendUserModal";
 import { useAuth } from "@/hooks/auth/useAuth";
 import { toast } from "react-toastify";
 import { CreateUserModal } from "@/components/users/modals/CreateUserModal";
-
-
-type ActiveModal =
-  | { type: "create" }
-  | { type: "edit"; user: DashboardUser }
-  | { type: "suspend"; user: DashboardUser }
-  | { type: "delete"; user: DashboardUser }
-  | null;
+import type { ActiveModal } from "@/types/shared/modals/activeModal.types";
 
 export const UsersPage = () => {
   const { data: allUsers = [], isLoading, error } = useDashboardUsers();

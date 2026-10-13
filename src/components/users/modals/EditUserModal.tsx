@@ -138,7 +138,7 @@ export const EditUserModal = ({
               options={ROLE_OPTIONS}
               disabled={isSelf}
               {...register("role")}
-              className="flex-1"
+              className="flex-1 bg-white"
             />
             {isSelf && (
               <p className="mt-1 text-[11px] text-slate-400">
@@ -153,7 +153,7 @@ export const EditUserModal = ({
               options={STATUS_OPTIONS}
               disabled={isSelf}
               {...register("status")}
-              className="flex-1"
+              className="flex-1 bg-white"
             />
             {isSelf && (
               <p className="mt-1 text-[11px] text-slate-400">

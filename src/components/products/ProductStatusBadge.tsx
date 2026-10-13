@@ -17,7 +17,7 @@ export const ProductStatusBadge = ({
       : status;
 
   return (
-    <Badge variant={variant} size={size}>
+    <Badge variant={variant} size={size} >
       {label}
     </Badge>
   );

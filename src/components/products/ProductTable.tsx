@@ -21,7 +21,7 @@ export const ProductTable = ({
         key: "product",
         title: "Product",
         render: (product) => (
-          <div className="flex items-center gap-4 px-6 py-4">
+          <div className="flex items-center gap-4">
             <div className="h-12 w-12 shrink-0 overflow-hidden bg-[#ECEEF0] rounded-md">
               <img
                 src={product.image || product.avatar || PLACEHOLDER_IMAGE}
@@ -96,6 +96,10 @@ export const ProductTable = ({
       pagination={pagination}
       emptyMessage="No products match your criteria"
       onClearFilters={onClearFilters}
+      paginationVariant="detailed"
+      entityName="products"
+      avatarVariant="square"
+      activePageColorClass="bg-[#4F46E5] text-[#DAD7FF]"
     />
   );
 };

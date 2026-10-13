@@ -13,4 +13,9 @@ export type TableProps<T> = {
   getRowKey?: (row: T) => string | number;
   pagination?: PaginationConfig;
   onClearFilters?: () => void;
+  skeletonRows?: number;
+  paginationVariant?: "default" | "detailed";
+  entityName?: string;
+  avatarVariant?: "circle" | "square";
+  activePageColorClass?: string;
 };

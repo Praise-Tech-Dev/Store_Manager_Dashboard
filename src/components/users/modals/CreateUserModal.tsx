@@ -158,7 +158,7 @@ export const CreateUserModal = ({
             options={ROLE_OPTIONS}
             error={errors.role?.message}
             {...register("role")}
-            className="flex-1 "
+            className="flex-1 bg-white"
           />
 
           <Select
@@ -166,7 +166,7 @@ export const CreateUserModal = ({
             options={STATUS_OPTIONS}
             error={errors.status?.message}
             {...register("status")}
-            className="flex-1 cursor-not-allowed"
+            className="flex-1 cursor-not-allowed bg-white"
             disabled={true}
           />
         </div>

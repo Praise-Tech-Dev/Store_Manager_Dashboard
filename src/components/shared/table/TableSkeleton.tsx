@@ -3,12 +3,18 @@ import type { TableSkeletonProps } from "@/types/table/tableSkeleton.types";
 export const TableSkeleton = ({
   rows = 5,
   columnsCount = 6,
+  avatarVariant="circle",
 }: TableSkeletonProps) => {
   const rowList: number[] = [];
   const colList: number[] = [];
 
   for (let i = 0; i < rows; i++) rowList.push(i);
   for (let j = 0; j < columnsCount; j++) colList.push(j);
+
+  const avatarStyles =
+    avatarVariant === "square"
+      ? "h-12 w-12 rounded-md shrink-0" 
+      : "h-10 w-10 rounded-full shrink-0"; 
 
   return (
     <>
@@ -19,7 +25,9 @@ export const TableSkeleton = ({
               {cIdx === 0 ? (
                 // small avatar / icon pill + title line for  Leading column
                 <div className="flex items-center gap-3">
-                  <div className="h-8 w-8 shrink-0 animate-pulse rounded-full bg-slate-200" />
+                  <div
+                    className={`animate-pulse bg-slate-200 ${avatarStyles}`}
+                  />
                   <div className="h-3 w-24 animate-pulse rounded bg-slate-200" />
                 </div>
               ) : cIdx === columnsCount - 1 ? (
