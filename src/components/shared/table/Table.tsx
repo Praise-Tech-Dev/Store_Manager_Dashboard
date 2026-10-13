@@ -2,6 +2,7 @@ import { TableSkeleton } from "./TableSkeleton";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { Identifiable, TableProps } from "@/types/table/table.types";
 import { getPageNumbers, isPaginationDisabled } from "@/utils/pagination.utils";
+import { useEffect, useState } from "react";
 
 export function Table<T extends Identifiable>({
   columns,
@@ -13,16 +14,30 @@ export function Table<T extends Identifiable>({
   onClearFilters,
   skeletonRows,
   paginationVariant = "default",
-  entityName ="entries",
-  avatarVariant ="circle",
-  activePageColorClass ="bg-primary text-white"
+  entityName = "entries",
+  avatarVariant = "circle",
+  activePageColorClass = "bg-primary text-white",
 }: TableProps<T>) {
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia("(max-width: 767px)").matches;
+  });
 
-  // pagination calc 
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 767px)");
+    const handleResize = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+
+    mediaQuery.addEventListener("change", handleResize);
+    return () => mediaQuery.removeEventListener("change", handleResize);
+  }, []);
+
+  const effectiveVariant = isMobile ? "default" : paginationVariant;
+
+  // pagination calc
   let fromItem = 0;
   let toItem = 0;
 
-  if (pagination){
+  if (pagination) {
     const { currentPage, totalItems, pageSize } = pagination;
     fromItem = totalItems === 0 ? 0 : (currentPage - 1) * pageSize + 1;
     toItem = Math.min(currentPage * pageSize, totalItems);
@@ -33,7 +48,7 @@ export function Table<T extends Identifiable>({
     ? getPageNumbers({
         currentPage: pagination.currentPage,
         totalPages: pagination.totalPages,
-        paginationVariant,
+        paginationVariant: effectiveVariant,
       })
     : [];
 
@@ -44,7 +59,6 @@ export function Table<T extends Identifiable>({
         loading,
       )
     : { isPrevDisabled: true, isNextDisabled: true };
-
 
   return (
     <div className="overflow-hidden rounded-xl bg-white shadow-sm">
@@ -148,18 +162,18 @@ export function Table<T extends Identifiable>({
                 pagination.onPageChange(pagination.currentPage - 1)
               }
               className={`flex items-center justify-center rounded-sm border border-border-subtle/30  transition hover:bg-slate-50 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent ${
-                paginationVariant === "detailed"
+                effectiveVariant === "detailed"
                   ? "px-3 py-1 text-base leading-6 tracking-normal font-normal text-center align-middle text-text-default"
                   : "bg-[#F2F4F6] h-8 w-8 text-text-gray"
               }`}
             >
-              {paginationVariant === "detailed" ? (
+              {effectiveVariant === "detailed" ? (
                 "Previous"
               ) : (
                 <ChevronLeft className="h-4 w-4" />
               )}
             </button>
-            
+
             {/* Render items from pageNumbers utility */}
             {pageNumbers.map((p, index) => {
               // Ellipsis rendering
@@ -175,7 +189,7 @@ export function Table<T extends Identifiable>({
               }
 
               // Numeric page button rendering
-              const isActive = p === pagination.currentPage;
+              const isActive = Number(p) === Number(pagination.currentPage);
               return (
                 <button
                   key={p}
@@ -199,12 +213,12 @@ export function Table<T extends Identifiable>({
                 pagination.onPageChange(pagination.currentPage + 1)
               }
               className={`flex items-center justify-center rounded-sm border border-border-subtle/30  transition hover:bg-slate-50 cursor-pointer disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent ${
-                paginationVariant === "detailed"
+                effectiveVariant === "detailed"
                   ? "px-3 py-1 text-base leading-6 tracking-normal font-normal text-center align-middle text-text-default"
                   : "bg-[#F2F4F6] h-8 w-8 text-text-gray"
               }`}
             >
-              {paginationVariant === "detailed" ? (
+              {effectiveVariant === "detailed" ? (
                 "Next"
               ) : (
                 <ChevronRight className="h-4 w-4" />
