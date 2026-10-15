@@ -26,4 +26,5 @@ export type ModalProps = {
   showCloseButton?: boolean;
   headerBorder?: string;
   footerBorder?: string;
+  footerLayout?: "default" | "full";
 };

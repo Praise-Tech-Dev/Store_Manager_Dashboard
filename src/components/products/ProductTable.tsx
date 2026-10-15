@@ -5,7 +5,8 @@ import { useMemo } from "react"
 import { ProductStatusBadge } from "./ProductStatusBadge"
 import { ProductActionMenu } from "./ProductActionMenu"
 import { Table } from "../shared/table/Table"
-import PLACEHOLDER_IMAGE from "../../assets/images/placeholder.jpg";
+// import PLACEHOLDER_IMAGE from "../../assets/images/placeholder.jpg";
+import { ProductImage } from "./ProductImage"
 
 export const ProductTable = ({
   products,
@@ -23,7 +24,7 @@ export const ProductTable = ({
         render: (product) => (
           <div className="flex items-center gap-4">
             <div className="h-12 w-12 shrink-0 overflow-hidden bg-[#ECEEF0] rounded-md">
-              <img
+              {/* <img
                 src={product.image || product.avatar || PLACEHOLDER_IMAGE}
                 alt={product.title}
                 className="h-full w-full object-contain"
@@ -33,6 +34,11 @@ export const ProductTable = ({
                     target.src = PLACEHOLDER_IMAGE;
                   }
                 }}
+              /> */}
+              <ProductImage
+                src={product.image || product.avatar}
+                alt={product.title}
+                className="h-full w-full object-contain"
               />
             </div>
             <div className="flex flex-col">

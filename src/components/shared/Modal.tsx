@@ -29,6 +29,7 @@ export const Modal = ({
   maxWidth = "md",
   className = "",
   showCloseButton = true,
+  footerLayout ="default",
 }: ModalProps) => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -176,7 +177,11 @@ export const Modal = ({
         {hasFooter && (
           <div
             className={`flex flex-col sm:flex-row items-center gap-3 px-6 py-4 ${footerBorder}  ${footerBg} ${
-              onDelete ? "justify-between" : "justify-end"
+              footerLayout === "full"
+                ? "w-full text-center"
+                : onDelete
+                  ? "justify-between"
+                  : "justify-end"
             }`}
           >
             {onDelete && (
@@ -194,7 +199,9 @@ export const Modal = ({
               </Button>
             )}
 
-            <div className="flex items-center gap-2.5 w-full sm:w-auto justify-end">
+            <div
+              className={`flex items-center gap-2.5 w-full ${footerLayout === "full" ? "sm:w-full" : "sm:w-auto"} justify-end`}
+            >
               {cancelText && (
                 <Button
                   type="button"
@@ -202,7 +209,7 @@ export const Modal = ({
                   size="sm"
                   onClick={onClose}
                   disabled={confirmLoading || deleteLoading}
-                  className="w-full sm:w-auto border-slate-200 text-slate-700"
+                  className={`${footerLayout === "full" ? "flex-1" : "w-full sm:w-auto"} border-slate-200 text-slate-700`}
                 >
                   {cancelText}
                 </Button>
@@ -218,7 +225,7 @@ export const Modal = ({
                   loading={confirmLoading}
                   disabled={deleteLoading}
                   iconRight={confirmIcon}
-                  className="w-full sm:w-auto"
+                  className={`${footerLayout === "full" ? "flex-1" : "w-full sm:w-auto"}`}
                 >
                   {confirmText}
                 </Button>

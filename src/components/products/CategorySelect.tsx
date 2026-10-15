@@ -2,6 +2,7 @@ import { forwardRef } from "react";
 import type { SelectProps } from "@/types/shared/select/select.types";
 import type { ProductCategory } from "@/types/products/productCategory.types";
 import { Select } from "../shared/Select";
+import { CATEGORY_OPTIONS } from "@/constants/products/productCategoryOptions.constants";
 
 export interface CategorySelectProps extends Omit<
   SelectProps,
@@ -11,13 +12,7 @@ export interface CategorySelectProps extends Omit<
   onChange?: (value: ProductCategory | "Category") => void;
 }
 
-const CATEGORY_OPTIONS = [
-  { value: "Category", label: "Category" },
-  { value: "electronics", label: "Electronics" },
-  { value: "jewelery", label: "Jewelery" },
-  { value: "men's clothing", label: "Men's Clothing" },
-  { value: "women's clothing", label: "Women's Clothing" },
-];
+
 
 export const CategorySelect = forwardRef<
   HTMLSelectElement,
