@@ -22,9 +22,18 @@ export const useProductStore = create<ProductStoreState>()(
                 })),
             
             recordDeletion: (id) =>
-                set((state) => ({
-                    deletedIds: [...state.deletedIds, id],
-                })),
+                set((state) => {
+                    const remainingEdits = {...state.userEdits };
+                    delete remainingEdits[id];
+                    return {
+                        deletedIds: state.deletedIds.includes(id)
+                            ? state.deletedIds
+                            : [...state.deletedIds, id],
+                        userEdits: remainingEdits,
+                        userCreatedProducts: state.userCreatedProducts.filter((p) => p.id !== id),
+                    }
+                    }
+                ),
         }),    
         {
             name: "product-catalog-storage",

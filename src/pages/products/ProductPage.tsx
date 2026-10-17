@@ -1,5 +1,6 @@
 import { CategorySelect } from "@/components/products/CategorySelect";
 import { AddProductModal } from "@/components/products/ProductModals/AddProductModal";
+import { DeleteProductModal } from "@/components/products/ProductModals/DeleteProductModal";
 import { EditProductModal } from "@/components/products/ProductModals/EditProductModal";
 import { ProductTable } from "@/components/products/ProductTable";
 import { StatusSelect } from "@/components/products/StatusSelect";
@@ -14,7 +15,7 @@ import { useState } from "react";
 export const ProductPage = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<DashboardProduct | null>(null);
-  // const [deletingProduct, setDeletingProduct] = useState<DashboardProduct | null>(null);
+  const [deletingProduct, setDeletingProduct] = useState<DashboardProduct | null>(null);
   const { data: allProducts = [], isLoading, error } = useDashboardProducts();
   const {
     searchTerm,
@@ -95,7 +96,7 @@ export const ProductPage = () => {
         }}
         onClearFilters={isFiltered ? clearFilters : undefined}
         onEdit={setEditingProduct}
-        // onDelete={setDeletingProduct}
+        onDelete={setDeletingProduct}
       />
 
       <AddProductModal
@@ -109,10 +110,16 @@ export const ProductPage = () => {
         product={editingProduct}
         existingProducts={allProducts}
         onClose={() => setEditingProduct(null)}
-        onRequestDelete={() => {
+        onRequestDelete={(p) => {
           setEditingProduct(null);
-          // setDeletingProduct(p);
+          setDeletingProduct(p);
         }}
+      />
+
+      <DeleteProductModal
+        product={deletingProduct}
+        isOpen={!!deletingProduct}
+        onClose={() => setDeletingProduct(null)}
       />
     </div>
   );

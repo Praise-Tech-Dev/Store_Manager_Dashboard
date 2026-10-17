@@ -10,16 +10,20 @@ export const useCreateProduct = () => {
   const recordCreation = useProductStore((state) => state.recordCreation);
 
   return useMutation({
+    networkMode: "always",
     mutationFn: async (payload: CreateProductInput) => {
       // Pass currently cached products so productService calculates maxId accurately
-      const cached =
-        queryClient.getQueryData<DashboardProduct[]>(PRODUCT_KEYS.all) ?? [];
-      const { userCreatedProducts } = useProductStore.getState();
+      const cached = queryClient
+        .getQueriesData<DashboardProduct[]>({
+          queryKey: PRODUCT_KEYS.lists(),
+        })
+        .flatMap(([, data]) => data ?? []);
+      const { userCreatedProducts, deletedIds } = useProductStore.getState();
 
       return await productService.createProduct(payload, [
         ...cached,
         ...userCreatedProducts,
-      ]);
+      ], deletedIds);
     },
     onSuccess: (newProduct: DashboardProduct) => {
       // Persist locally to Zustand

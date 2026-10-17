@@ -26,6 +26,7 @@ export const productService = {
   async createProduct(
     input: CreateProductInput,
     existingProducts: DashboardProduct[] = [],
+    deletedIds: number[] = []
   ): Promise<DashboardProduct> {
     const { sku, stockCount, image, ...fields } = input;
     // Uploaded images live in IndexedDB; the product keeps only a small reference.
@@ -36,9 +37,10 @@ export const productService = {
       // so it never receives image data.
       const created = await productsApi.create({ ...fields, image: "" });
 
-      const maxId = existingProducts.reduce(
-        (max, p) => (typeof p.id === "number" && p.id > max ? p.id : max),
+      const maxId = Math.max(
         0,
+        ...existingProducts.map((p) => p.id),
+        ...deletedIds,
       );
       const assignedId =
         created?.id && created.id > maxId ? created.id : maxId + 1;
@@ -76,8 +78,9 @@ export const productService = {
     );
   },
 
-  async deleteProduct(id: number): Promise<number> {
-    await productsApi.delete(id);
-    return id;
+  async deleteProduct(product: DashboardProduct): Promise<number> {
+    await productsApi.delete(product.id);
+    await productImageStorage.remove(product.image)
+    return product.id;
   },
 };
