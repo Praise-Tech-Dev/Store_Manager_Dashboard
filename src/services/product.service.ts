@@ -59,12 +59,19 @@ export const productService = {
     payload: UpdateProductDTO,
     existingProduct?: DashboardProduct,
   ): Promise<DashboardProduct> {
-    const updated = await productsApi.update(id, payload);
+    // Fields the API doesn't know about stay in our local store 
+    const { title, price, description, category } = payload;
+    const updated = await productsApi.update(id, {
+      title,
+      price,
+      description,
+      category,
+    });
     return enrichProduct(
-      { ...existingProduct, ...updated, id },
+      { ...existingProduct, ...updated, ...payload, id },
       {
+        sku:existingProduct?.sku,
         stockCount: payload.stockCount ?? existingProduct?.stockCount,
-        status: payload.status ?? existingProduct?.status,
       },
     );
   },

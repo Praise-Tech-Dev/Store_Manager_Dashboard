@@ -1,16 +1,20 @@
 import { CategorySelect } from "@/components/products/CategorySelect";
 import { AddProductModal } from "@/components/products/ProductModals/AddProductModal";
+import { EditProductModal } from "@/components/products/ProductModals/EditProductModal";
 import { ProductTable } from "@/components/products/ProductTable";
 import { StatusSelect } from "@/components/products/StatusSelect";
 import Button from "@/components/shared/Button";
 import { SearchInput } from "@/components/shared/SearchInput";
 import { useDashboardProducts } from "@/hooks/products";
 import { useProductTableFilters } from "@/hooks/products/useProductFilters";
+import type { DashboardProduct } from "@/types/products";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 
 export const ProductPage = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<DashboardProduct | null>(null);
+  // const [deletingProduct, setDeletingProduct] = useState<DashboardProduct | null>(null);
   const { data: allProducts = [], isLoading, error } = useDashboardProducts();
   const {
     searchTerm,
@@ -90,12 +94,25 @@ export const ProductPage = () => {
           onPageChange: setPage,
         }}
         onClearFilters={isFiltered ? clearFilters : undefined}
+        onEdit={setEditingProduct}
+        // onDelete={setDeletingProduct}
       />
 
       <AddProductModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
         existingProducts={allProducts}
+      />
+
+      <EditProductModal
+        isOpen={editingProduct !== null}
+        product={editingProduct}
+        existingProducts={allProducts}
+        onClose={() => setEditingProduct(null)}
+        onRequestDelete={() => {
+          setEditingProduct(null);
+          // setDeletingProduct(p);
+        }}
       />
     </div>
   );

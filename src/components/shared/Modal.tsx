@@ -21,6 +21,7 @@ export const Modal = ({
   cancelText = "Cancel",
   confirmVariant = "primary",
   confirmLoading = false,
+  confirmDisabled = false,
   confirmFormId,
   confirmIcon,
   onDelete,
@@ -53,7 +54,7 @@ export const Modal = ({
     sm: "max-w-[440px]",
     md: "max-w-[480px]",
     lg: "max-w-lg",
-    xl: "max-w-xl",
+    xl: "max-w-2xl",
   };
 
   const effectiveIconVariant =
@@ -223,7 +224,7 @@ export const Modal = ({
                   size="sm"
                   onClick={!confirmFormId ? onConfirm : undefined}
                   loading={confirmLoading}
-                  disabled={deleteLoading}
+                  disabled={deleteLoading || confirmDisabled}
                   iconRight={confirmIcon}
                   className={`${footerLayout === "full" ? "flex-1" : "w-full sm:w-auto"}`}
                 >

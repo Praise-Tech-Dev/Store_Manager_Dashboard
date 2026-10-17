@@ -16,6 +16,7 @@ export type ModalProps = {
   cancelText?: string;
   confirmVariant?: "primary" | "danger";
   confirmLoading?: boolean;
+  confirmDisabled?: boolean;
   confirmFormId?: string;
   confirmIcon?: React.ReactNode;
   onDelete?: () => void;

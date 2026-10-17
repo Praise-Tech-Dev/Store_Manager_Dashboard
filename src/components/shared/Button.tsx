@@ -27,7 +27,8 @@ export default function Button({
   };
 
   const variants = {
-    primary: "bg-primary text-white hover:bg-primary-hover shadow-sm",
+    primary:
+      "bg-primary text-white hover:bg-primary-hover disabled:bg-primary/70 shadow-sm",
 
     secondary: "bg-surface-light text-text-default  hover:bg-slate-100",
 

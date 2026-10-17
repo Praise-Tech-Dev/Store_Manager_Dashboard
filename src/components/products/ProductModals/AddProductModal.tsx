@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useForm, Controller, type SubmitHandler } from "react-hook-form";
+import { useForm, Controller, type SubmitHandler, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCreateProduct } from "@/hooks/products";
 import type { AddProductModalProps } from "@/types/products/productModal";
@@ -13,6 +13,7 @@ import { Modal } from "../../shared/Modal";
 import { Input } from "../../shared/Input";
 import { Select } from "../../shared/Select";
 import { ProductImageUpload } from "../ProductImageUpload";
+import { generateSku } from "@/utils/products/productEnricher";
 
 export const AddProductModal = ({
   isOpen,
@@ -39,12 +40,18 @@ export const AddProductModal = ({
     mode: "onTouched",
     defaultValues: {
       title: "",
-      sku: "",
-      price: 0,
+      price: undefined,
       category: "",
       image: undefined,
     },
   });
+
+  const nextId = useMemo(
+    () => Math.max(0, ...existingProducts.map((p) => p.id)) + 1,
+    [existingProducts],
+  );
+  const title = useWatch({ control, name: "title" });
+  const skuPreview = title.trim().length >= 4 ? generateSku(nextId, title) : "";
 
   const handleClose = () => {
     reset();
@@ -55,7 +62,7 @@ export const AddProductModal = ({
     createProduct(
       {
         title: data.title,
-        sku: data.sku,
+        sku: generateSku(nextId, data.title),
         price: data.price,
         category: data.category,
         description: "",
@@ -76,7 +83,7 @@ export const AddProductModal = ({
       onClose={handleClose}
       variant="default"
       title="Add New Product"
-      bodyClassName="p-6"
+      bodyClassName="p-3 md:p-6"
       confirmText="Create Product"
       confirmFormId="add-product-form"
       confirmLoading={isPending}
@@ -99,16 +106,16 @@ export const AddProductModal = ({
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <Input
             label="SKU"
-            placeholder="SKU-000"
-            {...register("sku")}
-            error={errors.sku?.message}
+            value={skuPreview}
+            placeholder="Generated from product name"
+            readOnly
           />
           <Input
             label="Price"
             type="number"
             step="0.01"
             placeholder="0.00"
-            {...register("price")}
+            {...register("price", { valueAsNumber: true })}
             error={errors.price?.message}
           />
         </div>
