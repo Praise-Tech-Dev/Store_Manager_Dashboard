@@ -3,4 +3,5 @@ import type { BaseProductModalProps } from "./baseProductModalProps.types";
 
 export interface DuplicateProductModalProps extends BaseProductModalProps {
   product: DashboardProduct | null;
+  existingProducts?: DashboardProduct[];
 }

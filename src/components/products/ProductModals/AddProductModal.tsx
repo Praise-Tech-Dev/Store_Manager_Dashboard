@@ -15,6 +15,7 @@ import { Select } from "../../shared/Select";
 import { ProductImageUpload } from "../ProductImageUpload";
 import { generateSku } from "@/utils/products/productEnricher";
 import { useProductStore } from "@/store/useProductStore";
+import { getNextProductId } from "@/utils/products/getNextProductIId";
 
 export const AddProductModal = ({
   isOpen,
@@ -50,9 +51,10 @@ export const AddProductModal = ({
   const deletedIds = useProductStore((state) => state.deletedIds);
 
   const nextId = useMemo(
-    () => Math.max(0, ...existingProducts.map((p) => p.id), ...deletedIds) + 1,
-    [existingProducts, deletedIds],
-  );
+      () => getNextProductId(existingProducts, deletedIds),
+      [existingProducts, deletedIds],
+    );
+
   const title = useWatch({ control, name: "title" });
   const skuPreview = title.trim().length >= 4 ? generateSku(nextId, title) : "";
 

@@ -14,6 +14,7 @@ export const ProductTable = ({
   pagination,
   onEdit,
   onDelete,
+  onDuplicate,
   onClearFilters,
 }: ProductTableProps) => {
   const columns: Column<DashboardProduct>[] = useMemo(() => {
@@ -89,11 +90,12 @@ export const ProductTable = ({
             product={product}
             onEdit={onEdit}
             onDelete={onDelete}
+            onDuplicate={onDuplicate}
           />
         ),
       },
     ];
-  }, [onEdit, onDelete]);
+  }, [onEdit, onDelete, onDuplicate]);
   return (
     <Table
       columns={columns}

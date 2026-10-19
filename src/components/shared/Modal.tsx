@@ -24,6 +24,7 @@ export const Modal = ({
   confirmDisabled = false,
   confirmFormId,
   confirmIcon,
+  confirmIconPosition = "right",
   onDelete,
   deleteText = "Delete User",
   deleteLoading = false,
@@ -31,6 +32,8 @@ export const Modal = ({
   className = "",
   showCloseButton = true,
   footerLayout ="default",
+  headerPadding = "px-6 py-5",
+  cancelVariant = "outline",
 }: ModalProps) => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -106,7 +109,7 @@ export const Modal = ({
                     </h3>
                   )}
                   {subtitle && (
-                    <p className="mt-0.5 text-xs text-slate-500text-text-gray leading-4 tracking-normal">
+                    <p className="mt-0.5 text-xs text-text-gray leading-4 tracking-normal">
                       {subtitle}
                     </p>
                   )}
@@ -133,7 +136,7 @@ export const Modal = ({
           <>
             {(title || Icon) && (
               <div
-                className={`flex items-start justify-between gap-4 ${headerBorder} px-6 py-5`}
+                className={`flex items-start justify-between gap-4 ${headerBorder} ${headerPadding}`}
               >
                 <div className="flex items-center gap-3.5">
                   {Icon && (
@@ -206,7 +209,7 @@ export const Modal = ({
               {cancelText && (
                 <Button
                   type="button"
-                  variant="outline"
+                  variant={cancelVariant}
                   size="sm"
                   onClick={onClose}
                   disabled={confirmLoading || deleteLoading}
@@ -225,8 +228,13 @@ export const Modal = ({
                   onClick={!confirmFormId ? onConfirm : undefined}
                   loading={confirmLoading}
                   disabled={deleteLoading || confirmDisabled}
-                  iconRight={confirmIcon}
+                  iconRight={
+                    confirmIconPosition === "right" ? confirmIcon : undefined
+                  }
                   className={`${footerLayout === "full" ? "flex-1" : "w-full sm:w-auto"}`}
+                  iconLeft={
+                    confirmIconPosition === "left" ? confirmIcon : undefined
+                  }
                 >
                   {confirmText}
                 </Button>

@@ -34,6 +34,7 @@ export default function Button({
 
     outline:
       "bg-none border border-border-subtle text-text-default hover:bg-slate-50",
+    ghost: "bg-none  text-text-gray hover:bg-slate-50",
 
     danger: "bg-danger text-white hover:opacity-90",
   };

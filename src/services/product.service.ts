@@ -30,7 +30,10 @@ export const productService = {
   ): Promise<DashboardProduct> {
     const { sku, stockCount, image, ...fields } = input;
     // Uploaded images live in IndexedDB; the product keeps only a small reference.
-    const imageRef = image ? await productImageStorage.save(image) : "";
+    const imageRef =
+      image instanceof Blob
+        ? await productImageStorage.save(image)
+        : (image ?? "");
 
     try {
       // Fake Store API persists nothing and rejects large bodies (HTTP 413),
@@ -42,6 +45,7 @@ export const productService = {
         ...existingProducts.map((p) => p.id),
         ...deletedIds,
       );
+      
       const assignedId =
         created?.id && created.id > maxId ? created.id : maxId + 1;
 

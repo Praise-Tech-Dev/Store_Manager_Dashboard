@@ -7,5 +7,6 @@ export interface ProductTableProps {
   pagination?: PaginationConfig;
   onEdit?: (product: DashboardProduct) => void;
   onDelete?: (product: DashboardProduct) => void;
+  onDuplicate?: (product: DashboardProduct) => void;
   onClearFilters?: () => void;
 }

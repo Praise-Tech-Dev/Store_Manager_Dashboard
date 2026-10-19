@@ -9,5 +9,5 @@ export type CreateDashboardProductDTO = CreateProductDTO & Pick<DashboardProduct
 
 /** Add-product input from the UI: the image is the Blob the user picked, not a reference. */
 export type CreateProductInput = Omit<CreateDashboardProductDTO, "image"> & {
-  image?: Blob;
+  image?: Blob | string;
 };

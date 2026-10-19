@@ -28,4 +28,7 @@ export type ModalProps = {
   headerBorder?: string;
   footerBorder?: string;
   footerLayout?: "default" | "full";
+  headerPadding?: string;
+  confirmIconPosition?: "left" | "right";
+  cancelVariant?: "outline" | "ghost";
 };
