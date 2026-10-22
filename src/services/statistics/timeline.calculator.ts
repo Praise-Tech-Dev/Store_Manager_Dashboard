@@ -2,6 +2,7 @@ import { WEEKDAYS } from "@/constants/statistics/statistics.constants";
 import type { Cart } from "@/types/carts";
 import type { Product } from "@/types/products";
 import type { RevenueOrdersPoint } from "@/types/statistics";
+import { calculateCartTotal } from "@/utils/carts/cart.utils";
 
 export const calculateRevenueTimeline = (
   carts: Cart[],
@@ -31,11 +32,8 @@ export const calculateRevenueTimeline = (
     const dayName = dayLookup[new Date(cart.date).getDay()];
     if (dayIncrements[dayName]) {
       dayIncrements[dayName].orders += 1;
-      const cartCost = cart.products.reduce((acc, item) => {
-        const product = productMap.get(item.productId);
-        return acc + (product?.price ?? 0) * item.quantity;
-      }, 0);
-      dayIncrements[dayName].revenue += Math.round(cartCost);
+      
+      dayIncrements[dayName].revenue += Math.round(calculateCartTotal({cart, productMap}),);
     }
   });
 

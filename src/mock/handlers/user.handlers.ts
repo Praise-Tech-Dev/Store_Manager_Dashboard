@@ -6,20 +6,13 @@ import type {
   AuthSuccessResponse,
   ErrorResponse,
 } from "@/types/mock";
-import { MOCK_USERS } from "@/mock/data/users.data"
+import { USERS_MOCK_DATA } from "@/mock/data/users.mock.data";
+import { fetchWithTimeout } from "../utils/fetchWithTimeout";
 
 // Cloned in memory so mutate operations (POST, PUT, DELETE) won't permanently corrupt the seed array
-let usersState: ApiUser[] = [...MOCK_USERS];
+let usersState: ApiUser[] = [...USERS_MOCK_DATA];
 
 const BASE = "https://fakestoreapi.com";
-
-const fetchWithTimeout = (input: RequestInfo | URL, ms = 3500) => {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), ms);
-  return fetch(input, { signal: controller.signal }).finally(() =>
-    clearTimeout(timer),
-  );
-};
 
 // Helper to generate a valid base64-encoded JWT structure
 const createMockJwt = (userId: number, username: string) => {
@@ -37,7 +30,6 @@ const createMockJwt = (userId: number, username: string) => {
 
   return `${header}.${payload}.${signature}`;
 };
-
 
 export const userHandlers = [
   // POST /auth/login
@@ -167,21 +159,23 @@ export const userHandlers = [
     async ({ request, params }) => {
       const payload = (await request.json()) as UpdateUserDTO;
       try {
-         const live = await fetchWithTimeout(
-           bypass(
-             new Request(request.url, {
-               method: "PUT",
-               headers: request.headers,
-               body: JSON.stringify(payload),
-             }),
-           ),
-         );
-         if (live.ok) {
-           return live;
-         }
-        
+        const live = await fetchWithTimeout(
+          bypass(
+            new Request(request.url, {
+              method: "PUT",
+              headers: request.headers,
+              body: JSON.stringify(payload),
+            }),
+          ),
+        );
+        if (live.ok) {
+          return live;
+        }
       } catch (error) {
-        console.info(`[MSW Fallback] PUT /users/${params.id} live request failed. Updating user in local mock state.`, error);
+        console.info(
+          `[MSW Fallback] PUT /users/${params.id} live request failed. Updating user in local mock state.`,
+          error,
+        );
       }
 
       const targetId = Number(params.id);
@@ -221,7 +215,7 @@ export const userHandlers = [
           error,
         );
       }
-      
+
       const targetId = Number(params.id);
       const existingUser = usersState.find((u) => u.id === targetId);
 

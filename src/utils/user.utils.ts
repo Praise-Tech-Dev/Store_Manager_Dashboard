@@ -1,3 +1,4 @@
+import type { DashboardUser } from "@/types/user.types";
 
 /**
  * Returns an avatar image URL if the user has one,
@@ -23,3 +24,6 @@ export const formatFullName = (
   if (!firstname && !lastname) return "Unknown User";
   return `${firstname ?? ""} ${lastname ?? ""}`.trim();
 };
+
+export const getCustomerName = (user?: DashboardUser): string =>
+  user ? `${user.name.firstname} ${user.name.lastname}` : "Guest Customer";

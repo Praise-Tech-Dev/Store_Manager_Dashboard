@@ -1,6 +1,6 @@
 import type { ApiUser } from "@/types/user.types";
 
-export const MOCK_USERS: ApiUser[] = [
+export const USERS_MOCK_DATA: ApiUser[] = [
   {
     id: 1,
     email: "john@gmail.com",
@@ -124,31 +124,31 @@ export const MOCK_USERS: ApiUser[] = [
   {
     id: 9,
     email: "kate@gmail.com",
-    username: "kate_voigt",
-    password: "katepass!2",
-    name: { firstname: "kate", lastname: "voigt" },
+    username: "kate_h",
+    password: "kfejk@*_",
+    name: { firstname: "kate", lastname: "hale" },
     address: {
       city: "dallas",
       street: "678 maple street",
       number: 21,
       zipcode: "75201",
-      geolocation: { lat: "32.7767", long: "-96.7970" },
+      geolocation: { lat: "40.12456", long: "20.5419" },
     },
-    phone: "1-214-555-0133",
+    phone: "1-678-456-1934",
   },
   {
     id: 10,
-    email: "jessica@gmail.com",
-    username: "jess_k",
-    password: "jessica123",
-    name: { firstname: "jessica", lastname: "kovacs" },
+    email: "jimmie@gmail.com",
+    username: "jimmie_k",
+    password: "klein*#%*",
+    name: { firstname: "jimmie", lastname: "klein" },
     address: {
       city: "austin",
       street: "901 congress ave",
       number: 8,
       zipcode: "78701",
-      geolocation: { lat: "30.2672", long: "-97.7431" },
+      geolocation: { lat: "30.24788", long: "-20.545419" },
     },
-    phone: "1-512-555-0144",
+    phone: "1-104-001-4567",
   },
 ];

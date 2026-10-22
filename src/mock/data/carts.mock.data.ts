@@ -1,6 +1,6 @@
 import type { Cart } from "@/types/carts";
 
-export const MOCK_CARTS: Cart [] = [
+export const CARTS_MOCK_DATA: Cart[] = [
   {
     id: 1,
     userId: 1,

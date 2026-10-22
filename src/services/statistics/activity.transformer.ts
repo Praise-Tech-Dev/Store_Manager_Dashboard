@@ -2,7 +2,9 @@ import type { Cart } from "@/types/carts";
 import type { Product } from "@/types/products";
 import type { ActivityItem } from "@/types/statistics/recentActivity/activity.types";
 import type { DashboardUser } from "@/types/user.types";
+import { calculateCartTotal } from "@/utils/carts/cart.utils";
 import { formatCurrency } from "@/utils/statistics.utils";
+import { getCustomerName } from "@/utils/user.utils";
 
 export const transformRecentActivities = (
   carts: Cart[],
@@ -13,18 +15,12 @@ export const transformRecentActivities = (
   users.forEach((user) => userMap.set(user.id, user));
 
   return carts.slice(0, 4).map((cart, index) => {
-    const user = userMap.get(cart.userId);
+    // const user = userMap.get(cart.userId);
     const firstProduct = productMap.get(cart.products[0]?.productId);
 
-    const totalCost = cart.products.reduce((sum, item) => {
-      const price = productMap.get(item.productId)?.price ?? 0;
+    const totalCost = calculateCartTotal({cart, productMap});
 
-      return sum + price * item.quantity;
-    }, 0);
-
-    const customerName = user
-      ? `${user.name.firstname} ${user.name.lastname}`
-      : "Guest Customer";
+    const customerName = getCustomerName(userMap.get(cart.userId))
 
     return {
       id: `act-cart-${cart.id}-${index}`,

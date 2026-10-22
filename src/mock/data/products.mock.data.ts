@@ -1,6 +1,6 @@
 import type { Product } from "@/types/products";
 
-export const MOCK_PRODUCTS: Product[] = [
+export const PRODUCTS_MOCK_DATA: Product[] = [
   {
     id: 1,
     title: "Fjallraven - Foldsack No. 1 Backpack",

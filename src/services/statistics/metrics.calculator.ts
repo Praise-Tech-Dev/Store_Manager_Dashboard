@@ -33,7 +33,7 @@ export const calculateDashboardMetrics = (params: MetricCalculationParams): Metr
         change: "12.1%",
         isPositive: true,
         color: "#3525CD",
-        trend: generateZigzagTrend(totalUsers, "neutral"),
+        trend: generateZigzagTrend(totalOrders, "neutral"),
       },
       {
         id: "conversion",
