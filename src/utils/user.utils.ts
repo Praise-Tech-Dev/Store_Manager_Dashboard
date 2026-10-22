@@ -1,4 +1,4 @@
-import type { DashboardUser } from "@/types/user.types";
+import type { ApiUser, DashboardUser } from "@/types/user.types";
 
 /**
  * Returns an avatar image URL if the user has one,
@@ -25,5 +25,11 @@ export const formatFullName = (
   return `${firstname ?? ""} ${lastname ?? ""}`.trim();
 };
 
-export const getCustomerName = (user?: DashboardUser): string =>
+export const getCustomerName = (user?: Pick<ApiUser, "name">): string =>
   user ? `${user.name.firstname} ${user.name.lastname}` : "Guest Customer";
+
+export const createUserMap = (users: DashboardUser[]): Map<number, DashboardUser> => {
+    const map = new Map<number, DashboardUser>();
+    users.forEach((user) => map.set(user.id, user));
+    return map;
+};
