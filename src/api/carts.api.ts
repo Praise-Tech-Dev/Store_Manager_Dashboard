@@ -16,7 +16,7 @@ export const cartsApi = {
         return data;
     },
 
-    async getUserId(userId: number): Promise<Cart []> {
+    async getByUserId(userId: number): Promise<Cart []> {
         const { data } = await apiClient.get<Cart []>(`/carts/user/${userId}`);
 
         return data;

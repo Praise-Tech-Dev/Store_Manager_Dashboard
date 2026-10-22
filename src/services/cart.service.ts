@@ -12,7 +12,7 @@ export const cartService = {
     },
 
     async fetchCartsByUserId(userId: number): Promise<Cart[]> {
-        return await cartsApi.getUserId(userId);
+        return await cartsApi.getByUserId(userId);
     },
 
     async createCart(payload: CreateCartDTO): Promise<Cart> {
