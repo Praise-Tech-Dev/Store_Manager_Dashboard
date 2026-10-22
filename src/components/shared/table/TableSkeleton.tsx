@@ -22,7 +22,7 @@ export const TableSkeleton = ({
         <tr key={rIdx} className="border-b border-slate-100 last:border-b-0">
           {colList.map((cIdx) => (
             <td key={cIdx} className="whitespace-nowrap px-5 py-4 sm:px-6">
-              {cIdx === 0 ? (
+              {cIdx === 0 && avatarVariant !== "none" ? (
                 // small avatar / icon pill + title line for  Leading column
                 <div className="flex items-center gap-3">
                   <div

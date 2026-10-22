@@ -16,6 +16,6 @@ export type TableProps<T> = {
   skeletonRows?: number;
   paginationVariant?: "default" | "detailed";
   entityName?: string;
-  avatarVariant?: "circle" | "square";
+  avatarVariant?: "circle" | "square" | "none";
   activePageColorClass?: string;
 };
