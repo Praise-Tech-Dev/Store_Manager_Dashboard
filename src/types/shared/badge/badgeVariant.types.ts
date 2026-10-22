@@ -7,5 +7,7 @@ export type BadgeVariant =
   | "default"
   | "success"
   | "warning"
-  | "error";
+  | "error"
+  | "pending"
+  | "info";
   

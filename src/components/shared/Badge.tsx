@@ -49,6 +49,14 @@ export const Badge = ({
       container: "bg-[#FFDAD6]/80 text-[#93000A]",
       dot: "",
     },
+    pending: {
+      container: "bg-[#FEF9C3] text-[#854D0E]",
+      dot: "bg-[#EAB308]",
+    },
+    info: {
+      container: "bg-[#DBEAFE] text-[#1E40AF]",
+      dot: "bg-[#3B82F6]",
+    },
   };
 
   const selectedSize = sizeStyles[size] || sizeStyles.md
