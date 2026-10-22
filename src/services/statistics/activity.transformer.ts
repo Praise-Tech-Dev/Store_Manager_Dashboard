@@ -4,15 +4,14 @@ import type { ActivityItem } from "@/types/statistics/recentActivity/activity.ty
 import type { DashboardUser } from "@/types/user.types";
 import { calculateCartTotal } from "@/utils/carts/cart.utils";
 import { formatCurrency } from "@/utils/statistics.utils";
-import { getCustomerName } from "@/utils/user.utils";
+import { createUserMap, getCustomerName } from "@/utils/user.utils";
 
 export const transformRecentActivities = (
   carts: Cart[],
   users: DashboardUser[],
   productMap: Map<number, Product>,
 ): ActivityItem[] => {
-  const userMap = new Map<number, DashboardUser>();
-  users.forEach((user) => userMap.set(user.id, user));
+  const userMap = createUserMap(users);
 
   return carts.slice(0, 4).map((cart, index) => {
     // const user = userMap.get(cart.userId);
