@@ -4,7 +4,7 @@ import { userService } from "./user.service";
 import { productService } from "./product.service";
 import { buildingPendingCarts } from "@/utils/carts/pendingCarts.utils";
 
-export const pendingCartsSevice = {
+export const pendingCartsService = {
     async getPendingCarts(): Promise<PendingCart[]> {
         const [carts, users, products] = await Promise.all([
             cartService.fetchAllCarts(),
