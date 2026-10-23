@@ -1,5 +1,6 @@
 import type {
   OrderDateRange,
+  OrderFilters,
   OrderStatusFilter,
   OrderTab,
 } from "@/types/orders/orderFilters.types";
@@ -14,8 +15,8 @@ export const ORDER_TABS: SelectOption<OrderTab>[] = [
 export const ORDER_STATUS_OPTIONS: SelectOption<OrderStatusFilter>[] = [
   { value: "all", label: "All" },
   { value: "PAID", label: "Paid" },
-  { value: "FAILED", label: "FAILED" },
-  { value: "PENDING", label: "PENDING" },
+  { value: "FAILED", label: "Failed" },
+  { value: "PENDING", label: "Pending" },
 ];
 
 export const ORDER_DATE_OPTIONS: SelectOption<OrderDateRange>[] = [
@@ -32,3 +33,8 @@ export const ORDER_DATE_RANGE_DAYS: Record<OrderDateRange, number | null> = {
   all: null,
 };
 
+export const DEFAULT_ORDER_FILTERS: OrderFilters = {
+  status: "all",
+  dateRange: "all",
+};
+export const ORDERS_PAGE_SIZE = 4;
