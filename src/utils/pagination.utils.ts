@@ -1,5 +1,4 @@
-import type { PaginationParams } from "@/types/shared/pagination.types";
-import type { PaginatedResult, PaginateParams } from "@/types/pagination.types";
+import type { PaginatedResult, PaginateParams, PaginationParams } from "@/types/shared/pagination.types";
 
 /**
  * Generates array of page numbers and ellipses based on pagination design variant.
