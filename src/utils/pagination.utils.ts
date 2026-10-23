@@ -1,5 +1,5 @@
 import type { PaginationParams } from "@/types/shared/pagination.types";
-
+import type { PaginatedResult, PaginateParams } from "@/types/pagination.types";
 
 /**
  * Generates array of page numbers and ellipses based on pagination design variant.
@@ -47,3 +47,22 @@ export const isPaginationDisabled = (
   isPrevDisabled: currentPage <= 1 || loading,
   isNextDisabled: currentPage >= totalPages || loading,
 });
+
+
+export const paginate = <T>({
+  items,
+  page,
+  pageSize,
+}: PaginateParams<T>): PaginatedResult<T> => {
+  const totalPages = Math.max(1, Math.ceil(items.length / pageSize));
+  const currentPage = Math.min(Math.max(1, page), totalPages);
+  const start = (currentPage - 1) * pageSize;
+
+  return {
+    items: items.slice(start, start + pageSize),
+    currentPage,
+    totalPages,
+    totalItems: items.length,
+    pageSize,
+  };
+};
