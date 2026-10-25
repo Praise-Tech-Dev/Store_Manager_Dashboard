@@ -5,3 +5,4 @@ export * from "./daysAgoParams.types";
 export * from "./orderIdentifiers.types";
 export * from "./orderStore.types";
 export * from "./orderUtils.types";
+export * from "./orderProps.types";
