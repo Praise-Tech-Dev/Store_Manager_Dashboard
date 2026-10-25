@@ -18,4 +18,7 @@ export type TableProps<T> = {
   entityName?: string;
   avatarVariant?: "circle" | "square" | "none";
   activePageColorClass?: string;
+  tableHeaderBgColor?: string;
+  showRowDividers?: boolean;
+  showTableRadius?: boolean;
 };

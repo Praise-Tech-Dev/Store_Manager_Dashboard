@@ -25,17 +25,6 @@ export const ProductTable = ({
         render: (product) => (
           <div className="flex items-center gap-4">
             <div className="h-12 w-12 shrink-0 overflow-hidden bg-[#ECEEF0] rounded-md">
-              {/* <img
-                src={product.image || product.avatar || PLACEHOLDER_IMAGE}
-                alt={product.title}
-                className="h-full w-full object-contain"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  if (target.src !== PLACEHOLDER_IMAGE) {
-                    target.src = PLACEHOLDER_IMAGE;
-                  }
-                }}
-              /> */}
               <ProductImage
                 src={product.image || product.avatar}
                 alt={product.title}

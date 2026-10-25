@@ -17,6 +17,9 @@ export function Table<T extends Identifiable>({
   entityName = "entries",
   avatarVariant = "circle",
   activePageColorClass = "bg-primary text-white",
+  tableHeaderBgColor = "bg-[#F2F4F6]",
+  showRowDividers = false,
+  showTableRadius = true,
 }: TableProps<T>) {
   const [isMobile, setIsMobile] = useState(() => {
     if (typeof window === "undefined") return false;
@@ -60,11 +63,15 @@ export function Table<T extends Identifiable>({
       )
     : { isPrevDisabled: true, isNextDisabled: true };
 
+  const headerDividerClass = showRowDividers ? "border-b border-[#ECEEF0]" : "";
+  const bodyDividerClass = showRowDividers ? "divide-y divide-[#ECEEF0]" : "";
+  const radiusClass = showTableRadius ? "rounded-xl shadow-sm" : "";
+
   return (
-    <div className="overflow-hidden rounded-xl bg-white shadow-sm">
+    <div className={`overflow-hidden bg-white ${radiusClass}`}>
       <div className="overflow-x-auto">
         <table className="min-w-full border-collapse">
-          <thead className="bg-[#F2F4F6]">
+          <thead className={`${tableHeaderBgColor} ${headerDividerClass}`}>
             <tr>
               {columns.map((column, idx) => (
                 <th
@@ -92,7 +99,7 @@ export function Table<T extends Identifiable>({
             </tr>
           </thead>
 
-          <tbody className="">
+          <tbody className={bodyDividerClass}>
             {loading ? (
               <TableSkeleton
                 rows={skeletonRows ?? pagination?.pageSize ?? 5}
