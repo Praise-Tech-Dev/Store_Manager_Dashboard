@@ -8,11 +8,17 @@ export type ReturnReason =
 
 export interface OrderReturn {
   id: number;
-  returnNumber: string; 
-  orderNumber: string; 
+  returnNumber: string;
+  orderNumber: string;
   customerName: string;
-  date: string; 
-  amount: number; 
+  date: string;
+  amount: number;
   reason: ReturnReason;
   status: ReturnStatus;
+}
+
+export interface ReturnsTableProps {
+  returns: OrderReturn[];
+  page: number;
+  onPageChange: (page: number) => void;
 }
