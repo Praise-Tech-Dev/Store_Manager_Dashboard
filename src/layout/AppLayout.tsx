@@ -10,7 +10,7 @@ export default function AppLayout() {
       <Sidebar />
 
       {/* Right Side */}
-      <div className="ml-18 flex min-w-0 flex-1 flex-col overflow-hidden md:ml-64">
+      <div className="flex min-w-0 flex-1 flex-col overflow-hidden md:ml-64">
         {/* <TopNav user_data={UserProfileMockData} hasUnreadNotification={true} /> */}
         <TopNav />
         {/* Only this area scrolls */}

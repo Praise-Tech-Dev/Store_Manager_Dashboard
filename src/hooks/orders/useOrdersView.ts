@@ -99,5 +99,6 @@ export const useOrdersView = () => {
     updateFilters,
     changeTab,
     setPage,
+    page,
   };
 };

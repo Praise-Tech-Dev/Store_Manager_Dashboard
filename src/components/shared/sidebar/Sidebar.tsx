@@ -16,6 +16,14 @@ export default function Sidebar() {
   }, [location.pathname, closeSidebar]);
   return (
     <div className="">
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-30 bg-black/40 md:hidden"
+          onClick={closeSidebar}
+          aria-hidden="true"
+        />
+      )}
+
       <aside
         className={`
         fixed
@@ -23,6 +31,8 @@ export default function Sidebar() {
         left-0
         z-40
         h-screen
+        w-full 
+        max-w-64
         bg-white
         text-text-gray
         flex
@@ -31,13 +41,13 @@ export default function Sidebar() {
         duration-300
         ease-in-out
         justify-between
-        ${isOpen ? "w-64" : "w-18"}
-
-        md:w-64
+        ${isOpen ? "translate-x-0" : "-translate-x-full"}
+          md:translate-x-0
       `}
       >
         <div
-          className={`transition-all duration-300 ${isOpen ? "px-4" : "px-2"}`}
+          // className={`transition-all duration-300 ${isOpen ? "px-4" : "px-2"}`}
+          className="px-4"
         >
           <div className="flex items-center gap-3 px-2  py-4">
             <div className="flex w-8 h-8 shrink-0 items-center justify-center  bg-slate-100  shadow-sm">
@@ -84,8 +94,8 @@ export default function Sidebar() {
                 <SidebarNavItem
                   key={item.name}
                   {...item}
-                  isOpen={isOpen}
-                  closeSidebar={closeSidebar}
+                  // isOpen={isOpen}
+                  // closeSidebar={closeSidebar}
                 />
               ))}
             </nav>

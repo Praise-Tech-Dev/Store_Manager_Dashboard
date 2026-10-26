@@ -5,28 +5,28 @@ type SidebarNavItemProps = {
   name: string;
   path: string;
   icon: ComponentType<SVGProps<SVGSVGElement>>;
-  isOpen: boolean;
-  closeSidebar: () => void;
+  // isOpen: boolean;
+  // closeSidebar: () => void;
 };
 
 export default function SidebarNavItem({
   name,
   path,
   icon: Icon,
-  isOpen,
-  closeSidebar,
+  // isOpen,
+  // closeSidebar,
 }: SidebarNavItemProps) {
   return (
     <NavLink
       to={path}
       // end={path === "/" || path === "/dashboard"}
       end={path === "/statistics"}
-      onClick={() => {
-        if (!isOpen && window.innerWidth < 768) {
-          closeSidebar();
-        }
+      // onClick={() => {
+      //   if (!isOpen && window.innerWidth < 768) {
+      //     closeSidebar();
+      //   }
 
-      }}
+      // }}
       className={({ isActive }) =>
         `
         flex
@@ -34,11 +34,10 @@ export default function SidebarNavItem({
         gap-3
         rounded-lg
         py-2.5
-        transition-all
+        px-3.5
+        transition-colors
         duration-300
         
-        ${isOpen ? "px-3.5 gap-3 justify-start" : "px-0 justify-center"}
-
         ${
           isActive
             ? "bg-[#4F46E5] text-[#DAD7FF]"
@@ -51,8 +50,7 @@ export default function SidebarNavItem({
       <Icon className="w-5 h-5 shrink-0 " />
 
       <span
-        className={`truncate text-sm font-medium tracking-tight ${
-          isOpen ? "inline-block" : "hidden md:inline-block"
+        className={`truncate text-sm font-medium tracking-tight"
         }`}
       >
         {name}
