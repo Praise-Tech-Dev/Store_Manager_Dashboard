@@ -1,6 +1,6 @@
 import type { ButtonHTMLAttributes } from "react";
 
-export type ButtonVariant = "primary" | "secondary" | "outline" | "danger" | "ghost";
+export type ButtonVariant = "primary" | "secondary" | "outline" | "danger" | "ghost" | "gray";
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   // onClick?: () => void;

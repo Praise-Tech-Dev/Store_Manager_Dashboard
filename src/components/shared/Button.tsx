@@ -17,7 +17,7 @@ export default function Button({
   ...rest
 }: ButtonProps) {
   const baseStyles =
-    "cursor-pointer inline-flex items-center justify-center gap-2 font-medium shadow-xs transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/30 disabled:opacity-50 disabled:cursor-not-allowed tracking-[0px] whitespace-nowrap";
+    "cursor-pointer inline-flex items-center justify-center gap-2 font-medium  transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/30 disabled:opacity-50 disabled:cursor-not-allowed tracking-[0px] whitespace-nowrap";
 
   const sizes = {
     xs: "py-2 px-4 text-sm rounded-lg leading-[20px] ",
@@ -35,6 +35,7 @@ export default function Button({
     outline:
       "bg-none border border-border-subtle text-text-default hover:bg-slate-50",
     ghost: "bg-none  text-text-gray hover:bg-slate-50",
+    gray: "bg-[#E6E8EA] text-text-default hover:opacity-90 shadow-sm",
 
     danger: "bg-danger text-white hover:opacity-90",
   };
