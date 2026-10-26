@@ -1,4 +1,4 @@
-export * from "./filterOrderParams.types";
+export * from "./filterOrdersParams.types";
 export * from "./order.types";
 export * from "./orderFilters.types";
 export * from "./daysAgoParams.types";
