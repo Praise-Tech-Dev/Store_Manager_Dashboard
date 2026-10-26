@@ -73,6 +73,15 @@ export const useOrdersView = () => {
       }),
     [createdOrders, cancelledIds],
   );
+  const periodOrders = useMemo(
+    () =>
+      filterOrders({
+        orders,
+        filters: { ...DEFAULT_ORDER_FILTERS, dateRange },
+        now,
+      }),
+    [orders, dateRange, now],
+  );
 
   const filtered = useMemo(
     () => filterOrders({ orders, filters, now }),
@@ -100,5 +109,6 @@ export const useOrdersView = () => {
     changeTab,
     setPage,
     page,
+    periodOrders,
   };
 };
