@@ -2,11 +2,19 @@ import type { PendingCart } from "../carts/pendingCart.types";
 import type { OrderReturn } from "../returns/return.types";
 import type { SelectOption } from "../shared/select/selectOptions.types";
 import type { Order } from "./order.types";
+import type { OrderCardValues } from "./orderCard.types";
 
 export interface BuildOrdersParams {
   seedOrders: Order[];
   createdOrders: Order[];
   cancelledIds: number[];
+}
+
+export interface BuildOrderCardsParams {
+  kpis: OrderCardValues;
+  periodLabel: string;
+  cartsLoading: boolean;
+  cartsError: boolean;
 }
 
 export interface SortOrdersParams {
