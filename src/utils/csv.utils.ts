@@ -1,3 +1,8 @@
+const FORMULA_TRIGGERS = ["=", "+", "-", "@", "\t", "\r"];
+
+export const neutralizeFormula = (text: string): string =>
+  FORMULA_TRIGGERS.some((char) => text.startsWith(char)) ? `'${text}` : text;
+
 export const sanitizeCsvField = (
   field: string | number | undefined | null,
 ): string => {
