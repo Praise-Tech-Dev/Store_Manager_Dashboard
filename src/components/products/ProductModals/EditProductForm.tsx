@@ -158,7 +158,7 @@ export const EditProductForm = ({
         </section>
 
         <section className="space-y-4 border-t border-[#E0E3E5] pt-6">
-          <h4 className="text-xs font-semibold uppercase tracking-wide text-text-gray">
+          <h4 className="text-xs font-semibold tracking-wide text-text-gray">
             Inventory Management
           </h4>
 
