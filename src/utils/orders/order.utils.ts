@@ -19,3 +19,10 @@ export const formatOrderDate = ({ date }: FormatOrderDateParams) => {
     }),
   };
 };
+
+export const formatOrderDateTime = ({
+  date,
+}: FormatOrderDateParams): string => {
+  const { day, time } = formatOrderDate({ date });
+  return `${day} ${time}`;
+};

@@ -1,6 +1,6 @@
 export * from "./daysAgo";
 export * from "./filterOrder";
-export * from "./orderId.utils";
+export * from "./order.utils";
 export * from "./buildOrders.utils";
 export * from "./orderIdentifiers.utils";
 export * from "./parseSelectOption.utils";

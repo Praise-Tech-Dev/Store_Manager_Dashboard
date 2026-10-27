@@ -38,3 +38,28 @@ export const DEFAULT_ORDER_FILTERS: OrderFilters = {
   dateRange: "all",
 };
 export const ORDERS_PAGE_SIZE = 4;
+
+export const ORDER_EXPORT_HEADERS = {
+  all: [
+    "Order ID",
+    "Customer",
+    "Date",
+    "Total (USD)",
+    "Payment",
+    "Shipping",
+  ],
+  pending: [
+    "Cart ID",
+    "Customer",
+    "Last Activity",
+    "Items",
+    "Cart Value (USD)",
+  ],
+  returns: ["Return ID","Order", "Customer", "Date", "Reason", "Amount (USD)", "Status"],
+} as const satisfies Record<OrderTab, readonly string[]>;
+
+export const ORDER_EXPORT_FILE_NAMES = {
+  all: "orders",
+  pending: "pending-carts",
+  returns: "returns",
+} as const satisfies Record<OrderTab, string>;
