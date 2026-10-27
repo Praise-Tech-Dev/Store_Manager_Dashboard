@@ -10,16 +10,32 @@ import { usePendingCarts } from "@/hooks/carts/usePendingCarts";
 import { useOrderCards } from "@/hooks/orders/useOrderCards";
 import { useOrdersView } from "@/hooks/orders/useOrdersView";
 import { RETURN_MOCK_DATA } from "@/mock/data/returns.mock.data";
+import type { OrderTab } from "@/types/orders";
+import { exportOrdersToCsv } from "@/utils/orders/exportOrders.utils";
 import { Download, Plus } from "lucide-react";
 
 export  const OrderPage = () => {
-  const { periodOrders, visibleOrders, pagination, filters, tab, setPage, updateFilters, changeTab, page } = useOrdersView();
+  const { periodOrders, visibleOrders, filteredOrders, pagination, filters, tab, setPage, updateFilters, changeTab, page } = useOrdersView();
   const { data : pendingCarts = [] , isPending : isCartsPending, isError: isCartsError, refetch: refetchCarts } = usePendingCarts();
 
   const cards = useOrderCards({
     orders: periodOrders,
     dateRange: filters.dateRange,
   });
+
+  const exportCounts: Record<OrderTab, number> = {
+    all: filteredOrders.length,
+    pending: pendingCarts.length,
+    returns: RETURN_MOCK_DATA.length,
+  };
+
+  const handleExport = () =>
+    exportOrdersToCsv({
+      tab,
+      orders: filteredOrders,
+      carts: pendingCarts,
+      returns: RETURN_MOCK_DATA,
+    });
 
   return (
     <div className="space-y-6 bg-surface-light/80">
@@ -39,6 +55,8 @@ export  const OrderPage = () => {
             variant="gray"
             size="xs"
             iconLeft={<Download className="h-4 w-4" />}
+            onClick={handleExport}
+            disabled={exportCounts[tab] === 0}
             className="w-full sm:w-auto"
           >
             Export CSV

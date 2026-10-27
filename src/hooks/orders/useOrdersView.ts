@@ -110,5 +110,6 @@ export const useOrdersView = () => {
     setPage,
     page,
     periodOrders,
+    filteredOrders : sorted,
   };
 };
