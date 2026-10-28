@@ -1,6 +1,7 @@
 import { DUPLICATE_NAME_SUFFIX } from "@/constants/products/productDuplicate.constants";
 import type { CreateProductInput, DashboardProduct } from "@/types/products";
 import { generateSku } from "./productEnricher";
+import { DUPLICATE_PUBLISH_STATUS } from "@/constants/products/publishStatus.constants";
 
 export const buildDuplicateInput = (
   source: DashboardProduct,
@@ -13,5 +14,6 @@ export const buildDuplicateInput = (
   category: source.category,
   stockCount: source.stockCount,
   sku: generateSku(nextId, source.title),
+  publishStatus: DUPLICATE_PUBLISH_STATUS,
   image,
 });

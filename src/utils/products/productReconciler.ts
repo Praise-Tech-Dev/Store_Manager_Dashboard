@@ -1,5 +1,26 @@
-import type { DashboardProduct } from "@/types/products";
+import { DEFAULT_PUBLISH_STATUS } from "@/constants/products/publishStatus.constants";
+import type { DashboardProduct, UpdateProductDTO } from "@/types/products";
 import type { ReconciliationStore } from "@/types/products/productReconciler.types";
+import { calculateStatus } from "./productEnricher";
+
+const withPublishDefault = (product: DashboardProduct): DashboardProduct => ({
+  ...product,
+  publishStatus: product.publishStatus ?? DEFAULT_PUBLISH_STATUS,
+});
+
+ /** Layers a user's saved edits over a product. `status` is derived from
+ * stockCount and isn't saved with edits, so we recomputed here.
+ */
+const applyEdits = (
+  product: DashboardProduct,
+  edits?: UpdateProductDTO,
+): DashboardProduct => {
+  if (!edits) return product;
+  const merged = { ...product, ...edits };
+  return edits.stockCount === undefined
+    ? merged
+    : { ...merged, status: calculateStatus(edits.stockCount) };
+};
 
 export const reconcileProducts = (
   serverProducts: DashboardProduct[],
@@ -11,12 +32,12 @@ export const reconcileProducts = (
   // Reconcile locally created products (exclude deleted, apply edits if any)
   const reconciledCreated = userCreatedProducts
     .filter((p) => !deletedSet.has(p.id))
-    .map((p) => (userEdits[p.id] ? { ...p, ...userEdits[p.id] } : p));
+    .map((p) => withPublishDefault(applyEdits(p, userEdits[p.id])));
 
   // Reconcile fetched server products (exclude deleted, apply edits if any)
   const reconciledServer = serverProducts
     .filter((p) => !deletedSet.has(p.id))
-    .map((p) => (userEdits[p.id] ? { ...p, ...userEdits[p.id] } : p));
+    .map((p) => withPublishDefault(applyEdits(p, userEdits[p.id])));
 
   // User-created products prepended to the top of the catalog
   return [...reconciledCreated, ...reconciledServer];
@@ -37,6 +58,5 @@ export const reconcileSingleProduct = (
   );
   const baseProduct = createdMatch || serverProduct;
 
-  const localEdits = userEdits[baseProduct.id];
-  return localEdits ? { ...baseProduct, ...localEdits } : baseProduct;
+  return withPublishDefault(applyEdits(baseProduct, userEdits[baseProduct.id]));
 };

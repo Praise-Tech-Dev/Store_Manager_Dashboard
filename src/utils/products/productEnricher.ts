@@ -1,4 +1,5 @@
 import { DEFAULT_LOW_STOCK_THRESHOLD } from "@/constants/products/productCategory.constants"
+import { DEFAULT_PUBLISH_STATUS } from "@/constants/products/publishStatus.constants";
 import type { DashboardProduct, Product, ProductStatus } from "@/types/products";
 
 export const generateSku = (id: number, title: string): string => {
@@ -30,12 +31,14 @@ export const enrichProduct = (
     const stockCount = overrides?.stockCount ?? (product.id * 7) % 51;
     const status = overrides?.status ?? calculateStatus(stockCount);
     const sku = overrides?.sku ?? generateSku(product.id, product.title);
+    const publishStatus = overrides?.publishStatus ?? DEFAULT_PUBLISH_STATUS;
 
     return {
         ...product,
         sku,
         stockCount,
         status,
+        publishStatus,
         avatar: overrides?.avatar ?? product.image,
     }
 }

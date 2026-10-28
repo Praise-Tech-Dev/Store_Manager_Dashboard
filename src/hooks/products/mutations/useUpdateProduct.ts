@@ -30,6 +30,7 @@ export const useUpdateProduct = () => {
           {
             sku: product.sku,
             stockCount: payload.stockCount ?? product.stockCount,
+            publishStatus: payload.publishStatus ?? product.publishStatus,
           }) : product)),
       );
       return { previousProducts };

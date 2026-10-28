@@ -2,22 +2,32 @@ import { z } from "zod";
 import { categoryField, priceField, titleField } from "./productFields";
 import type { DashboardProduct } from "@/types/products";
 import { PUBLISH_STATUS_VALUES } from "@/constants/products/publishStatus.constants";
+import { resolvePublishStatus } from "@/utils/products/publishStatus.utils";
 
 export const editProductSchema = (
   existingProducts: DashboardProduct[] = [],
   currentId: DashboardProduct["id"],
 ) =>
-  z.object({
-    title: titleField(existingProducts.filter((p) => p.id !== currentId)),
-    price: priceField,
-    category: categoryField,
-    description: z.string().trim().max(500, "Max 500 characters").optional(),
-    stockCount: z
-      .number({ message: "Stock must be a number" })
-      .int("Stock must be a whole number")
-      .min(0, "Stock count cannot be negative"),
-    publishStatus: z.enum(PUBLISH_STATUS_VALUES),
-  });
+  z
+    .object({
+      title: titleField(existingProducts.filter((p) => p.id !== currentId)),
+      price: priceField,
+      category: categoryField,
+      description: z.string().trim().max(500, "Max 500 characters").optional(),
+      stockCount: z
+        .number({ message: "Stock must be a number" })
+        .int("Stock must be a whole number")
+        .min(0, "Stock count cannot be negative"),
+      publishStatus: z.enum(PUBLISH_STATUS_VALUES),
+    })
+    // Not validation: an out-of-stock Active product is saved as Inactive.
+    .transform((values) => ({
+      ...values,
+      publishStatus: resolvePublishStatus(
+        values.stockCount,
+        values.publishStatus,
+      ),
+    }));
 
 export const editProductBaseSchema = editProductSchema([], 0);
 export type EditProductFormInput = z.input<typeof editProductBaseSchema>;

@@ -7,6 +7,7 @@ import { ProductActionMenu } from "./ProductActionMenu"
 import { Table } from "../shared/table/Table"
 // import PLACEHOLDER_IMAGE from "../../assets/images/placeholder.jpg";
 import { ProductImage } from "./ProductImage"
+import { PublishStatusBadge } from "./PublishStatusBadge"
 
 export const ProductTable = ({
   products,
@@ -68,6 +69,13 @@ export const ProductTable = ({
             status={product.status}
             stockCount={product.stockCount}
           />
+        ),
+      },
+      {
+        key: "publishStatus",
+        title: "Publish Status",
+        render: (product) => (
+          <PublishStatusBadge status={product.publishStatus} />
         ),
       },
       {

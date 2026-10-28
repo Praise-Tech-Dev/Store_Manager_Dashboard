@@ -12,6 +12,7 @@ import { useMemo } from "react";
 import { Controller, useForm, useWatch, type SubmitHandler } from "react-hook-form";
 import { StockHealth } from "../StockHealth";
 import { RadioGroup } from "@/components/shared/RadioGroup";
+import { resolvePublishStatus } from "@/utils/products/publishStatus.utils";
 
 export const EditProductForm = ({
   isOpen,
@@ -35,7 +36,7 @@ export const EditProductForm = ({
     control,
     reset,
     formState: { errors, isDirty },
-  } = useForm<EditProductFormInput>({
+  } = useForm<EditProductFormInput, unknown, EditProductFormValues>({
     resolver: zodResolver(schema),
     mode: "onChange",
     defaultValues: {
@@ -109,7 +110,9 @@ export const EditProductForm = ({
               value={product.sku}
               readOnly
               className="bg-[#F2F4F6]"
-              iconRight={<LockKeyhole className="w-3 h-[15.75px] text-text-gray" />}
+              iconRight={
+                <LockKeyhole className="w-3 h-[15.75px] text-text-gray" />
+              }
             />
             <Input
               label="Price"
@@ -162,7 +165,7 @@ export const EditProductForm = ({
             Inventory Management
           </h4>
 
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-3">
             <Input
               label="Stock Count"
               type="number"
@@ -170,20 +173,36 @@ export const EditProductForm = ({
               error={errors.stockCount?.message}
               {...register("stockCount", { valueAsNumber: true })}
             />
-            <Controller
-              name="publishStatus"
-              control={control}
-              render={({ field }) => (
-                <RadioGroup
-                  label="Status"
-                  name={field.name}
-                  options={PUBLISH_STATUS_OPTIONS}
-                  value={field.value}
-                  onChange={field.onChange}
-                  error={errors.publishStatus?.message}
-                />
-              )}
-            />
+            <div className="md:col-span-2">
+              <Controller
+                name="publishStatus"
+                control={control}
+                render={({ field }) => {
+                  // Shows Inactive while stock is 0; field.value keeps the admin's choice
+                  const effective = Number.isFinite(stockInput)
+                    ? resolvePublishStatus(stockInput, field.value)
+                    : field.value;
+                  
+                  return (
+                    <>
+                      <RadioGroup
+                        label="Status"
+                        name={field.name}
+                        options={PUBLISH_STATUS_OPTIONS}
+                        value={effective}
+                        onChange={field.onChange}
+                        error={errors.publishStatus?.message}
+                      />
+                      {effective !== field.value && (
+                        <p className="mt-1.5 text-xs text-text-gray">
+                          Out-of-stock products are saved as {effective}.
+                        </p>
+                      )}
+                    </>
+                  );
+                }}
+              />
+            </div>
           </div>
 
           <StockHealth stockCount={liveStock} />
