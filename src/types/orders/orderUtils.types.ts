@@ -2,10 +2,11 @@ import type { CreatableShippingStatus } from "@/constants/orders";
 import type { PendingCart } from "../carts/pendingCart.types";
 import type { OrderReturn } from "../returns/return.types";
 import type { SelectOption } from "../shared/select/selectOptions.types";
-import type { Order, PaymentStatus } from "./order.types";
+import type { Order, OrderItem, PaymentStatus } from "./order.types";
 import type { OrderCardValues } from "./orderCard.types";
 import type { CreateOrderFormValues } from "@/validationSchema/createOrder.schema";
 import type { ApiUser } from "../user.types";
+import type { Product } from "../products";
 
 export interface BuildOrdersParams {
   seedOrders: Order[];
@@ -51,5 +52,12 @@ export interface ResolveShippingStatusParams {
 
 export interface BuildNewOrderInputParams {
   values: CreateOrderFormValues;
+  items: OrderItem[];
   user: Pick<ApiUser, "id" | "name">;
+  productMap: Map<number, Product>;
+}
+
+export interface CalculateItemsTotalParams {
+  items: OrderItem[];
+  productMap: Map<number, Product>;
 }

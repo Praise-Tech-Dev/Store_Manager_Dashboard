@@ -5,6 +5,10 @@ export type ShippingStatus =
   | "Unfulfilled"
   | "Cancelled";
 
+export interface OrderItem {
+  productId: number;
+  quantity: number;
+}
 export interface Order {
   id: number;
   orderNumber: string; // "#ORD-7301", from formatOrderId
@@ -14,7 +18,7 @@ export interface Order {
   total: number; // raw number, formatted in the UI
   paymentStatus: PaymentStatus;
   shippingStatus: ShippingStatus;
+  items: OrderItem[];
 }
-
 
 export type NewOrderInput = Omit<Order, "id"| "orderNumber">;

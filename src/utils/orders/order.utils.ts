@@ -1,6 +1,11 @@
-import { DEFAULT_SHIPPING_STATUS, SHIPPING_OPTIONS_BY_PAYMENT, type CreatableShippingStatus } from "@/constants/orders";
+import {
+  DEFAULT_SHIPPING_STATUS,
+  SHIPPING_OPTIONS_BY_PAYMENT,
+  type CreatableShippingStatus,
+} from "@/constants/orders";
 import type {
   BuildNewOrderInputParams,
+  CalculateItemsTotalParams,
   FormatOrderDateParams,
   GetShippingOptionsParams,
   NewOrderInput,
@@ -38,13 +43,16 @@ export const formatOrderDateTime = ({
 
 export function buildNewOrderInput({
   values,
+  items,
   user,
+  productMap,
 }: BuildNewOrderInputParams): NewOrderInput {
   return {
     userId: user.id,
     customerName: getCustomerName(user),
     date: new Date().toISOString(),
-    total: values.total,
+    items,
+    total: calculateItemsTotal({ items, productMap }),
     paymentStatus: values.paymentStatus,
     shippingStatus: values.shippingStatus,
   };
@@ -65,7 +73,6 @@ export function getShippingSelectOptions({
   }));
 }
 
-
 export function resolveShippingStatus({
   paymentStatus,
   shippingStatus,
@@ -76,3 +83,14 @@ export function resolveShippingStatus({
     : DEFAULT_SHIPPING_STATUS;
 }
 
+export const calculateItemsTotal = ({
+  items,
+  productMap,
+}: CalculateItemsTotalParams): number => {
+  const total = items.reduce(
+    (sum, item) =>
+      sum + (productMap.get(item.productId)?.price ?? 0) * item.quantity,
+    0,
+  );
+  return Math.round(total * 100) / 100;
+};
