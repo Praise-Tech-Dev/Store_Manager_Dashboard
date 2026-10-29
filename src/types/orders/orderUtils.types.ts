@@ -1,8 +1,11 @@
+import type { CreatableShippingStatus } from "@/constants/orders";
 import type { PendingCart } from "../carts/pendingCart.types";
 import type { OrderReturn } from "../returns/return.types";
 import type { SelectOption } from "../shared/select/selectOptions.types";
-import type { Order } from "./order.types";
+import type { Order, PaymentStatus } from "./order.types";
 import type { OrderCardValues } from "./orderCard.types";
+import type { CreateOrderFormValues } from "@/validationSchema/createOrder.schema";
+import type { ApiUser } from "../user.types";
 
 export interface BuildOrdersParams {
   seedOrders: Order[];
@@ -35,4 +38,18 @@ export interface GetOrderCardValuesParams {
 
 export interface FormatOrderDateParams {
   date: string;
+}
+
+export interface GetShippingOptionsParams {
+  paymentStatus: PaymentStatus;
+}
+
+export interface ResolveShippingStatusParams {
+  paymentStatus: PaymentStatus;
+  shippingStatus: CreatableShippingStatus;
+}
+
+export interface BuildNewOrderInputParams {
+  values: CreateOrderFormValues;
+  user: Pick<ApiUser, "id" | "name">;
 }
