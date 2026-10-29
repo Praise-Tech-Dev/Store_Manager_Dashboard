@@ -14,7 +14,12 @@ export interface OrderFiltersBarProps {
 }
 
 export interface OrderTabsProps {
-  tab: OrderTab; 
+  tab: OrderTab;
   onChange: (tab: OrderTab) => void;
 }
 
+export interface CreateOrderModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onCreated: () => void;
+}

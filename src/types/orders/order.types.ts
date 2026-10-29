@@ -15,3 +15,6 @@ export interface Order {
   paymentStatus: PaymentStatus;
   shippingStatus: ShippingStatus;
 }
+
+
+export type NewOrderInput = Omit<Order, "id"| "orderNumber">;

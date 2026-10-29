@@ -1,4 +1,5 @@
 import { PendingCartsTable } from "@/components/carts/PendingCartsTable";
+import { CreateOrderModal } from "@/components/orders/CreateOrder";
 import { OrderCard } from "@/components/orders/OrderCard";
 import { OrderFiltersBar } from "@/components/orders/OrderFiltersBar";
 import { OrderTable } from "@/components/orders/OrderTable";
@@ -13,8 +14,14 @@ import { RETURN_MOCK_DATA } from "@/mock/data/returns.mock.data";
 import type { OrderTab } from "@/types/orders";
 import { exportOrdersToCsv } from "@/utils/orders/exportOrders.utils";
 import { Download, Plus } from "lucide-react";
+import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export  const OrderPage = () => {
+  
+  const [, setSearchParams] = useSearchParams();
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
   const { periodOrders, visibleOrders, filteredOrders, pagination, filters, tab, setPage, updateFilters, changeTab, page } = useOrdersView();
   const { data : pendingCarts = [] , isPending : isCartsPending, isError: isCartsError, refetch: refetchCarts } = usePendingCarts();
 
@@ -27,6 +34,13 @@ export  const OrderPage = () => {
     all: filteredOrders.length,
     pending: pendingCarts.length,
     returns: RETURN_MOCK_DATA.length,
+  };
+
+
+  const handleOrderCreated = () => {
+    setIsCreateOpen(false);
+    setSearchParams({}); 
+    toast.success("Order created");
   };
 
   const handleExport = () =>
@@ -66,11 +80,17 @@ export  const OrderPage = () => {
             variant="primary"
             size="xs"
             iconLeft={<Plus className="h-4 w-4" />}
-            // onClick={handleOpenCreateModal}
+            onClick={() => setIsCreateOpen(true)}
             className="w-full sm:w-auto"
           >
             Create Order
           </Button>
+
+          <CreateOrderModal
+            isOpen={isCreateOpen}
+            onClose={() => setIsCreateOpen(false)}
+            onCreated={handleOrderCreated}
+          />
         </div>
       </div>
 
