@@ -12,3 +12,4 @@ export * from './productTable';
 export * from './productModal';
 export * from './productImageUpload.types';
 export * from './publishStatus.types';
+export * from './isSellableProduct.types';
