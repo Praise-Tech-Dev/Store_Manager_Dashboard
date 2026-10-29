@@ -1,0 +1,1 @@
+export const MAX_OPTION_TITLE_LENGTH = 36;
