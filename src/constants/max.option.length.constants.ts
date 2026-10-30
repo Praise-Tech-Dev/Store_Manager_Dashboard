@@ -1,1 +1,1 @@
-export const MAX_OPTION_TITLE_LENGTH = 36;
+export const MAX_OPTION_TITLE_LENGTH = 20;
