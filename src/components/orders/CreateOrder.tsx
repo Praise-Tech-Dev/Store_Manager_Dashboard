@@ -17,6 +17,8 @@ import { truncateText } from "@/utils/truncateText.utils";
 import { MAX_OPTION_TITLE_LENGTH } from "@/constants/max.option.length.constants";
 import { formatCurrency } from "@/utils/statistics.utils";
 import { isSellableProduct } from "@/types/products/isSellableProduct.types";
+import { buildStockUpdates, findInsufficientStock, reservesStock } from "@/utils/orders/stock.utils";
+import { useProductStore } from "@/store/useProductStore";
 
 export const CreateOrderModal = ({
   isOpen,
@@ -27,7 +29,7 @@ export const CreateOrderModal = ({
   const { data: users = [] } = useDashboardUsers();
   const { data: products = [] } = useDashboardProducts();
   const productMap = createProductMap(products);
-
+  const recordEdit = useProductStore((state) => state.recordEdit);
   const {
     register,
     control,
@@ -59,7 +61,9 @@ export const CreateOrderModal = ({
       .filter((product) => isSellableProduct(product))
       .map((product) => ({
         value: String(product.id),
-        label: `${truncateText({ text: product.title, maxLength: MAX_OPTION_TITLE_LENGTH })} · ${formatCurrency(product.price)}`,
+        label: `${truncateText({ text: product.title, maxLength: MAX_OPTION_TITLE_LENGTH })} · ${formatCurrency(product.price)}
+        `
+        ,
       })),
   ];
 
@@ -96,7 +100,26 @@ export const CreateOrderModal = ({
       setError("userId", { message: "Selected customer was not found" });
       return;
     }
+
+    const issues = findInsufficientStock({ items: values.items, productMap });
+    if (issues.length > 0) {
+      issues.forEach(({ index, available }) =>
+        setError(`items.${index}.quantity`, {
+          message: `Only ${available} in stock`,
+        }),
+      );
+      return;
+    }
+
     createOrder(buildNewOrderInput({ values, items: values.items, user, productMap }));
+
+    // failed payments don't take stock
+    if (reservesStock({ paymentStatus: values.paymentStatus })) {
+      buildStockUpdates({ items: values.items, productMap }).forEach(
+        ({ productId, ...payload }) => recordEdit(productId, payload),
+      );
+    }
+
     reset();
     onCreated();
   };
