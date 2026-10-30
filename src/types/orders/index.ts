@@ -8,3 +8,4 @@ export * from "./orderUtils.types";
 export * from "./orderProps.types";
 export * from "./orderCard.types";
 export * from "./useOrderCardsParams.types";
+export * from "./stock.types";
