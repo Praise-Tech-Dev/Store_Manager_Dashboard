@@ -1,7 +1,7 @@
 import { ORDER_DATE_RANGE_DAYS } from "@/constants/orders";
+import { MS_PER_DAY } from "@/constants/time.constants";
 import type { FilterOrdersParams, Order } from "@/types/orders";
 
-const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
 export const filterOrders = ({ orders, filters, now = new Date(),}: FilterOrdersParams): Order[] => {
     const days = ORDER_DATE_RANGE_DAYS[filters.dateRange];
