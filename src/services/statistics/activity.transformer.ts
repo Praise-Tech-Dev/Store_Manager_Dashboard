@@ -1,12 +1,14 @@
 import { ACTIVITY_FEED_LIMIT, ACTIVITY_TITLE_MAX_LENGTH, DELETED_PRODUCT_LABEL } from "@/constants/statistics/statistics.constants";
 import type { ActivityItem } from "@/types/statistics";
 import type { ActivityTransformParams } from "@/types/statistics/calculatorParams.types";
-import { countsAsOrder, formatOrderDateTime, sortOrdersByDate } from "@/utils/orders";
+import { countsAsOrder, sortOrdersByDate } from "@/utils/orders";
+import { formatRelativeTime } from "@/utils/relativeTime.utils";
 import { formatCurrency } from "@/utils/statistics.utils";
 
 export const transformRecentActivities = ({
   orders,
   productMap,
+  now,
 }: ActivityTransformParams): ActivityItem[] =>
   sortOrdersByDate({ orders: orders.filter(countsAsOrder) })
     .slice(0, ACTIVITY_FEED_LIMIT)
@@ -25,6 +27,6 @@ export const transformRecentActivities = ({
         title: `New Order ${order.orderNumber}`,
         description: `${order.customerName} purchased '${shortTitle}'`,
         amount: formatCurrency(order.total),
-        timestamp: formatOrderDateTime({ date: order.date }),
+        timestamp: formatRelativeTime({ date: order.date, now }),
       };
     });

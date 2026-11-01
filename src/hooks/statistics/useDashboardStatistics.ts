@@ -41,6 +41,7 @@ export const useDashboardStatistics = (dateRange: OrderDateRange) => {
       recentActivities: transformRecentActivities({
         orders: periodOrders,
         productMap,
+        now,
       }),
     };
   }, [products, users, orders, dateRange, now]);

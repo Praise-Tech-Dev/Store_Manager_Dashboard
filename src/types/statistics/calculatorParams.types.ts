@@ -15,4 +15,5 @@ export interface CategoryCalculationParams {
 export interface ActivityTransformParams {
   orders: Order[];
   productMap: Map<number, Product>;
+  now: Date;
 }
