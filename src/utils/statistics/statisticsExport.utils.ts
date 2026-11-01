@@ -10,8 +10,8 @@ export const exportStatisticReport = ({data, timeRange, filename, }: ExportRepor
     const rows: string[] = [
       // Header section
       createCsvRow(["STORE PERFORMANCE REPORT"]),
-      createCsvRow(["Generate At", new Date().toLocaleDateString()]),
-      createCsvRow(["Select Range", getDateRangeLabel(timeRange)]),
+      createCsvRow(["Generated At", new Date().toLocaleDateString()]),
+      createCsvRow(["Date Range", getDateRangeLabel(timeRange)]),
       "", // blank row separator
 
       // Key Performance Metrics
