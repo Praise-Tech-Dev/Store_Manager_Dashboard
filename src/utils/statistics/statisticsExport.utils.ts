@@ -1,6 +1,7 @@
 import type { ExportReportOptions } from "@/types/statistics/exportReport";
 import { createCsvRow, triggerCsvDownload } from "../csv.utils";
 import { REPORT_HEADERS } from "@/constants/statistics/reportHeaders.constants";
+import { getDateRangeLabel } from "../orders";
 
 export const exportStatisticReport = ({data, timeRange, filename, }: ExportReportOptions): void => {
     const fileDate = new Date().toISOString().split("T")[0];
@@ -10,7 +11,7 @@ export const exportStatisticReport = ({data, timeRange, filename, }: ExportRepor
       // Header section
       createCsvRow(["STORE PERFORMANCE REPORT"]),
       createCsvRow(["Generate At", new Date().toLocaleDateString()]),
-      createCsvRow(["Select Range", timeRange]),
+      createCsvRow(["Select Range", getDateRangeLabel(timeRange)]),
       "", // blank row separator
 
       // Key Performance Metrics

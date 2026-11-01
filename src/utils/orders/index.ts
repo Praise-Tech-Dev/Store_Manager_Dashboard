@@ -5,3 +5,6 @@ export * from "./buildOrders.utils";
 export * from "./orderIdentifiers.utils";
 export * from "./parseSelectOption.utils";
 export * from "./sortOrders.utils";
+export * from "./orders.predicates";
+export * from "./dateRange.utils";
+export * from "./filterOrderByPeriod.utils";

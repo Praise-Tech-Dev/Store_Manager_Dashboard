@@ -1,8 +1,8 @@
+import type { OrderDateRange } from "@/types/orders";
 import type { DashboardStatisticsResponse } from "../dashboardStatisticsResponse.types";
-import type { TimeRangeOption } from "./timeRangeOption.types";
 
 export interface ExportReportOptions {
   data: DashboardStatisticsResponse;
-  timeRange: TimeRangeOption | string;
+  timeRange: OrderDateRange;
   filename?: string;
 }

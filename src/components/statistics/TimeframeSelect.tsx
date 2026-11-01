@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { Calendar } from "lucide-react";
 import type { TimeframeSelectProps } from "@/types/statistics/exportReport/timeFrameSelect.types";
-import { TIMEFRAME_OPTIONS } from "@/constants/statistics/timeframeOptions.constants";
+import { getDateRangeLabel } from "@/utils/orders";
+import { ORDER_DATE_OPTIONS } from "@/constants/orders";
 
 
 export const TimeframeSelect = ({ value, onChange }: TimeframeSelectProps) => {
@@ -30,27 +31,27 @@ export const TimeframeSelect = ({ value, onChange }: TimeframeSelectProps) => {
       >
         <Calendar className="h-3.75 w-[13.5px] text-slate-500" />
         <span className="font-inter font-normal text-sm leading-5 text-center align-middle">
-          {value}
+          {getDateRangeLabel(value)}
         </span>
       </button>
 
       {isOpen && (
         <ul className="absolute right-0 z-20 mt-2 w-44 rounded-xl border border-slate-100 bg-white py-1 shadow-lg ring-1 ring-black/5">
-          {TIMEFRAME_OPTIONS.map((option) => (
-            <li key={option}>
+          {ORDER_DATE_OPTIONS.map((option) => (
+            <li key={option.value}>
               <button
                 type="button"
                 onClick={() => {
-                  onChange(option);
+                  onChange(option.value);
                   setIsOpen(false);
                 }}
                 className={`w-full px-4 py-2 text-left text-sm transition-colors hover:bg-slate-50 ${
-                  value === option
+                  value === option.value
                     ? "font-semibold text-primary"
                     : "text-slate-700"
                 }`}
               >
-                {option}
+                {option.label}
               </button>
             </li>
           ))}

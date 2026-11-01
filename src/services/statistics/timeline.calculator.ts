@@ -1,12 +1,10 @@
 import { WEEKDAYS } from "@/constants/statistics/statistics.constants";
-import type { Cart } from "@/types/carts";
-import type { Product } from "@/types/products";
+import type { Order } from "@/types/orders";
 import type { RevenueOrdersPoint } from "@/types/statistics";
-import { calculateCartTotal } from "@/utils/carts/cart.utils";
+import { countsAsOrder, countsAsRevenue } from "@/utils/orders";
 
 export const calculateRevenueTimeline = (
-  carts: Cart[],
-  productMap: Map<number, Product>,
+  orders: Order[],
 ): RevenueOrdersPoint[] => {
   const dayLookup: Record<number, (typeof WEEKDAYS)[number]> = {
     0: "Sun",
@@ -28,13 +26,10 @@ export const calculateRevenueTimeline = (
     Sun: { revenue: 0, orders: 0 },
   };
 
-  carts.forEach((cart) => {
-    const dayName = dayLookup[new Date(cart.date).getDay()];
-    if (dayIncrements[dayName]) {
-      dayIncrements[dayName].orders += 1;
-      
-      dayIncrements[dayName].revenue += Math.round(calculateCartTotal({cart, productMap}),);
-    }
+  orders.forEach((order) => {
+    const dayName = dayLookup[new Date(order.date).getDay()];
+    if (countsAsOrder(order)) dayIncrements[dayName].orders += 1;
+    if (countsAsRevenue(order)) dayIncrements[dayName].revenue += order.total;
   });
 
   let accumulatedRevenue = 0;
@@ -46,7 +41,7 @@ export const calculateRevenueTimeline = (
 
     return {
       day,
-      revenue: accumulatedRevenue,
+      revenue: Math.round(accumulatedRevenue * 100) /100,
       orders: accumulatedOrders,
     };
   });

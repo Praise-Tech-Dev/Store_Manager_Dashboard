@@ -1,6 +1,6 @@
-import type { TimeRangeOption } from "./timeRangeOption.types";
+import type { OrderDateRange } from "@/types/orders";
 
 export interface TimeframeSelectProps {
-  value: TimeRangeOption;
-  onChange: (range: TimeRangeOption) => void;
+  value: OrderDateRange;
+  onChange: (next: OrderDateRange) => void;
 }

@@ -14,3 +14,7 @@ export const WEEKDAYS = [
   "Sat",
   "Sun",
 ] as const;
+
+export const ACTIVITY_FEED_LIMIT = 4;
+export const ACTIVITY_TITLE_MAX_LENGTH = 40;
+export const DELETED_PRODUCT_LABEL = "Deleted product";

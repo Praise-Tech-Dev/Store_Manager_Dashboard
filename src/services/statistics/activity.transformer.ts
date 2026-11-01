@@ -1,33 +1,30 @@
-import type { Cart } from "@/types/carts";
-import type { Product } from "@/types/products";
-import type { ActivityItem } from "@/types/statistics/recentActivity/activity.types";
-import type { DashboardUser } from "@/types/user.types";
-import { calculateCartTotal } from "@/utils/carts/cart.utils";
+import { ACTIVITY_FEED_LIMIT, ACTIVITY_TITLE_MAX_LENGTH, DELETED_PRODUCT_LABEL } from "@/constants/statistics/statistics.constants";
+import type { ActivityItem } from "@/types/statistics";
+import type { ActivityTransformParams } from "@/types/statistics/calculatorParams.types";
+import { countsAsOrder, formatOrderDateTime, sortOrdersByDate } from "@/utils/orders";
 import { formatCurrency } from "@/utils/statistics.utils";
-import { createUserMap, getCustomerName } from "@/utils/user.utils";
 
-export const transformRecentActivities = (
-  carts: Cart[],
-  users: DashboardUser[],
-  productMap: Map<number, Product>,
-): ActivityItem[] => {
-  const userMap = createUserMap(users);
+export const transformRecentActivities = ({
+  orders,
+  productMap,
+}: ActivityTransformParams): ActivityItem[] =>
+  sortOrdersByDate({ orders: orders.filter(countsAsOrder) })
+    .slice(0, ACTIVITY_FEED_LIMIT)
+    .map((order) => {
+      const title =
+        productMap.get(order.items[0]?.productId)?.title ??
+        DELETED_PRODUCT_LABEL;
+      const shortTitle =
+        title.length > ACTIVITY_TITLE_MAX_LENGTH
+          ? `${title.slice(0, ACTIVITY_TITLE_MAX_LENGTH)}...`
+          : title;
 
-  return carts.slice(0, 4).map((cart, index) => {
-    // const user = userMap.get(cart.userId);
-    const firstProduct = productMap.get(cart.products[0]?.productId);
-
-    const totalCost = calculateCartTotal({cart, productMap});
-
-    const customerName = getCustomerName(userMap.get(cart.userId))
-
-    return {
-      id: `act-cart-${cart.id}-${index}`,
-      type: "order",
-      title: `New Order #ORD-${cart.id + 7300}`,
-      description: `${customerName} purchased '${firstProduct?.title.slice(0, 40) ?? "Item"}...'`,
-      amount: formatCurrency(totalCost),
-      timestamp: `${(index + 1) * 20} mins ago`,
-    };
-  });
-};
+      return {
+        id: `act-order-${order.id}`,
+        type: "order",
+        title: `New Order ${order.orderNumber}`,
+        description: `${order.customerName} purchased '${shortTitle}'`,
+        amount: formatCurrency(order.total),
+        timestamp: formatOrderDateTime({ date: order.date }),
+      };
+    });

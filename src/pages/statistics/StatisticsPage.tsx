@@ -6,17 +6,17 @@ import { StatisticsLoader } from "@/components/statistics/StatisticsLoader";
 import { TimeframeSelect } from "@/components/statistics/TimeframeSelect";
 import { TopCategoriesChart } from "@/components/statistics/topCategories/TopCategoriesChart";
 import { DEFAULT_TIMEFRAME } from "@/constants/statistics/defaultTimeFrame.constants";
-import { useStatisticsQuery } from "@/hooks/statistics/useStatisticsQuery";
-import type { TimeRangeOption } from "@/types/statistics/exportReport";
+import { useDashboardStatistics } from "@/hooks/statistics/useDashboardStatistics";
+import type { OrderDateRange } from "@/types/orders";
 import { exportStatisticReport } from "@/utils/statistics/statisticsExport.utils";
 import { Download } from "lucide-react";
 import { useState } from "react";
 // import { useState } from "react";
 
 export const StatisticsPage = () => {
-  const [timeRange, setTimeRange] = useState<TimeRangeOption>(DEFAULT_TIMEFRAME);
+  const [timeRange, setTimeRange] = useState<OrderDateRange>(DEFAULT_TIMEFRAME);
   const { data, isLoading, isError, error, refetch, isRefetching } =
-    useStatisticsQuery();
+    useDashboardStatistics(timeRange);
 
   if (isLoading) {
     return <StatisticsLoader />;

@@ -1,11 +1,18 @@
 import type { MetricCardData } from "@/types/statistics";
-import type { MetricCalculationParams } from "@/types/statistics/metricCalculatorParam.types";
+import type { MetricCalculationParams } from "@/types/statistics/calculatorParams.types";
+import { countsAsOrder, countsAsRevenue } from "@/utils/orders";
 import { formatCurrency } from "@/utils/statistics.utils";
 import { generateZigzagTrend } from "@/utils/statistics/sparkline.utils";
 
-export const calculateDashboardMetrics = (params: MetricCalculationParams): MetricCardData[] => {
-  const { totalRevenue, totalOrders, totalUsers } = params;
-    const conversionRate = totalOrders > 0 ? (totalOrders / totalUsers) * 100 : 0;
+export const calculateDashboardMetrics = ({ orders, totalUsers}: MetricCalculationParams): MetricCardData[] => {
+  // const { totalRevenue, totalOrders, totalUsers } = params;
+  const paidOrders = orders.filter(countsAsRevenue);
+  const totalRevenue = paidOrders.reduce((sum, order) => sum + order.total, 0);
+  const totalOrders = orders.filter(countsAsOrder).length;
+  const buyers = new Set(paidOrders.map((order) => order.userId)).size;
+    const conversionRate = totalUsers > 0 ? (buyers / totalUsers) * 100 : 0;
+
+    // const conversionRate = totalOrders > 0 ? (totalOrders / totalUsers) * 100 : 0;
 
     return [
       {
