@@ -35,7 +35,7 @@ export const ORDER_DATE_RANGE_DAYS: Record<OrderDateRange, number | null> = {
 
 export const DEFAULT_ORDER_FILTERS: OrderFilters = {
   status: "all",
-  dateRange: "all",
+  dateRange: "30d",
 };
 export const ORDERS_PAGE_SIZE = 4;
 

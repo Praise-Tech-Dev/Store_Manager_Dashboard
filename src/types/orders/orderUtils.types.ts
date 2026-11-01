@@ -7,6 +7,7 @@ import type { OrderCardValues } from "./orderCard.types";
 import type { CreateOrderFormValues } from "@/validationSchema/createOrder.schema";
 import type { ApiUser } from "../user.types";
 import type { Product } from "../products";
+import type { OrderDateRange } from "./orderFilters.types";
 
 export interface BuildOrdersParams {
   seedOrders: Order[];
@@ -60,4 +61,10 @@ export interface BuildNewOrderInputParams {
 export interface CalculateItemsTotalParams {
   items: OrderItem[];
   productMap: Map<number, Product>;
+}
+
+export interface FilterOrdersByPeriodParams {
+  orders: Order[];
+  dateRange: OrderDateRange;
+  now?: Date;
 }

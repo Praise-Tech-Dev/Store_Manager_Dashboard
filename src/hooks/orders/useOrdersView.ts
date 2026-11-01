@@ -5,20 +5,16 @@ import {
   ORDER_TABS,
   ORDERS_PAGE_SIZE,
 } from "@/constants/orders";
-import { ORDERS_MOCK_DATA } from "@/mock/data/orders.mock.data";
-import { useOrderStore } from "@/store/useOrderStore";
 import type { OrderFilters, OrderTab } from "@/types/orders";
-import { filterOrders } from "@/utils/orders";
-import { buildOrders } from "@/utils/orders/buildOrders.utils";
+import { filterOrders, filterOrdersByPeriod } from "@/utils/orders";
 import { parseSelectOption } from "@/utils/orders/parseSelectOption.utils";
 import { sortOrdersByDate } from "@/utils/orders/sortOrders.utils";
 import { paginate } from "@/utils/pagination.utils";
 import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useAllOrders } from "./useAllOrders";
 
 export const useOrdersView = () => {
-  const createdOrders = useOrderStore((state) => state.createdOrders);
-  const cancelledIds = useOrderStore((state) => state.cancelledIds);
   const [searchParams, setSearchParams] = useSearchParams();
   const [now] = useState(() => new Date());
 
@@ -64,22 +60,9 @@ export const useOrdersView = () => {
   const setPage = (next: number) => updateParams({ page: String(next) });
 
   // Data pipeline: build, filter, sort, paginate
-  const orders = useMemo(
-    () =>
-      buildOrders({
-        seedOrders: ORDERS_MOCK_DATA,
-        createdOrders,
-        cancelledIds,
-      }),
-    [createdOrders, cancelledIds],
-  );
+  const orders = useAllOrders();
   const periodOrders = useMemo(
-    () =>
-      filterOrders({
-        orders,
-        filters: { ...DEFAULT_ORDER_FILTERS, dateRange },
-        now,
-      }),
+    () => filterOrdersByPeriod({ orders, dateRange, now }),
     [orders, dateRange, now],
   );
 

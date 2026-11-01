@@ -1,4 +1,5 @@
 import type { GetOrderCardValuesParams } from "@/types/orders";
+import { countsAsOrder, countsAsRevenue } from "./orders.predicates";
 
 
 export const getOrderCardValues = ({
@@ -7,15 +8,13 @@ export const getOrderCardValues = ({
   pendingCarts,
 }: GetOrderCardValuesParams ) => {
   const revenue = orders
-    .filter(
-      (o) => o.paymentStatus === "PAID" && o.shippingStatus !== "Cancelled",
-    )
+    .filter(countsAsRevenue)
     .reduce((sum, o) => sum + o.total, 0);
 
   const pendingReturns = returns.filter((r) => r.status !== "Refunded");
 
   return {
-    totalOrders: orders.length,
+    totalOrders: orders.filter(countsAsOrder).length,
     revenue,
     abandonedCarts: pendingCarts.length,
     pendingReturnsCount: pendingReturns.length,
