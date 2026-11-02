@@ -2,10 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import { PRODUCT_KEYS } from "../productKeys";
 import { productService } from "@/services/product.service";
 import { useProductStore } from "@/store/useProductStore";
-import type { DashboardProduct } from "@/types/products";
+import type { DashboardProduct, UseDashboardProductsParams } from "@/types/products";
 import { reconcileProducts } from "@/utils/products/productReconciler";
 
-export const useDashboardProducts = () => {
+export const useDashboardProducts = ({enabled = true }: UseDashboardProductsParams = {}) => {
     const userCreatedProducts = useProductStore((state) => state.userCreatedProducts);
     const userEdits = useProductStore((state) => state.userEdits);
     const deletedIds = useProductStore((state) => state.deletedIds);
@@ -18,6 +18,7 @@ export const useDashboardProducts = () => {
             userCreatedProducts,
             userEdits,
             deletedIds,
-        })
+        }),
+    enabled,
   });
 };
