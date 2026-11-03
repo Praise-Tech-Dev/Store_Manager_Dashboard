@@ -1,26 +1,21 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { Calendar } from "lucide-react";
 import type { TimeframeSelectProps } from "@/types/statistics/exportReport/timeFrameSelect.types";
 import { getDateRangeLabel } from "@/utils/orders";
 import { ORDER_DATE_OPTIONS } from "@/constants/orders";
+import { useClickOutside } from "@/hooks/common/useClickOutside";
 
 
 export const TimeframeSelect = ({ value, onChange }: TimeframeSelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const handleOutsideClick = (e: MouseEvent) => {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(e.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleOutsideClick);
-    return () => document.removeEventListener("mousedown", handleOutsideClick);
-  }, []);
+  useClickOutside(
+    {
+      ref: containerRef,
+      onOutsideClick: () => setIsOpen(false),
+    }
+  );
 
   return (
     <div className="relative" ref={containerRef}>

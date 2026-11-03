@@ -1,9 +1,10 @@
 import { useAuth } from "@/hooks/auth/useAuth"
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Avatar } from "../shared/Avatar";
 import { getUserAvatarUrl } from "@/utils/user.utils";
 import { useNavigate } from "react-router-dom";
 import { ProfileMenuSkeleton } from "../shared/topNav/ProfileMenuSkeleton";
+import { useClickOutside } from "@/hooks/common/useClickOutside";
 
 export const UserProfileMenu = () => {
     const { user, isLoading, logout} = useAuth();
@@ -16,29 +17,10 @@ export const UserProfileMenu = () => {
         navigate("/login", { replace: true});
     };
 
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-                setIsOpen(false);
-            }
-            
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-
-        return () => {
-          document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
+    useClickOutside({ ref: menuRef, onOutsideClick: () => setIsOpen(false) });
 
     if (isLoading) {
       return (
-        // <div className="flex items-center gap-3 animate-pulse">
-        //   <div className="w-10 h-10 rounded-full bg-slate-200" />
-        //   <div className="hidden sm:flex flex-col gap-1.5">
-        //     <div className="w-24 h-3.5 bg-slate-200 rounded" />
-        //     <div className="w-16 h-2.5 bg-slate-200 rounded" />
-        //   </div>
-        // </div>
         <ProfileMenuSkeleton />
       );
     }
@@ -83,13 +65,13 @@ export const UserProfileMenu = () => {
               onClick={() => {
                 setIsOpen(false);
               }}
-              className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50"
+              className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 cursor-pointer"
             >
               Profile settings
             </button>
             <button
               onClick={handleSignOut}
-              className="w-full text-left px-4 py-2 text-sm text-rose-600 hover:bg-rose-50"
+              className="w-full text-left px-4 py-2 text-sm text-rose-600 hover:bg-rose-50 cursor-pointer"
             >
               Sign Out
             </button>
