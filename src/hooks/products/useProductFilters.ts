@@ -31,6 +31,7 @@ export const useProductTableFilters = (products: DashboardProduct[] = []) => {
     
         // Prevent pushing stale debounced text if user or clearFilters cleared the input
         if (searchTerm === "" && urlSearch === "") return;
+        if (debouncedSearch !== searchTerm) return;
         // Guard to prevent pushing if it already matches
         if (trimmed === urlSearch) return;
     

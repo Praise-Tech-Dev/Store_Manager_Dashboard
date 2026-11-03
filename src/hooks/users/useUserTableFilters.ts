@@ -25,6 +25,7 @@ export const useUserTableFilters = (users: DashboardUser[] = []) => {
   const debouncedSearch = useDebounce(searchTerm, 400);
 
   useEffect(() => {
+    if (debouncedSearch !== searchTerm) return; // Only push when debounced value is stable
     const trimmed = debouncedSearch.trim();
 
     // Prevent pushing stale debounced text if user or clearFilters cleared the input
