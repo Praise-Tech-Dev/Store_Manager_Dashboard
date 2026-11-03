@@ -37,6 +37,7 @@ export const DEFAULT_ORDER_FILTERS: OrderFilters = {
   status: "all",
   dateRange: "30d",
 };
+export const ALL_TIME_RANGE: OrderDateRange = "all";
 export const ORDERS_PAGE_SIZE = 4;
 
 export const ORDER_EXPORT_HEADERS = {

@@ -12,8 +12,12 @@ import type {
 import { useAllOrders } from "../orders/useAllOrders";
 import { useDashboardProducts } from "../products";
 import { matchesOrder, matchesProduct, matchesUser } from "@/utils/globalsearch.matchers";
+import { ALL_TIME_RANGE } from "@/constants/orders";
 
-
+const buildOrdersSearchHref = (term: string) => {
+  const params = new URLSearchParams({ search: term, range: ALL_TIME_RANGE });
+  return `/orders?${params.toString()}`;
+};
 
 const buildGroup = <T>({
   key,
@@ -50,9 +54,9 @@ export const useGlobalSearch = ({ query, enabled }: UseGlobalSearchParams) => {
         id: `order-${o.id}`,
         title: o.orderNumber,
         subtitle: o.customerName,
-        href: `/orders?search=${encodeURIComponent(o.orderNumber)}`,
+        href: buildOrdersSearchHref(o.orderNumber),
       }),
-      viewAllHref: `/orders?search=${encoded}`,
+      viewAllHref: buildOrdersSearchHref(trimmed),
     });
 
     const userGroup = buildGroup({
