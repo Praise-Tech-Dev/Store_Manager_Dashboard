@@ -6,7 +6,7 @@ import {
   ORDERS_PAGE_SIZE,
 } from "@/constants/orders";
 import type { OrderFilters, OrderTab } from "@/types/orders";
-import { filterOrders, filterOrdersByPeriod } from "@/utils/orders";
+import { filterOrders, filterOrdersByPeriod, searchOrders } from "@/utils/orders";
 import { parseSelectOption } from "@/utils/orders/parseSelectOption.utils";
 import { sortOrdersByDate } from "@/utils/orders/sortOrders.utils";
 import { paginate } from "@/utils/pagination.utils";
@@ -17,6 +17,7 @@ import { useAllOrders } from "./useAllOrders";
 export const useOrdersView = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [now] = useState(() => new Date());
+  const search = (searchParams.get("search") ?? "").trim();
 
   // Read and validate view state from the URL
   const status = parseSelectOption({
@@ -59,7 +60,24 @@ export const useOrdersView = () => {
   const changeTab = (next: OrderTab) => updateParams({ tab: next, page: "1" });
   const setPage = (next: number) => updateParams({ page: String(next) });
 
-  // Data pipeline: build, filter, sort, paginate
+  const clearSearch = () =>
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      next.delete("search");
+      next.set("page", "1");
+      return next;
+    });
+
+  // One call that resets everything, used by the table's empty state
+  const clearFilters = () =>
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      ["status", "range", "search"].forEach((key) => next.delete(key));
+      next.set("page", "1");
+      return next;
+    });
+
+  // build, filter, sort, paginate
   const orders = useAllOrders();
   const periodOrders = useMemo(
     () => filterOrdersByPeriod({ orders, dateRange, now }),
@@ -71,9 +89,14 @@ export const useOrdersView = () => {
     [orders, filters, now],
   );
 
+  const searched = useMemo(
+    () => searchOrders({ orders: filtered, search }),
+    [filtered, search],
+  );
+
   const sorted = useMemo(
-    () => sortOrdersByDate({ orders: filtered }),
-    [filtered],
+    () => sortOrdersByDate({ orders: searched }),
+    [searched],
   );
 
   const pagination = paginate({
@@ -94,5 +117,8 @@ export const useOrdersView = () => {
     page,
     periodOrders,
     filteredOrders : sorted,
+    search,
+    clearSearch,
+    clearFilters,
   };
 };

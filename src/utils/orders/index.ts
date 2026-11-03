@@ -8,3 +8,4 @@ export * from "./sortOrders.utils";
 export * from "./orders.predicates";
 export * from "./dateRange.utils";
 export * from "./filterOrderByPeriod.utils";
+export * from "./searchOrders.utils";

@@ -2,11 +2,11 @@ import { PendingCartsTable } from "@/components/carts/PendingCartsTable";
 import { CreateOrderModal } from "@/components/orders/CreateOrder";
 import { OrderCard } from "@/components/orders/OrderCard";
 import { OrderFiltersBar } from "@/components/orders/OrderFiltersBar";
+import { OrderSearchChip } from "@/components/orders/OrderSearchChip";
 import { OrderTable } from "@/components/orders/OrderTable";
 import { OrderTabs } from "@/components/orders/OrderTabs";
 import { ReturnsTable } from "@/components/returns/ReturnsTable";
 import Button from "@/components/shared/Button";
-import { DEFAULT_ORDER_FILTERS } from "@/constants/orders";
 import { usePendingCarts } from "@/hooks/carts/usePendingCarts";
 import { useOrderCards } from "@/hooks/orders/useOrderCards";
 import { useOrdersView } from "@/hooks/orders/useOrdersView";
@@ -22,7 +22,7 @@ export  const OrderPage = () => {
   
   const [, setSearchParams] = useSearchParams();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
-  const { periodOrders, visibleOrders, filteredOrders, pagination, filters, tab, setPage, updateFilters, changeTab, page } = useOrdersView();
+  const { periodOrders, visibleOrders, filteredOrders, pagination, filters, tab, setPage, updateFilters, changeTab, page, search, clearSearch, clearFilters } = useOrdersView();
   const { data : pendingCarts = [] , isPending : isCartsPending, isError: isCartsError, refetch: refetchCarts } = usePendingCarts();
 
   const cards = useOrderCards({
@@ -106,11 +106,12 @@ export  const OrderPage = () => {
         {tab === "all" && (
           <>
             <OrderFiltersBar filters={filters} onChange={updateFilters} />
+            {search && <OrderSearchChip term={search} onClear={clearSearch} />}
             <div className="px-4">
               <OrderTable
                 orders={visibleOrders}
                 pagination={{ ...pagination, onPageChange: setPage }}
-                onClearFilters={() => updateFilters(DEFAULT_ORDER_FILTERS)}
+                onClearFilters={clearFilters}
               />
             </div>
           </>

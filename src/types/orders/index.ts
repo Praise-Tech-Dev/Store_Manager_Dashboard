@@ -9,3 +9,4 @@ export * from "./orderProps.types";
 export * from "./orderCard.types";
 export * from "./useOrderCardsParams.types";
 export * from "./stock.types";
+export * from "./searchOrdersParams.types";

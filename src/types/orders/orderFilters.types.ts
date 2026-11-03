@@ -10,3 +10,8 @@ export interface OrderFilters {
   status: OrderStatusFilter;
   dateRange: OrderDateRange;
 }
+
+export interface OrderSearchChipProps {
+  term: string;
+  onClear: () => void;
+}
