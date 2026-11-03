@@ -13,6 +13,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
         placeholder = "Search...",
         className = "",
         containerClassName = "",
+        rounded = "rounded-xl",
         disabled = false,
         ...rest
         },
@@ -37,7 +38,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
           disabled={disabled}
           placeholder={placeholder}
           className={`
-            w-full rounded-xl border border-transparent bg-[#F2F4F6] text-sm text-gray-900 placeholder-[#9CA3AF]
+            w-full ${rounded} border border-transparent bg-[#F2F4F6] text-sm text-gray-900 placeholder-[#9CA3AF]
             transition-all duration-200 outline-none
             py-2.5 pl-10 pr-10
             hover:border-gray-200 focus:border-primary focus:bg-white focus:ring-2 focus:ring-primary/20

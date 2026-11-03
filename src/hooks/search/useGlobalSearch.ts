@@ -13,6 +13,7 @@ import { useAllOrders } from "../orders/useAllOrders";
 import { useDashboardProducts } from "../products";
 import { matchesOrder, matchesProduct, matchesUser } from "@/utils/globalsearch.matchers";
 import { ALL_TIME_RANGE } from "@/constants/orders";
+import { formatCurrency } from "@/utils/statistics.utils";
 
 const buildOrdersSearchHref = (term: string) => {
   const params = new URLSearchParams({ search: term, range: ALL_TIME_RANGE });
@@ -53,7 +54,7 @@ export const useGlobalSearch = ({ query, enabled }: UseGlobalSearchParams) => {
       toItem: (o) => ({
         id: `order-${o.id}`,
         title: o.orderNumber,
-        subtitle: o.customerName,
+        subtitle: `${o.customerName} · ${formatCurrency(o.total)}`,
         href: buildOrdersSearchHref(o.orderNumber),
       }),
       viewAllHref: buildOrdersSearchHref(trimmed),

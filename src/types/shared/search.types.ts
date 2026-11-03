@@ -4,6 +4,7 @@ export interface SearchInputProps extends Omit<
 > {
   onClear: () => void;
   containerClassName?: string;
+  rounded?: string;
 }
 
 export type SearchGroupKey = "orders" | "users" | "products";
