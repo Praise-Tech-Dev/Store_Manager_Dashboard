@@ -35,3 +35,29 @@ export interface BuildGroupParams<T> {
   toItem: (match: T) => SearchResultItem;
   viewAllHref: string;
 }
+
+export interface SearchNavigation {
+  hrefs: string[];
+  starts: number[];
+}
+
+export interface ClampIndexParams {
+  index: number;
+  length: number;
+}
+
+export interface MoveIndexParams {
+  current: number;
+  step: 1 | -1;
+  length: number;
+}
+
+export interface GlobalSearchDropdownProps {
+  listboxId: string; 
+  groups: SearchResultGroup[];
+  starts: number[]; 
+  activeIndex: number; 
+  statusMessage: string | null; 
+  onSelect: (href: string) => void;
+  onHover: (index: number) => void;
+}
