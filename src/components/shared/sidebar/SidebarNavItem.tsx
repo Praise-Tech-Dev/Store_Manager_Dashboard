@@ -1,40 +1,23 @@
-import type { ComponentType, SVGProps } from "react";
+import type { SidebarNavItemProps } from "@/types/shared/sidebar/sidebarNavItemsProps";
 import { NavLink } from "react-router-dom";
-
-type SidebarNavItemProps = {
-  name: string;
-  path: string;
-  icon: ComponentType<SVGProps<SVGSVGElement>>;
-  // isOpen: boolean;
-  // closeSidebar: () => void;
-};
 
 export default function SidebarNavItem({
   name,
   path,
   icon: Icon,
-  // isOpen,
-  // closeSidebar,
 }: SidebarNavItemProps) {
   return (
     <NavLink
       to={path}
-      // end={path === "/" || path === "/dashboard"}
       end={path === "/statistics"}
-      // onClick={() => {
-      //   if (!isOpen && window.innerWidth < 768) {
-      //     closeSidebar();
-      //   }
-
-      // }}
       className={({ isActive }) =>
         `
         flex
         items-center
         gap-3
-        rounded-lg
-        py-2.5
-        px-3.5
+        rounded-xl
+        py-3
+        px-4
         transition-colors
         duration-300
         
@@ -46,7 +29,6 @@ export default function SidebarNavItem({
         `
       }
     >
-      {/* <img src={icon} alt={`${name} icon`} className={`w-4.5 h-4.5 shrink-0 `} /> */}
       <Icon className="w-5 h-5 shrink-0 " />
 
       <span

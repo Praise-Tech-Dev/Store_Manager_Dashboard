@@ -21,7 +21,7 @@ export const navigation = [
       icon: Users,
     },
     {
-      name: "Order",
+      name: "Orders",
       path: "/orders",
       icon: Orders,
     },

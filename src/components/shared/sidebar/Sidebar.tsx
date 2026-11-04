@@ -46,7 +46,6 @@ export default function Sidebar() {
       `}
       >
         <div
-          // className={`transition-all duration-300 ${isOpen ? "px-4" : "px-2"}`}
           className="px-4"
         >
           <div className="flex items-center gap-3 px-2  py-4">
@@ -89,13 +88,11 @@ export default function Sidebar() {
           </div>
 
           <div className="flex flex-col pt-10 gap-10">
-            <nav className="flex-1 space-y-2 px-2  md:px-4">
+            <nav className="flex-1 space-y-2">
               {navigation.map((item) => (
                 <SidebarNavItem
                   key={item.name}
                   {...item}
-                  // isOpen={isOpen}
-                  // closeSidebar={closeSidebar}
                 />
               ))}
             </nav>
